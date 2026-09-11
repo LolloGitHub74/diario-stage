@@ -1,64 +1,271 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Diario di Stage</title>
 
-
-
-    cuo
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>Diario di Stage</h1>
+    <header class="header">
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="#settimane">Attività settimanali</a>
+        <div class="logo">
+            <span>Diario di Stage - Skilla - Lorenzo Carducci</span>
+        </div>
+
+        <nav class="navigation">
+            <a href="#home">Home</a>
+            <a href="#attivita">Attività settimanali</a>
             <a href="#progetto">Progetto</a>
         </nav>
-    </header>
 
+    </header>
 
     <main>
 
-        <section id="introduzione">
-            <h2>Il mio stage</h2>
+        <section class="intro" id="home">
 
-            <p>
-                In questa sezione inseriremo una breve introduzione
-                allo stage e al progetto svolto.
-            </p>
+            <div class="intro-content">
+
+                <div class="intro-text">
+
+                    <p class="status">
+                        <span class="status-dot"></span>
+                        STAGE IN CORSO
+                    </p>
+
+                    <p class="eyebrow">
+                        STAGE UNIVERSITARIO · 2026
+                    </p>
+
+                    <h1>
+                        Il mio stage in Skilla
+                    </h1>
+
+                    <p class="description">
+                        Un'esperienza formativa dedicata all'esplorazione e
+                        allo sviluppo di soluzioni basate sull'intelligenza
+                        artificiale.
+                    </p>
+
+                    <div class="intro-action">
+
+                        <a href="progetto.html" class="hero-button">
+                            Scopri il progetto →
+                        </a>
+
+                        <p>
+                            Esplora gli strumenti e le attivita che stiamo svolgendo insieme
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="intro-image">
+
+                    <img src="immagini/animali_cubici.jpg" alt="Illustrazione Skilla">
+
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-item">
+
+                    <div class="info-title">
+                        <span>Azienda</span>
+                    </div>
+
+                    <strong>Skilla</strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-title">
+                        <span>Corso di laurea</span>
+                    </div>
+
+                    <strong>Informatica</strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-title">
+                        <span>Tutor universitario</span>
+                    </div>
+
+                    <strong>Guglielmo Lulli</strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-title">
+                        <span>Tutor aziendale</span>
+                    </div>
+
+                    <strong>Silvia Innocenzi</strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-title">
+                        <span>Durata</span>
+                    </div>
+
+                    <strong>07/09/2026 — 23/12/2026</strong>
+
+                    <img src="icone/durata.svg" alt="" class="info-icon">
+
+                </div>
+
+            </div>
+
         </section>
 
 
-        <section id="settimane">
-            <h2>Attività settimanali</h2>
+        <section class="activities" id="attivita">
 
-            <!-- Qui inseriremo le settimane -->
+            <div class="section-header">
+                <p class="eyebrow">DIARIO DI STAGE</p>
+
+                <h2>Attività settimanali</h2>
+
+                <p>
+                    Un resoconto delle attività svolte e delle conoscenze
+                    acquisite durante ogni settimana dello stage.
+                </p>
+            </div>
+
+
+            <div class="slider">
+
+                <button class="slider-button previous" aria-label="Settimana precedente">
+                    ←
+                </button>
+
+
+                <div class="slider-window">
+
+                    <div class="slider-track">
+
+                        <!-- Settimana 01 -->
+
+                        <article class="week-card">
+
+                            <div class="week-number">
+                                SETTIMANA 01
+                            </div>
+
+                            <div class="week-date">
+                                7 — 11 settembre 2026
+                            </div>
+
+                            <h3>Introduzione e attività iniziali</h3>
+
+                            <p>
+                                Una breve descrizione delle attività
+                                svolte durante la prima settimana.
+                            </p>
+                            <a href="settimane/settimana-01.html">
+                                Leggi la settimana →
+                            </a>
+
+                        </article>
+
+
+                        <!-- Settimana 02 -->
+
+                        <article class="week-card">
+
+                            <div class="week-number">
+                                SETTIMANA 02
+                            </div>
+
+                            <div class="week-date">
+                                14 — 18 settembre 2026
+                            </div>
+
+                            <h3>Prime attività di sviluppo</h3>
+
+                            <p>
+                                Una breve descrizione delle attività
+                                svolte durante la seconda settimana.
+                            </p>
+
+                            <a href="#">
+                                Leggi la settimana →
+                            </a>
+
+                        </article>
+
+
+                        <!-- Settimana 03 -->
+
+                        <article class="week-card">
+
+                            <div class="week-number">
+                                SETTIMANA 03
+                            </div>
+
+                            <div class="week-date">
+                                21 — 25 settembre 2026
+                            </div>
+
+                            <h3>Sviluppo e sperimentazione</h3>
+
+                            <p>
+                                Una breve descrizione delle attività
+                                svolte durante la terza settimana.
+                            </p>
+
+                            <a href="#">
+                                Leggi la settimana →
+                            </a>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+
+                <button class="slider-button next" aria-label="Settimana successiva">
+                    →
+                </button>
+
+            </div>
+
+
+            <div class="slider-dots">
+
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+
+            </div>
 
         </section>
 
-
-        <section id="progetto">
-            <h2>Il progetto</h2>
-
-            <p>
-                Descrizione del progetto di stage.
-            </p>
-        </section>
 
     </main>
 
-
-    <footer>
-        <p>Diario di Stage · 2026</p>
-    </footer>
-
 </body>
+
 </html>
