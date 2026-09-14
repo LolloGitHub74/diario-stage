@@ -29,6 +29,8 @@ body {
     padding: 0 8%;
 
     border-bottom: 1px solid #e5e7eb;
+
+    position: relative;
 }
 
 
@@ -58,6 +60,69 @@ body {
 
 .navigation a:hover {
     color: #315ea8;
+}
+
+
+/* Bottone menu (hamburger) - visibile solo su mobile */
+
+.menu-toggle {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+
+    align-items: center;
+    justify-content: center;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
+}
+
+.menu-toggle span,
+.menu-toggle span::before,
+.menu-toggle span::after {
+    display: block;
+
+    width: 22px;
+    height: 2px;
+
+    background-color: #17233c;
+
+    position: relative;
+
+    transition: all 0.2s ease;
+}
+
+.menu-toggle span::before,
+.menu-toggle span::after {
+    content: "";
+    position: absolute;
+}
+
+.menu-toggle span::before {
+    top: -7px;
+}
+
+.menu-toggle span::after {
+    top: 7px;
+}
+
+/* Trasforma l'icona in una X quando il menu è aperto */
+
+.menu-toggle.active span {
+    background-color: transparent;
+}
+
+.menu-toggle.active span::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.menu-toggle.active span::after {
+    top: 0;
+    transform: rotate(-45deg);
 }
 
 
@@ -366,6 +431,8 @@ body {
 .slider-track {
     display: flex;
     gap: 25px;
+
+    transition: transform 0.3s ease;
 }
 
 
@@ -489,6 +556,24 @@ body {
     border-color: #315ea8;
 }
 
+.slider-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.slider-button:disabled:hover {
+    background-color: #ffffff;
+    border-color: #dfe3e8;
+}
+
+
+/* Testo placeholder per le settimane non ancora compilate */
+
+.placeholder-text {
+    font-style: italic;
+    color: #98a2b3 !important;
+}
+
 
 /* Indicatori */
 
@@ -496,8 +581,19 @@ body {
     margin-top: 30px;
 
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
+
+    cursor: pointer;
+}
+
+.slider-dots .dot {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.slider-dots .dot:hover {
+    background-color: #a9c0e0;
 }
 
 .dot {
@@ -631,4 +727,221 @@ footer {
     border-top: 1px solid #e5e7eb;
 
     color: #667085;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   Da qui in poi: regole che si attivano solo sotto
+   una certa larghezza dello schermo, per adattare il
+   sito a tablet e smartphone. Si leggono dal basso
+   (schermi grandi) verso l'alto (schermi piccoli):
+   ogni blocco sovrascrive solo quello che deve cambiare.
+========================================================= */
+
+
+/* ---------- TABLET (fino a 1024px) ---------- */
+
+@media (max-width: 1024px) {
+
+    .info {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .info-item:nth-child(3) {
+        border-right: none;
+    }
+
+    .info-item:nth-child(4),
+    .info-item:nth-child(5) {
+        border-top: 1px solid #dfe3e8;
+    }
+
+    .week-card {
+        flex: 0 0 calc((100% - 25px) / 2);
+    }
+}
+
+
+/* ---------- MOBILE (fino a 768px) ---------- */
+
+@media (max-width: 768px) {
+
+    /* Header e menu hamburger */
+
+    .header {
+        padding: 0 6%;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .navigation {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+
+        max-height: 0;
+        overflow: hidden;
+
+        transition: max-height 0.25s ease;
+    }
+
+    .navigation.active {
+        max-height: 250px;
+    }
+
+    .navigation a {
+        width: 100%;
+        padding: 16px 6%;
+        border-top: 1px solid #f0f1f4;
+    }
+
+    /* Intro */
+
+    .intro {
+        padding: 45px 6% 0;
+    }
+
+    .intro-content {
+        flex-direction: column;
+
+        gap: 35px;
+    }
+
+    .intro-image {
+        flex: 0 0 auto;
+        width: 100%;
+        order: -1;
+    }
+
+    .intro h1 {
+        font-size: 34px;
+    }
+
+    .description {
+        font-size: 16px;
+    }
+
+    .intro-action {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    /* Info stage */
+
+    .info {
+        grid-template-columns: repeat(2, 1fr);
+
+        margin-top: 45px;
+    }
+
+    .info-item {
+        min-height: auto;
+        padding: 22px 20px;
+    }
+
+    .info-item:nth-child(2n) {
+        border-right: none;
+    }
+
+    .info-item:nth-child(3),
+    .info-item:nth-child(4) {
+        border-top: 1px solid #dfe3e8;
+    }
+
+    .info-item:last-child {
+        grid-column: span 2;
+        border-top: 1px solid #dfe3e8;
+    }
+
+    .info-icon {
+        display: none;
+    }
+
+    /* Attività / diario settimanale */
+
+    .activities {
+        padding: 55px 6%;
+    }
+
+    .section-header h2 {
+        font-size: 30px;
+    }
+
+    .week-card {
+        flex: 0 0 100%;
+    }
+
+    .slider {
+        gap: 12px;
+    }
+
+    .slider-button {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+
+    /* Pagina settimana */
+
+    .week-header {
+        padding: 45px 6% 45px;
+    }
+
+    .week-header h1 {
+        font-size: 34px;
+    }
+
+    .week-section {
+        padding: 45px 6%;
+    }
+
+    .week-section h2 {
+        font-size: 26px;
+    }
+}
+
+
+/* ---------- MOBILE PICCOLO (fino a 480px) ---------- */
+
+@media (max-width: 480px) {
+
+    .info {
+        grid-template-columns: 1fr;
+    }
+
+    .info-item {
+        border-right: none !important;
+        border-top: 1px solid #dfe3e8;
+    }
+
+    .info-item:first-child {
+        border-top: none;
+    }
+
+    .info-item:last-child {
+        grid-column: span 1;
+    }
+
+    .intro h1,
+    .week-header h1 {
+        font-size: 28px;
+    }
+
+    .hero-button {
+        width: 100%;
+        text-align: center;
+    }
 }
