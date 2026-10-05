@@ -1599,3 +1599,534 @@ body::before {
     transform: none;
     box-shadow: 0 12px 28px rgba(23, 35, 60, 0.10);
 }
+
+
+/* =========================================================
+   PAGINA PROGETTO: RIQUADRI E PANNELLI
+   ========================================================= */
+
+.week-header .week-period {
+    max-width: 640px;
+    line-height: 1.6;
+}
+
+/* ---------- Riquadri ---------- */
+
+.project-tiles {
+    width: calc(100% - 16%);
+    max-width: 1000px;
+    margin: 50px auto 70px;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+/* Stesso aspetto 3D delle sezioni delle settimane */
+.project-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 240px;
+    padding: 32px 32px 28px;
+
+    font: inherit;
+    text-align: left;
+    color: var(--ink);
+    cursor: pointer;
+
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-bottom: 3px solid #dde3ee;
+    border-radius: 18px;
+    box-shadow:
+        0 1px 2px rgba(23, 35, 60, 0.04),
+        0 8px 16px rgba(23, 35, 60, 0.05),
+        0 22px 44px rgba(49, 94, 168, 0.08);
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-tile:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 2px 4px rgba(23, 35, 60, 0.05),
+        0 12px 24px rgba(23, 35, 60, 0.07),
+        0 30px 60px rgba(49, 94, 168, 0.12);
+}
+
+.project-tile:focus-visible,
+.panel-close:focus-visible {
+    outline: 3px solid #8fb0ea;
+    outline-offset: 3px;
+}
+
+.tile-meta {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--blue);
+}
+
+.project-tile h2 {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.project-tile p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.tile-more {
+    margin-top: auto;
+    padding-top: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue);
+}
+
+/* Il riquadro del simulatore usa il blu di Skilla per distinguersi */
+.project-tile-simulator {
+    background: linear-gradient(145deg, #0000d0, #2a3fd6);
+    border-color: #0000d0;
+    border-bottom-color: #00009a;
+    color: #ffffff;
+}
+
+.project-tile-simulator p {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.project-tile-simulator .tile-more {
+    color: #ffffff;
+}
+
+.simulator-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 13px;
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.simulator-status .status-dot {
+    background-color: #5ff0a8;
+}
+
+/* ---------- Pannelli ---------- */
+
+/* Mentre un pannello è aperto la pagina sotto non scorre */
+html.panel-open {
+    overflow: hidden;
+}
+
+.panel {
+    width: min(860px, calc(100% - 32px));
+    max-width: none;
+    max-height: 86vh;
+    margin: auto;
+    padding: 0;
+
+    border: 0;
+    border-radius: 20px;
+    overflow: hidden;
+
+    background: #ffffff;
+    color: var(--ink);
+    box-shadow: 0 30px 80px rgba(23, 35, 60, 0.30);
+}
+
+.panel[open] {
+    animation: panel-in 0.25s ease;
+}
+
+.panel::backdrop {
+    background: rgba(23, 35, 60, 0.45);
+    backdrop-filter: blur(3px);
+}
+
+@keyframes panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+}
+
+.panel-inner {
+    max-height: 86vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 40px 40px;
+}
+
+/* Il titolo resta fisso in alto mentre si scorre il pannello */
+.panel-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 28px 0 18px;
+    margin-bottom: 18px;
+
+    background: #ffffff;
+    border-bottom: 1px solid var(--line);
+}
+
+.panel-head h2 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.panel-close {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    font: inherit;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--ink);
+    cursor: pointer;
+
+    background: var(--page);
+    border: 1px solid var(--line);
+
+    transition: background-color 0.2s ease;
+}
+
+.panel-close:hover {
+    background: #e6edfb;
+}
+
+.panel-intro {
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.panel h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* Pannello del simulatore, in blu */
+.panel-simulator,
+.panel-simulator .panel-head {
+    background: #0b15d1;
+    color: #ffffff;
+}
+
+.panel-simulator .panel-head {
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.panel-simulator .panel-close {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.panel-simulator .panel-close:hover {
+    background: rgba(255, 255, 255, 0.24);
+}
+
+.panel-simulator .panel-intro {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+/* ---------- Contenuto: attività ---------- */
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 26px;
+}
+
+.activity-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 24px;
+
+    background: var(--page);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+
+.activity-item-wide {
+    grid-column: 1 / -1;
+}
+
+.activity-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.week-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+.week-tags a {
+    padding: 5px 12px;
+    border-radius: 999px;
+
+    background: #e6edfb;
+    color: var(--blue);
+
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.week-tags a:hover {
+    background: var(--blue);
+    color: #ffffff;
+}
+
+/* ---------- Contenuto: SkillaLab ---------- */
+
+.lab-list {
+    list-style: none;
+    margin-top: 18px;
+}
+
+.lab-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+}
+
+.lab-item:first-child {
+    border-top: 0;
+}
+
+.lab-item > div {
+    min-width: 0;
+}
+
+.lab-week {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    padding: 5px 12px;
+    border-radius: 999px;
+
+    background: #ece6fb;
+    color: #5b3fb0;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.lab-item p {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+/* ---------- Contenuto: simulatore ---------- */
+
+.simulator-steps {
+    list-style: none;
+    counter-reset: step;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.simulator-steps li {
+    counter-increment: step;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.simulator-steps li::before {
+    content: counter(step);
+
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 6px;
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.simulator-steps li.step-done::before {
+    content: "✓";
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #0000d0;
+}
+
+.simulator-steps li.step-current {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.simulator-steps strong {
+    font-size: 15px;
+}
+
+.simulator-steps span {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* ---------- Contenuto: strumenti ---------- */
+
+.tech-grid {
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 26px;
+}
+
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px;
+
+    background: var(--page);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+
+.tech-item strong {
+    font-size: 16px;
+    color: var(--ink);
+}
+
+.tech-item span {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+    .simulator-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .project-tiles {
+        width: calc(100% - 12%);
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin: 32px auto 45px;
+    }
+
+    .project-tile {
+        min-height: 0;
+        padding: 26px 24px 22px;
+        border-radius: 14px;
+    }
+
+    .project-tile h2 {
+        font-size: 23px;
+    }
+
+    /* Su telefono il pannello occupa tutto lo schermo */
+    .panel {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+
+    .panel-inner {
+        height: 100%;
+        max-height: 100%;
+        padding: 0 22px 32px;
+    }
+
+    .panel-head {
+        padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    }
+
+    .panel-head h2 {
+        font-size: 23px;
+    }
+
+    .activity-grid,
+    .simulator-steps,
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-tile,
+    .project-tile:hover {
+        transition: none;
+        transform: none;
+    }
+
+    .panel[open] {
+        animation: none;
+    }
+}
