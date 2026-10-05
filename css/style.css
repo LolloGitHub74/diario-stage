@@ -1320,7 +1320,7 @@ body {
 .intro h1 {
     font-size: clamp(105px, 5.4vw, 94px);
     font-family: "Nunito", sans-serif;
-    font-weight: 700;
+    font-weight: 900;
     line-height: 0.98;
     letter-spacing: -3.5px;
     max-width: 760px;
