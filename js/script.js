@@ -38,6 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let currentIndex = 0;
 
+        // Durante lo scorrimento avviato dalle frecce, la posizione
+        // intermedia non deve cambiare la card corrente
+        let scrollTarget = null;
+        let scrollTargetTimer = null;
+
         // Quante card stanno interamente nella finestra visibile, in base
         // alla larghezza attuale dello schermo (1 su mobile, 2 su tablet, ecc.)
         function getVisibleCount() {
@@ -51,21 +56,55 @@ document.addEventListener("DOMContentLoaded", function () {
             return Math.max(0, cards.length - getVisibleCount());
         }
 
-        // Sposta il "nastro" delle card e aggiorna frecce/pallini
-        function goToIndex(index) {
+        // Distanza tra l'inizio di una card e quella successiva
+        function getStep() {
+            return cards[0].getBoundingClientRect().width + gap;
+        }
+
+        // Aggiorna frecce e pallini in base alla posizione attuale
+        function updateControls() {
             const maxIndex = getMaxIndex();
-            currentIndex = Math.min(Math.max(index, 0), maxIndex);
-
-            const cardWidth = cards[0].getBoundingClientRect().width;
-            const offset = currentIndex * (cardWidth + gap);
-
-            sliderTrack.style.transform = "translateX(-" + offset + "px)";
 
             if (prevButton) prevButton.disabled = currentIndex === 0;
             if (nextButton) nextButton.disabled = currentIndex >= maxIndex;
 
             updateDots();
         }
+
+        // Scorre la finestra fino alla card indicata
+        function goToIndex(index) {
+            const maxIndex = getMaxIndex();
+            currentIndex = Math.min(Math.max(index, 0), maxIndex);
+
+            scrollTarget = Math.min(currentIndex * getStep(), sliderWindow.scrollWidth - sliderWindow.clientWidth);
+            clearTimeout(scrollTargetTimer);
+            scrollTargetTimer = setTimeout(function () { scrollTarget = null; }, 700);
+
+            sliderWindow.scrollTo({ left: scrollTarget });
+
+            updateControls();
+        }
+
+        // Quando si scorre con il dito o con il trackpad, capisce
+        // quale card è arrivata in prima posizione
+        sliderWindow.addEventListener("scroll", function () {
+            if (scrollTarget !== null) {
+                if (Math.abs(sliderWindow.scrollLeft - scrollTarget) < 2) scrollTarget = null;
+                return;
+            }
+
+            const index = Math.round(sliderWindow.scrollLeft / getStep());
+            const maxIndex = getMaxIndex();
+
+            // A fine corsa l'ultima posizione potrebbe non essere un multiplo esatto
+            const atEnd = sliderWindow.scrollLeft + sliderWindow.clientWidth >= sliderWindow.scrollWidth - 2;
+            const newIndex = atEnd ? maxIndex : Math.min(index, maxIndex);
+
+            if (newIndex !== currentIndex) {
+                currentIndex = newIndex;
+                updateControls();
+            }
+        });
 
         // Ricrea i pallini: uno per ogni posizione raggiungibile dallo slider
         function buildDots() {

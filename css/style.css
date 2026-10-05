@@ -489,14 +489,25 @@ main {
 
 .slider-window {
     width: 100%;
-    overflow: hidden;
+
+    /* Scorrimento nativo: funziona con touch, trackpad e frecce */
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+
+    /* Nasconde la barra di scorrimento */
+    scrollbar-width: none;
+}
+
+.slider-window::-webkit-scrollbar {
+    display: none;
 }
 
 .slider-track {
     display: flex;
     gap: 25px;
-
-    transition: transform 0.3s ease;
 }
 
 
@@ -516,6 +527,8 @@ main {
     flex-direction: column;
 
     background-color: #ffffff;
+
+    scroll-snap-align: start;
 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -1407,5 +1420,142 @@ body {
         width: 100%;
         height: 1px;
         transform: none;
+    }
+}
+
+
+/* =========================================================
+   CERCHI DECORATIVI SULLO SFONDO
+   ========================================================= */
+
+/* Cerchi grandi, appena più scuri dello sfondo, dietro a tutto il contenuto.
+   Sono semitrasparenti: dove si sovrappongono il colore si scurisce un po'. */
+body {
+    position: relative;
+
+    --circle: rgba(49, 94, 168, 0.06);
+    --r1: 320px;
+    --r2: 230px;
+    --r3: 380px;
+    --r4: 260px;
+    --r5: 210px;
+}
+
+body::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 92% 120px, var(--circle) var(--r1), transparent calc(var(--r1) + 1px)),
+        radial-gradient(circle at 3% 640px, var(--circle) var(--r2), transparent calc(var(--r2) + 1px)),
+        radial-gradient(circle at 72% 1180px, var(--circle) var(--r3), transparent calc(var(--r3) + 1px)),
+        radial-gradient(circle at 12% 1780px, var(--circle) var(--r4), transparent calc(var(--r4) + 1px)),
+        radial-gradient(circle at 96% 2300px, var(--circle) var(--r5), transparent calc(var(--r5) + 1px));
+}
+
+/* L'intestazione delle settimane lascia vedere i cerchi */
+.week-header {
+    background-color: transparent;
+}
+
+/* Su mobile i cerchi sono più piccoli */
+@media (max-width: 768px) {
+    body {
+        --r1: 190px;
+        --r2: 140px;
+        --r3: 220px;
+        --r4: 160px;
+        --r5: 130px;
+    }
+}
+
+
+/* =========================================================
+   LOGO SKILLA NELL'HEADER
+   ========================================================= */
+
+/* Il logo quadrato viene ritagliato in un rettangolo orizzontale,
+   così la scritta "skilla" resta grande e leggibile. */
+.logo-mark {
+    width: 108px;
+    height: 38px;
+    border-radius: 10px;
+    background: #0000d0 url("../immagini/logo-skilla.png") center / cover no-repeat;
+}
+
+@media (max-width: 768px) {
+    .logo-mark {
+        width: 96px;
+        height: 34px;
+        border-radius: 9px;
+    }
+}
+
+
+/* =========================================================
+   MENU A OVALE NELL'HEADER
+   ========================================================= */
+
+/* I tre link stanno dentro un unico ovale; la pagina attuale è evidenziata */
+.navigation {
+    gap: 4px;
+    padding: 5px;
+
+    border: 1px solid var(--line);
+    border-radius: 999px;
+
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(23, 35, 60, 0.05);
+}
+
+.navigation a {
+    padding: 9px 18px;
+    border-radius: 999px;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navigation a:not(.nav-cta)::after {
+    display: none;
+}
+
+.navigation a:hover {
+    background: #eef2fa;
+    color: var(--blue);
+}
+
+.navigation a.active,
+.navigation a.active:hover {
+    background: var(--blue);
+    color: #ffffff;
+}
+
+/* Su mobile il menu torna a tendina sotto l'header */
+@media (max-width: 768px) {
+    .navigation {
+        gap: 0;
+        padding: 0;
+
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
+
+        box-shadow: none;
+    }
+
+    .navigation a {
+        padding: 16px 6%;
+        border-radius: 0;
+    }
+
+    .navigation a.active,
+    .navigation a.active:hover {
+        background: transparent;
+        color: var(--blue);
     }
 }
