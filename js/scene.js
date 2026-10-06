@@ -1,7 +1,7 @@
 // =========================================================
 // Scena del falò: l'illustrazione fa da sfondo alla home e
-// sopra si animano nuvole, fiamme, scintille e il respiro
-// del cavaliere.
+// sopra si animano nuvole, fiamme e scintille. Il cavaliere
+// resta fermo.
 // =========================================================
 
 (function () {
@@ -28,7 +28,6 @@
 
     const FIRE_AREA = { x: 696, y: 560, w: 150, h: 208 };      // fiamme sopra i tronchi
     const FIRE_BASE = { x: 772, y: 765 };
-    const KNIGHT_AREA = { x: 896, y: 640, w: 172, h: 76 };     // testa e spalle del cavaliere
     const SKY_BOTTOM = 190;                                     // dove finisce il cielo libero
 
     // Tela delle nuvole e delle scintille: un pixel = un pixel del disegno
@@ -36,7 +35,7 @@
     canvas.width = W;
     canvas.height = H;
 
-    let fireLayer = null, knightLayer = null;
+    let fireLayer = null;
     let clouds = [], embers = [];
     let scale = 1;
 
@@ -107,15 +106,9 @@
             fireLayer = cutLayer(FIRE_AREA, function (r, g, b) {
                 return r > 150 && r > b + 70;
             });
-            // Cavaliere: tutto tranne il bosco blu scuro alle sue spalle
-            knightLayer = cutLayer(KNIGHT_AREA, function (r, g, b) {
-                const blueish = b > r + 6 && r + g + b < 260;
-                const dark = r + g + b < 70;
-                return !blueish && !dark;
-            });
         } catch (error) {
             // Se il browser non permette di leggere i pixel, restano scintille e nuvole
-            fireLayer = knightLayer = null;
+            fireLayer = null;
         }
     }
 
@@ -218,7 +211,7 @@
             ctx.fillRect(Math.round(e.x), Math.round(e.y), 1, 1);
         });
 
-        // Dettagli nitidi: fiamme che ondeggiano e cavaliere che respira
+        // Dettagli nitidi: fiamme che ondeggiano
         fx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
 
         if (fireLayer) {
@@ -232,12 +225,6 @@
                 fx.drawImage(fireLayer, 0, y, a.w, ART_PIXEL,
                     (a.x + shift) * scale, destY * scale, a.w * scale, ART_PIXEL * stretch * scale + 1);
             }
-        }
-
-        // Ogni tanto testa e spalle si alzano di un pixel: il cavaliere respira
-        if (knightLayer && Math.sin(seconds * 1.9) > 0.2) {
-            const a = KNIGHT_AREA;
-            fx.drawImage(knightLayer, 0, 0, a.w, a.h, a.x * scale, (a.y - ART_PIXEL) * scale, a.w * scale, a.h * scale);
         }
     }
 
