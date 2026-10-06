@@ -13,7 +13,7 @@
     const ctx = canvas.getContext("2d");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // ---------- Cavaliere che riposa con la schiena contro l'albero ----------
+    // ---------- Cavaliere che riposa con la schiena contro una colonna ----------
 
     const KNIGHT = [
         "......0000",
@@ -68,8 +68,6 @@
     // ---------- Colori della scena ----------
 
     const SKY = ["#0a0c28", "#0e1236", "#131944", "#182152", "#1d2a61", "#24356f", "#2c417e", "#354d8a"];
-    const NEAR_PINE = ["#08171b", "#0e2529", "#163639", "#214a49"];
-    const MID_PINE = ["#0d1730", "#12203c", "#192b4a", "#223858"];
     const FIRE = ["#5a1206", "#9a1f08", "#d8400e", "#f57a1c", "#ffb02e", "#ffe066", "#fff6c8"];
 
     // ---------- Utilità ----------
@@ -103,7 +101,7 @@
     let groundY = 0, fireX = 0, knightX = 0, knightY = 0;
     let background = null;
     let knightCanvas = null;
-    let stars = [], fireflies = [], embers = [];
+    let stars = [], fireflies = [], embers = [], windows = [];
     let heat = null;
     const FW = 22, FH = 30;
 
@@ -113,9 +111,14 @@
         const image = ctx.createImageData(W, H);
         const data = image.data;
 
+        // Ricorda quali pixel non sono più cielo libero (per non metterci stelle)
+        const covered = new Uint8Array(W * H);
+        let skyDone = false;
+
         function set(x, y, color) {
             x = Math.round(x); y = Math.round(y);
             if (x < 0 || y < 0 || x >= W || y >= H) return;
+            if (skyDone) covered[y * W + x] = 1;
             const i = (y * W + x) * 4;
             data[i] = color[0]; data[i + 1] = color[1]; data[i + 2] = color[2]; data[i + 3] = 255;
         }
@@ -134,7 +137,7 @@
         }
 
         // Luna con alone e crateri
-        const mx = Math.round(W * 0.8), my = Math.max(30, Math.round(H * 0.16)), mr = 9;
+        const mx = Math.round(W * (W < 240 ? 0.8 : 0.78)), my = Math.max(34, Math.round(H * 0.22)), mr = 10;
         for (let y = -mr - 7; y <= mr + 7; y++) {
             for (let x = -mr - 7; x <= mr + 7; x++) {
                 const d = Math.sqrt(x * x + y * y);
@@ -150,18 +153,15 @@
             for (let y = 0; y < c[2]; y++) for (let x = 0; x < c[2] + 1; x++) set(mx + c[0] + x, my + c[1] + y, rgb("#c4c7e8"));
         });
 
-        // Nuvole sottili che attraversano il cielo
-        [[0.62, 0.12, 46], [0.12, 0.22, 64], [0.78, 0.27, 38]].forEach(function (c) {
-            const cx = W * c[0], cy = Math.round(H * c[1]) + 6, len = c[2];
-            for (let x = -len / 2; x < len / 2; x++) {
-                const thick = Math.round(3 * Math.sin(((x + len / 2) / len) * Math.PI));
-                for (let y = 0; y < thick; y++) {
-                    if (hash(cx + x, cy + y) > 0.2) set(cx + x, cy - y, rgb(y === 0 ? "#26336c" : "#2e3d7a"));
-                }
-            }
+        skyDone = true;
+
+        // Grandi nuvole illuminate dalla luna sul bordo superiore
+        seed = 21;
+        [[0.08, 0.2, 70], [0.38, 0.12, 90], [0.62, 0.3, 80], [0.9, 0.16, 70], [0.25, 0.36, 60]].forEach(function (c) {
+            cloud(set, W * c[0], Math.round(H * c[1]) + 8, c[2]);
         });
 
-        // Montagne lontane, con il bordo illuminato dalla luna
+        // Montagne lontane, basse e scure
         function ridge(base, amp, freq, color, rim) {
             const c = rgb(color), r = rgb(rim);
             for (let x = 0; x < W; x++) {
@@ -170,72 +170,31 @@
                 for (let y = top; y < groundY; y++) set(x, y, y === top ? r : c);
             }
         }
-        ridge(groundY - H * 0.24, 20, 31, "#181f4c", "#2a3570");
-        ridge(groundY - H * 0.13, 14, 19, "#141a42", "#1f2856");
+        ridge(groundY - H * 0.2, 16, 37, "#161c46", "#252f66");
 
-        // Linea di piccoli abeti all'orizzonte
-        for (let x = -4; x < W + 4; x += 3 + Math.floor(hash(x, 7) * 4)) {
-            const h = 6 + Math.floor(hash(x, 3) * 12);
-            for (let y = 0; y < h; y++) {
-                const w = Math.floor((y / h) * 3.2);
-                for (let dx = -w; dx <= w; dx++) set(x + dx, groundY - 2 - h + y, rgb("#10163a"));
+        drawCastle(set);
+
+        // Rovine a mezza distanza: muri bassi e spezzati, quasi in ombra
+        seed = 31;
+        for (let x = 0; x < W;) {
+            const len = 14 + Math.floor(random() * 30), h = 6 + Math.floor(random() * 16);
+            if (random() > 0.25) {
+                stone(set, x, groundY - h, len, h, function (px, py) {
+                    return py >= groundY - h + Math.floor(hash(Math.floor(px / 4), 9) * 6);
+                }, 0.55);
             }
+            x += len + 4 + Math.floor(random() * 18);
         }
 
-        // Prato con ciuffi d'erba
-        const grass = ["#0e211d", "#132a24", "#18332a"].map(rgb);
-        for (let y = groundY; y < H; y++) {
-            for (let x = 0; x < W; x++) {
-                const n = hash(x, y);
-                set(x, y, grass[n > 0.82 ? 2 : n > 0.35 ? 1 : 0]);
-            }
-        }
-        for (let x = 0; x < W; x++) {
-            const h = Math.floor(hash(x, 11) * 4);
-            for (let y = 1; y <= h; y++) set(x, groundY - y, rgb(hash(x, 13) > 0.5 ? "#1c3a2f" : "#24493a"));
-        }
-
-        // Radura di terra battuta attorno al fuoco
-        for (let y = groundY; y < Math.min(H, groundY + 14); y++) {
-            for (let x = fireX - 60; x <= fireX + 60; x++) {
-                const dx = (x - fireX) / 60, dy = (y - groundY - 4) / 10;
-                const d = dx * dx + dy * dy;
-                if (d < 1 && BAYER[y & 3][x & 3] / 16 > d * d) set(x, y, rgb(d < 0.35 ? "#3a2c26" : "#2a2220"));
-            }
-        }
-
-        // Pini: prima quelli lontani, poi quelli vicini
-        const gap = Math.max(52, Math.min(W * 0.2, 86));
-        seed = 11;
-        const midTrees = [], nearTrees = [];
-        for (let x = 4; x < fireX - gap + 6; x += 9 + random() * 10) midTrees.push(x);
-        for (let x = W - 4; x > fireX + gap - 6; x -= 9 + random() * 10) midTrees.push(x);
-        for (let x = -6; x < fireX - gap - 14; x += 18 + random() * 16) nearTrees.push(x);
-        for (let x = W + 6; x > fireX + gap + 14; x -= 18 + random() * 16) nearTrees.push(x);
-
-        midTrees.forEach(function (x) {
-            pine(set, x, groundY - 1, H * (0.24 + random() * 0.14), MID_PINE, 0);
-        });
-        nearTrees.forEach(function (x) {
-            const warmth = Math.max(0, 1 - Math.abs(x - fireX) / (W * 0.42));
-            pine(set, x, groundY + 3 + random() * 4, H * (0.48 + random() * 0.3), NEAR_PINE, warmth);
-        });
-
-        // Funghetti e fiori ai piedi degli alberi
-        seed = 5;
-        for (let i = 0; i < 10; i++) {
-            const x = Math.round(random() * W);
-            if (Math.abs(x - fireX) < gap) continue;
-            const y = groundY + 1 + Math.round(random() * 3);
-            if (random() > 0.5) {
-                set(x, y, rgb("#d9d2c0")); set(x, y - 1, rgb("#b8343c")); set(x - 1, y - 1, rgb("#b8343c")); set(x + 1, y - 1, rgb("#8e2430"));
-            } else {
-                set(x, y, rgb("#24493a")); set(x, y - 1, rgb("#c9b8e8"));
-            }
-        }
-
-        drawTree(set);
+        drawGround(set);
+        drawArch(set);
+        drawRightWall(set);
+        drawPillar(set);
         drawBonfire(set);
+
+        stars = stars.filter(function (star) {
+            return !covered[star.y * W + star.x];
+        });
 
         const off = document.createElement("canvas");
         off.width = W; off.height = H;
@@ -243,97 +202,211 @@
         return off;
     }
 
-    // Pino a più livelli di rami, con ombre e luce calda dal lato del fuoco
-    function pine(set, cx, base, h, colors, warmth) {
-        cx = Math.round(cx); base = Math.round(base); h = Math.round(h);
-        const pal = colors.map(rgb);
-        const warm = rgb("#8a5a2c");
-        const light = cx < fireX ? 1 : -1;
-        const trunkH = Math.max(3, Math.round(h * 0.12));
-        const trunkW = Math.max(1, Math.round(h / 30));
-
-        for (let y = base - trunkH; y <= base; y++) {
-            for (let x = cx - trunkW; x <= cx + trunkW; x++) {
-                set(x, y, rgb((x - cx) * light > 0 ? "#3a2a22" : "#22181a"));
-            }
-        }
-
-        const top = base - h, bottom = base - trunkH * 0.5;
-        const tiers = Math.max(3, Math.round(h / 12));
-        const span = (bottom - top) / tiers;
-
-        for (let t = 0; t < tiers; t++) {
-            const ty = top + span * t * 0.96;
-            const th = span * 1.75;
-            const maxW = h * 0.27 * Math.pow((t + 1) / tiers, 0.85) + 2;
-
-            for (let r = 0; r <= th; r++) {
-                const y = Math.round(ty + r);
-                const k = r / th;
-                const w = maxW * Math.pow(k, 0.8);
-
-                for (let x = Math.floor(cx - w - 2); x <= Math.ceil(cx + w + 2); x++) {
-                    const dx = x - cx;
-                    const edge = Math.abs(dx) - w;
-                    const n = hash(x, y);
-                    if (edge > 0 && !(edge < 1.6 && n > 0.55)) continue;
-                    if (k > 0.82 && hash(x * 3, y) < (k - 0.82) * 4) continue;
-
-                    const side = (dx * light) / (w + 1);
-                    let s = 1;
-                    if (side > 0.3) s = 2;
-                    if (side < -0.3) s = 0;
-                    if (k > 0.74) s = Math.max(0, s - 1);
-                    if (k < 0.18 && side > -0.3) s = Math.min(3, s + 1);
-                    if (n > 0.88) s = Math.max(0, s - 1);
-                    if (n < 0.05) s = Math.min(3, s + 1);
-
-                    let color = pal[s];
-                    if (warmth > 0 && side > 0.55 && k > 0.3) color = mix(color, warm, warmth * (side - 0.4));
-                    set(x, y, color);
-                }
-            }
-        }
-        set(cx, top - 1, pal[2]);
-        set(cx, top - 2, pal[3]);
+    // Quanto la luce del fuoco scalda un punto (0 = niente, 1 = moltissimo)
+    function warmth(x, y) {
+        const dx = (x - fireX) / 1.3, dy = y - (groundY - 10);
+        const d = Math.sqrt(dx * dx + dy * dy);
+        return Math.max(0, 1 - d / 90);
     }
 
-    // Il grande albero a cui si appoggia il cavaliere: il tronco sale fuori dall'inquadratura
-    function drawTree(set) {
-        const width = 18;
-        const right = knightX + 5;
-        const left = right - width;
-        const bark = ["#1c120e", "#2a1a14", "#3e2a1e", "#5a3d28"].map(rgb);
-        const warm = rgb("#9a6236");
+    // Nuvola a sbuffi: base piatta, bordo alto chiaro dove la luna la colpisce
+    function cloud(set, cx, cy, len) {
+        const body = rgb("#1c2556"), lit = rgb("#33427e"), under = rgb("#161d48");
+        const puffs = [];
+        for (let i = 0; i < len / 9; i++) {
+            puffs.push([cx - len / 2 + (i + 0.5) * 9 + (random() - 0.5) * 6, cy - random() * 5, 5 + random() * 7]);
+        }
+        for (let y = Math.floor(cy - 14); y <= cy + 3; y++) {
+            for (let x = Math.floor(cx - len / 2 - 8); x <= cx + len / 2 + 8; x++) {
+                let inside = false, top = false;
+                puffs.forEach(function (p) {
+                    const dx = x - p[0], dy = y - p[1];
+                    const d = dx * dx + dy * dy;
+                    if (d <= p[2] * p[2]) { inside = true; if (d > (p[2] - 2) * (p[2] - 2) && dy < 0) top = true; }
+                });
+                if (!inside || y > cy + 2) continue;
+                const edge = top && !puffs.some(function (p) { const dx = x - p[0], dy = y - 1 - p[1]; return dx * dx + dy * dy <= (p[2] - 1) * (p[2] - 1); });
+                set(x, y, edge ? lit : y > cy ? under : body);
+            }
+        }
+    }
 
-        // Tronco con venature verticali, più chiaro verso il fuoco
-        for (let y = 0; y <= groundY + 2; y++) {
-            const flare = y > groundY - 10 ? Math.round((y - (groundY - 10)) * 0.7) : 0;
-            for (let x = left - flare; x <= right + flare; x++) {
-                const t = (x - left + flare) / (width + flare * 2);
-                const grain = hash(x * 7, Math.floor(y / 3)) > 0.82 ? -1 : 0;
-                let s = t < 0.25 ? 0 : t < 0.55 ? 1 : t < 0.85 ? 2 : 3;
-                s = Math.max(0, s + grain);
-                let color = bark[s];
-                if (t > 0.88 && y > groundY - 50) color = mix(color, warm, 0.6);
-                set(x, y, color);
+    // Muro di pietra a blocchi; mask(x, y) dice quali pixel fanno parte della forma
+    function stone(set, x0, y0, w, h, mask, shade) {
+        const pal = ["#1d1b26", "#2b2833", "#3a3540", "#4b4248"].map(rgb);
+        const dark = rgb("#14121b");
+        const warm = rgb("#b06a38");
+        const bw = 8, bh = 4;
+        for (let y = y0; y < y0 + h; y++) {
+            const row = Math.floor((y - y0) / bh);
+            const offset = row % 2 ? bw / 2 : 0;
+            for (let x = x0; x < x0 + w; x++) {
+                if (mask && !mask(x, y)) continue;
+                const col = Math.floor((x - x0 + offset) / bw);
+                const mortar = (y - y0) % bh === bh - 1 || (x - x0 + offset) % bw === 0;
+                let c;
+                if (mortar) c = dark;
+                else {
+                    let s = 1 + Math.floor(hash(col, row) * 2.6);
+                    if ((y - y0) % bh === 0) s = Math.min(3, s + 1);
+                    if (hash(x, y) > 0.9) s = Math.max(0, s - 1);
+                    c = pal[s];
+                }
+                if (shade) c = mix(c, rgb("#10142e"), shade);
+                const k = warmth(x, y);
+                if (k > 0) c = mix(c, warm, k * k * (mortar ? 0.4 : 0.85));
+                set(x, y, c);
+            }
+        }
+    }
+
+    // Castello gotico in rovina su una collina, con le finestre accese
+    function drawCastle(set) {
+        const cx = Math.round(W * (W < 240 ? 0.66 : 0.72));
+        const base = Math.round(groundY - H * 0.27);
+        const sil = rgb("#0f1330"), rim = rgb("#252e5c"), hill = rgb("#121636");
+
+        // Collina
+        for (let x = Math.round(cx - W * 0.32); x < Math.round(cx + W * 0.36); x++) {
+            const t = (x - cx) / (W * 0.34);
+            const top = Math.round(base + 6 + t * t * H * 0.18 + Math.sin(x / 5) * 1.5);
+            for (let y = top; y < groundY; y++) set(x, y, y === top ? rim : hill);
+        }
+
+        // Acquedotto ad archi che esce dal castello verso sinistra
+        const aqTop = base + 10, aqLeft = Math.round(cx - W * 0.42), aqRight = cx - 30;
+        for (let x = aqLeft; x < aqRight; x++) {
+            for (let y = aqTop; y < aqTop + 18; y++) {
+                const local = (x - aqLeft) % 12;
+                const ax = local - 6, ay = y - (aqTop + 9);
+                const hole = ay > 0 ? Math.abs(ax) < 4 : ax * ax + ay * ay < 16;
+                if (hole && y > aqTop + 4) continue;
+                set(x, y, y === aqTop ? rim : sil);
             }
         }
 
-        // Nodo nella corteccia
-        for (let y = 0; y < 5; y++) for (let x = 0; x < 3; x++) set(left + 6 + x, groundY - 46 + y, bark[y === 0 || y === 4 ? 1 : 0]);
-
-        // Radici che scendono nel prato
-        [[-1, 14, 3], [-1, 9, 5], [1, 10, 4], [1, 6, 6]].forEach(function (root) {
-            const dir = root[0], len = root[1], drop = root[2];
-            const start = dir < 0 ? left - 6 : right + 6;
-            for (let i = 0; i < len; i++) {
-                const x = start + dir * i;
-                const y = groundY - 1 + Math.round((i / len) * drop);
-                set(x, y, bark[2]);
-                set(x, y + 1, bark[1]);
+        // Torri con tetti a punta e guglie
+        const towers = [[-34, 6, 22, 8], [-25, 8, 34, 10], [-15, 7, 26, 9], [-6, 12, 48, 14], [7, 9, 58, 16], [17, 7, 36, 10], [26, 6, 28, 8], [34, 8, 40, 10], [44, 5, 20, 6]];
+        windows = [];
+        towers.forEach(function (t, i) {
+            const x0 = cx + t[0], w = t[1], h = t[2], roof = t[3];
+            for (let y = base - h; y <= base; y++) {
+                for (let x = x0; x < x0 + w; x++) set(x, y, x === x0 ? rim : sil);
+            }
+            // tetto a punta (alcune torri sono crollate e non ce l'hanno)
+            if (i % 4 !== 2) {
+                for (let r = 0; r < roof; r++) {
+                    const half = Math.round((w / 2 + 1) * (r / roof));
+                    for (let x = x0 + w / 2 - half; x <= x0 + w / 2 + half; x++) set(x, base - h - roof + r, x <= x0 + w / 2 - half + 0 ? rim : sil);
+                }
+                set(x0 + Math.floor(w / 2), base - h - roof - 1, rim);
+                set(x0 + Math.floor(w / 2), base - h - roof - 2, rim);
+            } else {
+                for (let x = x0; x < x0 + w; x += 2) set(x, base - h - 1, sil);
+            }
+            // finestre
+            for (let k = 0; k < Math.floor(h / 9); k++) {
+                const wx = x0 + 1 + Math.floor(hash(i, k) * (w - 2)), wy = base - h + 4 + k * 8;
+                if (hash(k, i) > 0.35) windows.push({ x: wx, y: wy, phase: hash(i * 3, k) * 6.28 });
             }
         });
+
+        // Mura merlate tra le torri
+        for (let x = cx - 36; x < cx + 50; x++) {
+            for (let y = base - 12; y <= base + 2; y++) {
+                if (y < base - 10 && (x >> 1) % 2) continue;
+                set(x, y, y === base - 12 ? rim : sil);
+            }
+        }
+        for (let i = 0; i < 6; i++) windows.push({ x: cx - 30 + i * 13, y: base - 6, phase: i });
+    }
+
+    // Pavimento di lastre di pietra con ciuffi d'erba tra le fughe
+    function drawGround(set) {
+        const pal = ["#1a1a26", "#22222f", "#2a2936", "#33303b"].map(rgb);
+        const gap = rgb("#111019");
+        const grass = [rgb("#1f3a2c"), rgb("#2b4d36")];
+        const warm = rgb("#a8673a");
+        let y = groundY, row = 0;
+        while (y < H) {
+            const rh = 3 + Math.min(5, Math.floor((y - groundY) / 9));
+            let x = -Math.floor(hash(row, 1) * 12);
+            let col = 0;
+            while (x < W) {
+                const sw = 9 + Math.floor(hash(row, col) * 10) + rh;
+                const s = Math.floor(hash(col, row + 7) * 4);
+                for (let yy = y; yy < y + rh && yy < H; yy++) {
+                    for (let xx = x; xx < x + sw; xx++) {
+                        const edge = yy === y + rh - 1 || xx === x;
+                        let c = edge ? gap : pal[yy === y ? Math.min(3, s + 1) : s];
+                        const k = warmth(xx, yy);
+                        if (k > 0) c = mix(c, warm, k * k * (edge ? 0.3 : 0.7));
+                        set(xx, yy, c);
+                    }
+                }
+                // ciuffo d'erba nella fuga
+                if (hash(col * 5, row) > 0.7) {
+                    const g = grass[Math.floor(hash(col, row * 3) * 2)];
+                    set(x, y + rh - 2, g); set(x + 1, y + rh - 3, g); set(x - 1, y + rh - 2, g);
+                }
+                x += sw; col++;
+            }
+            y += rh; row++;
+        }
+        // erba lungo il bordo del pavimento
+        for (let x = 0; x < W; x++) {
+            const h = Math.floor(hash(x, 41) * 3);
+            for (let k = 1; k <= h; k++) set(x, groundY - k, grass[(x + k) % 2]);
+        }
+    }
+
+    // Arco di pietra diroccato a sinistra, con l'edera
+    function drawArch(set) {
+        const shift = W < 240 ? -26 : 0;
+        const left = 4 + shift, pw = 12, span = 34;
+        const spring = groundY - Math.round(Math.min(78, H * 0.36));
+        const cx = left + pw + span / 2;
+        const ro = span / 2 + pw, ri = span / 2;
+        stone(set, left - 2, spring - ro - 2, pw * 2 + span + 4, groundY - spring + ro + 4, function (x, y) {
+            if (y >= spring) {
+                const leftPillar = x >= left && x < left + pw;
+                const rightPillar = x >= left + pw + span && x < left + pw * 2 + span && y > spring + 10 + Math.floor(hash(Math.floor(x / 3), 5) * 8);
+                return leftPillar || rightPillar;
+            }
+            const dx = x - cx, dy = y - spring;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            // l'arco è spezzato sul lato destro
+            const broken = dx > 6 && dy > -ro * 0.75 + hash(x, 3) * 4;
+            return d <= ro && d >= ri && !broken;
+        }, 0);
+        // edera che pende dall'arco
+        const ivy = [rgb("#1e3a24"), rgb("#2c5230"), rgb("#3d6a38")];
+        for (let i = 0; i < 9; i++) {
+            const x = left + Math.floor(hash(i, 77) * (pw + span * 0.6));
+            const len = 4 + Math.floor(hash(i, 78) * 14);
+            for (let k = 0; k < len; k++) set(x + (k % 3 === 2 ? 1 : 0), spring - ro * 0.6 + k + hash(i, 79) * 6, ivy[(i + k) % 3]);
+        }
+    }
+
+    // Muro crollato a destra, a gradini
+    function drawRightWall(set) {
+        const x0 = W - (W < 240 ? 30 : 64);
+        stone(set, x0, groundY - 46, W - x0, 47, function (x, y) {
+            const step = Math.floor((x - x0) / 12);
+            const top = groundY - 14 - step * 8 - Math.floor(hash(Math.floor(x / 3), 2) * 4);
+            return y >= top;
+        }, 0.1);
+    }
+
+    // Colonna spezzata a cui si appoggia il cavaliere
+    function drawPillar(set) {
+        const right = knightX + 6, width = 14;
+        const top = groundY - 52;
+        stone(set, right - width, top - 4, width, groundY - top + 5, function (x, y) {
+            return y >= top + Math.floor(hash(Math.floor(x / 2), 11) * 6);
+        }, 0);
+        // un blocco caduto ai suoi piedi
+        stone(set, right - width - 10, groundY - 6, 10, 7, null, 0.05);
     }
 
     // Cerchio di pietre, tronchi incrociati e spada piantata nel fuoco
@@ -485,6 +558,13 @@
                 px(s.x - 1, s.y, "#6f7bc0"); px(s.x + 1, s.y, "#6f7bc0");
                 px(s.x, s.y - 1, "#6f7bc0"); px(s.x, s.y + 1, "#6f7bc0");
             }
+        });
+
+        // Le finestre del castello tremolano come torce lontane
+        windows.forEach(function (w) {
+            const f = Math.sin(t / 400 + w.phase) + Math.sin(t / 170 + w.phase * 2) * 0.5;
+            px(w.x, w.y, f > 0.6 ? "#ffd27a" : f > -0.6 ? "#f28a2e" : "#9a4a1c");
+            px(w.x, w.y + 1, "#7a3a18");
         });
 
         drawGlow(t);
