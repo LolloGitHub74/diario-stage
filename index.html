@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diario di Stage</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Pixelify+Sans:wght@500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pixel.css">
 </head>
 
 <body>
@@ -24,9 +24,9 @@
         </a>
 
         <nav class="navigation">
-            <a href="#home" class="active">Home</a>
-            <a href="#attivita">Attività settimanali</a>
-            <a href="progetto.html">Progetto</a>
+            <a href="#home" class="active" data-wave>Home</a>
+            <a href="#attivita" data-wave>Attività settimanali</a>
+            <a href="progetto.html" data-wave>Progetto</a>
         </nav>
 
         <button class="menu-toggle" aria-label="Apri il menu">
@@ -37,62 +37,81 @@
 
     <main>
 
-        <section class="intro" id="home">
+        <!-- Intro -->
 
+        <section class="hero" id="home">
 
-            <div class="intro-content">
+            <div class="hero-text">
 
-                <div class="intro-text">
+                <p class="status">
+                    <span class="status-dot"></span>
+                    STAGE IN CORSO
+                </p>
 
-                    <p class="status">
-                        <span class="status-dot"></span>
-                        STAGE IN CORSO
-                    </p>
+                <p class="eyebrow">STAGE UNIVERSITARIO · 2026</p>
 
-                    <p class="eyebrow">
-                        STAGE UNIVERSITARIO · 2026
-                    </p>
+                <h1 data-type data-wave>Il mio stage <span class="highlight">in Skilla</span></h1>
 
-                    <h1>
-                        Il mio stage<br><span class="highlight">in Skilla</span>
-                    </h1>
+                <p class="description">
+                    Un'esperienza formativa dedicata all'esplorazione e allo
+                    sviluppo di soluzioni basate sull'intelligenza artificiale.
+                </p>
 
-                    <p class="description">
-                        Un'esperienza formativa dedicata all'esplorazione e
-                        allo sviluppo di soluzioni basate sull'intelligenza
-                        artificiale.
-                    </p>
-
-                    <div class="intro-action">
-
-                        <a href="progetto.html" class="hero-button">
-                            Scopri il progetto →
-                        </a>
-
-                        <p>
-                            Esplora gli strumenti e le attivita che stiamo svolgendo insieme
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="intro-image">
-
-                    <img src="immagini/animali_cubici.jpg" alt="Illustrazione Skilla">
-
+                <div class="hero-action">
+                    <a href="progetto.html" class="pixel-button">
+                        <span aria-hidden="true">▶</span> Scopri il progetto
+                    </a>
+                    <p>Esplora gli strumenti e le attività che stiamo svolgendo insieme</p>
                 </div>
 
             </div>
 
+            <div class="hero-image">
+                <img src="immagini/animali_cubici.jpg" alt="Illustrazione Skilla">
+            </div>
+
+        </section>
+
+
+        <!-- Livello ed esperienza: calcolati dalle date dello stage in script.js -->
+
+        <section class="xp-panel" aria-label="Avanzamento dello stage">
+
+            <div class="xp-level">
+                <span class="xp-label">LIVELLO</span>
+                <strong class="xp-value" data-level>05</strong>
+            </div>
+
+            <div class="xp-progress">
+                <div class="xp-row">
+                    <span class="xp-label">XP</span>
+                    <span class="xp-count"><strong data-xp>4</strong> / 16 settimane completate</span>
+                </div>
+                <div class="xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4">
+                    <span class="xp-fill" style="--xp: 25%"></span>
+                </div>
+            </div>
+
+            <div class="xp-next">
+                <span class="xp-label">FINE STAGE</span>
+                <strong>23/12/2026</strong>
+            </div>
+
+        </section>
+
+
+        <!-- Scheda personaggio -->
+
+        <section class="character">
+
+            <p class="eyebrow">SCHEDA PERSONAGGIO</p>
 
             <div class="info">
 
                 <div class="info-item">
                     <div class="info-icon-badge badge-blue">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            stroke-linecap="square" stroke-linejoin="miter">
                             <path d="M6 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18Z" />
                             <path d="M6 12H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2" />
                             <path d="M18 9h2a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-2" />
@@ -107,9 +126,9 @@
                 </div>
 
                 <div class="info-item">
-                    <div class="info-icon-badge badge-green">
+                    <div class="info-icon-badge badge-cyan">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            stroke-linecap="square" stroke-linejoin="miter">
                             <path d="M22 10v6" />
                             <path d="M2 10l10-5 10 5-10 5z" />
                             <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
@@ -120,9 +139,9 @@
                 </div>
 
                 <div class="info-item">
-                    <div class="info-icon-badge badge-purple">
+                    <div class="info-icon-badge badge-pink">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            stroke-linecap="square" stroke-linejoin="miter">
                             <circle cx="12" cy="8" r="4" />
                             <path d="M20 21a8 8 0 0 0-16 0" />
                         </svg>
@@ -132,9 +151,9 @@
                 </div>
 
                 <div class="info-item">
-                    <div class="info-icon-badge badge-pink">
+                    <div class="info-icon-badge badge-coin">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            stroke-linecap="square" stroke-linejoin="miter">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                             <circle cx="9" cy="7" r="4" />
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
@@ -146,12 +165,12 @@
                 </div>
 
                 <div class="info-item">
-                    <div class="info-icon-badge badge-orange">
+                    <div class="info-icon-badge badge-green">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            stroke-linecap="square" stroke-linejoin="miter">
                             <path d="M8 2v3" />
                             <path d="M16 2v3" />
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <rect x="3" y="3" width="18" height="18" />
                             <path d="M3 9h18" />
                         </svg>
                     </div>
@@ -164,454 +183,214 @@
         </section>
 
 
+        <!-- Livelli (settimane) -->
+
         <section class="activities" id="attivita">
 
             <div class="section-header">
-                <p class="eyebrow">DIARIO DI STAGE</p>
-
-                <h2>Attività settimanali</h2>
-
+                <p class="eyebrow">SELEZIONA IL LIVELLO</p>
+                <h2 data-wave>Attività settimanali</h2>
                 <p>
-                    Un resoconto delle attività svolte e delle conoscenze
-                    acquisite durante ogni settimana dello stage.
+                    Ogni settimana di stage è un livello: un resoconto delle attività
+                    svolte e delle conoscenze acquisite.
                 </p>
             </div>
 
-
             <div class="slider">
 
-                <button class="slider-button previous" aria-label="Settimana precedente">
-                    ←
-                </button>
-
+                <button class="slider-button previous" aria-label="Livello precedente">◀</button>
 
                 <div class="slider-window">
 
                     <div class="slider-track">
 
-                        <!-- Settimana 01 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 01
+                        <article class="week-card" data-week="1">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 01</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                7 — 11 settembre 2026
-                            </div>
-
+                            <div class="week-date">7 — 11 settembre 2026</div>
                             <h3>Introduzione e attività iniziali</h3>
-
-                            <p>
-                                Una breve descrizione delle attività
-                                svolte durante la prima settimana.
-                            </p>
-                            <a href="settimane/settimana-01.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Una breve descrizione delle attività svolte durante la prima settimana.</p>
+                            <a href="settimane/settimana-01.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 02 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 02
+                        <article class="week-card" data-week="2">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 02</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                14 — 18 settembre 2026
-                            </div>
-
+                            <div class="week-date">14 — 18 settembre 2026</div>
                             <h3>Prime attività di sviluppo</h3>
-
-                            <p>
-                                Una breve descrizione delle attività
-                                svolte durante la seconda settimana.
-                            </p>
-
-                            <a href="settimane/settimana-02.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Una breve descrizione delle attività svolte durante la seconda settimana.</p>
+                            <a href="settimane/settimana-02.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 03 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 03
+                        <article class="week-card" data-week="3">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 03</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                21 — 25 settembre 2026
-                            </div>
-
+                            <div class="week-date">21 — 25 settembre 2026</div>
                             <h3>Sviluppo e sperimentazione</h3>
-
-                            <p>
-                                Una breve descrizione delle attività
-                                svolte durante la terza settimana.
-                            </p>
-
-                            <a href="settimane/settimana-03.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Una breve descrizione delle attività svolte durante la terza settimana.</p>
+                            <a href="settimane/settimana-03.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 04 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 04
+                        <article class="week-card" data-week="4">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 04</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                28 settembre — 2 ottobre 2026
-                            </div>
-
+                            <div class="week-date">28 settembre — 2 ottobre 2026</div>
                             <h3>Settimana 04</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-04.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-04.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 05 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 05
+                        <article class="week-card" data-week="5">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 05</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                5 — 9 ottobre 2026
-                            </div>
-
+                            <div class="week-date">5 — 9 ottobre 2026</div>
                             <h3>Settimana 05</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-05.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-05.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 06 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 06
+                        <article class="week-card" data-week="6">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 06</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                12 — 16 ottobre 2026
-                            </div>
-
+                            <div class="week-date">12 — 16 ottobre 2026</div>
                             <h3>Settimana 06</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-06.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-06.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 07 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 07
+                        <article class="week-card" data-week="7">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 07</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                19 — 23 ottobre 2026
-                            </div>
-
+                            <div class="week-date">19 — 23 ottobre 2026</div>
                             <h3>Settimana 07</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-07.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-07.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 08 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 08
+                        <article class="week-card" data-week="8">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 08</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                26 — 30 ottobre 2026
-                            </div>
-
+                            <div class="week-date">26 — 30 ottobre 2026</div>
                             <h3>Settimana 08</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-08.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-08.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 09 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 09
+                        <article class="week-card" data-week="9">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 09</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                2 — 6 novembre 2026
-                            </div>
-
+                            <div class="week-date">2 — 6 novembre 2026</div>
                             <h3>Settimana 09</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-09.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-09.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 10 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 10
+                        <article class="week-card" data-week="10">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 10</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                9 — 13 novembre 2026
-                            </div>
-
+                            <div class="week-date">9 — 13 novembre 2026</div>
                             <h3>Settimana 10</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-10.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-10.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 11 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 11
+                        <article class="week-card" data-week="11">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 11</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                16 — 20 novembre 2026
-                            </div>
-
+                            <div class="week-date">16 — 20 novembre 2026</div>
                             <h3>Settimana 11</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-11.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-11.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 12 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 12
+                        <article class="week-card" data-week="12">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 12</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                23 — 27 novembre 2026
-                            </div>
-
+                            <div class="week-date">23 — 27 novembre 2026</div>
                             <h3>Settimana 12</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-12.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-12.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 13 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 13
+                        <article class="week-card" data-week="13">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 13</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                30 novembre — 4 dicembre 2026
-                            </div>
-
+                            <div class="week-date">30 novembre — 4 dicembre 2026</div>
                             <h3>Settimana 13</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-13.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-13.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 14 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 14
+                        <article class="week-card" data-week="14">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 14</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                7 — 11 dicembre 2026
-                            </div>
-
+                            <div class="week-date">7 — 11 dicembre 2026</div>
                             <h3>Settimana 14</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-14.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-14.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 15 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 15
+                        <article class="week-card" data-week="15">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 15</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                14 — 18 dicembre 2026
-                            </div>
-
+                            <div class="week-date">14 — 18 dicembre 2026</div>
                             <h3>Settimana 15</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-15.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-15.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
-
-                        <!-- Settimana 16 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 16
+                        <article class="week-card" data-week="16">
+                            <div class="week-top">
+                                <span class="week-number">LIVELLO 16</span>
+                                <span class="week-state">BLOCCATO</span>
                             </div>
-
-                            <div class="week-date">
-                                21 — 23 dicembre 2026
-                            </div>
-
+                            <div class="week-date">21 — 23 dicembre 2026</div>
                             <h3>Settimana 16</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-16.html">
-                                Leggi la settimana →
-                            </a>
-
+                            <p>Contenuti in aggiornamento.</p>
+                            <a href="settimane/settimana-16.html">Apri il livello <span aria-hidden="true">▶</span></a>
                         </article>
 
                     </div>
 
                 </div>
 
-
-                <button class="slider-button next" aria-label="Settimana successiva">
-                    →
-                </button>
+                <button class="slider-button next" aria-label="Livello successivo">▶</button>
 
             </div>
 
-
-            <div class="slider-dots">
-
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-
-            </div>
+            <div class="slider-dots"></div>
 
         </section>
-
 
     </main>
 
