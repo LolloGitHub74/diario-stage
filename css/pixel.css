@@ -224,7 +224,8 @@ html.show-start .start-screen {
 }
 
 /* Se sopra resta cielo libero, il bordo alto dell'immagine sfuma */
-.scene-art.is-floating {
+.scene-art.is-floating,
+#scene-fx.is-floating {
     -webkit-mask-image: linear-gradient(transparent, #000 14%);
     mask-image: linear-gradient(transparent, #000 14%);
 }
