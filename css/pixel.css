@@ -208,15 +208,35 @@ html.show-start .start-screen {
     height: 100svh;
     min-height: 560px;
     overflow: hidden;
-    background: var(--night);
+    /* Stesso blu del cielo dell'illustrazione, per quando l'immagine non arriva in cima */
+    background: linear-gradient(#070b1d, #0c1e39);
 }
 
+/* Illustrazione del falò e tela delle animazioni: posizionate da scene.js */
+.scene-art,
 #scene {
     position: absolute;
     top: 0;
     left: 0;
+    max-width: none;
     image-rendering: pixelated;
-    image-rendering: crisp-edges;
+}
+
+/* Se sopra resta cielo libero, il bordo alto dell'immagine sfuma */
+.scene-art.is-floating {
+    -webkit-mask-image: linear-gradient(transparent, #000 14%);
+    mask-image: linear-gradient(transparent, #000 14%);
+}
+
+/* Velo scuro in alto: le scritte restano leggibili sopra il cielo */
+.world::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 55%;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(rgba(5, 8, 22, 0.55), rgba(5, 8, 22, 0));
 }
 
 
@@ -336,7 +356,7 @@ html.show-start .start-screen {
 }
 
 .world-title {
-    font-size: clamp(64px, 9.5vh, 104px);
+    font-size: clamp(56px, 9vh, 96px);
     font-weight: 400;
     line-height: 0.92;
     letter-spacing: 1px;
@@ -410,12 +430,13 @@ html.show-start .start-screen {
 }
 
 /* Menu di gioco: la fiammella indica la voce selezionata */
+/* Su desktop le due voci stanno affiancate per lasciare spazio alla scena */
 .game-menu {
-    margin-top: clamp(18px, 3.4vh, 34px);
+    margin-top: clamp(14px, 3vh, 30px);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 64px;
 }
 
 .menu-item {
@@ -508,7 +529,7 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
 
 .levels {
     padding: 90px 5% 100px;
-    background: linear-gradient(var(--ground), var(--night) 320px);
+    background: linear-gradient(#03060c, var(--night) 320px);
 }
 
 .section-header {
@@ -814,6 +835,11 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
     .hud-xp {
         margin-left: auto;
         font-size: 22px;
+    }
+
+    .game-menu {
+        flex-direction: column;
+        align-items: center;
     }
 
     .menu-item {
