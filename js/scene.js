@@ -13,55 +13,49 @@
     const ctx = canvas.getContext("2d");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // ---------- Cavaliere seduto, rivolto verso il fuoco ----------
+    // ---------- Cavaliere che riposa con la schiena contro l'albero ----------
 
     const KNIGHT = [
-        "..............000",
-        ".............0rrr0",
-        "...........00rrqq00",
-        ".........00qrqq33560",
-        "........0qqp023334560",
-        ".......0qp002233244560",
-        "......0pq00222332444560",
-        ".....0pp0.0222332444560",
-        ".....0p0..0227777777770",
-        "......0...0222332333560",
-        "..........0222332373760",
-        "...........02233233370",
-        "...........0023323560",
-        ".........00c2g333560",
-        "........0c02000000060",
-        ".......0dc222333333560",
-        "......0ddc222333333560",
-        "......0dc0222333333560",
-        "......0dc101111500000....000",
-        ".....0ddc10111101123000004560",
-        ".....0dcc110000001000230444560",
-        ".....0dcc111222330112230333560",
-        "....0ddcc111222333012230333560",
-        "....0dcdc11122233301220003560",
-        "....0dcdc111222333400022300060",
-        "...0ddcddcbbbbbggbbbb022333560",
-        "...0dcdddc11222333440022333560",
-        "...0dcdddc11222000003302335600",
-        "...0dcddddc0000222233300333060",
-        "...0cddddcc1111222233301000560",
-        "..0dcddddcc1111222233001123560",
-        "..0dcdddccc1111222200.01123560",
-        "..0cdccctttcc1122000..01123560",
-        "..0cctttttttc000033c00000000000",
-        ".0dcttttttttc333333330nnnnnnnn50",
-        ".0ctttttttttc333333330nnnnnnnn500",
-        ".0csssssssssc222222220nnnnnnnnnn50",
-        "0dcsssssssssscccccc220bbbbbbbbbbb0",
-        "0cdcsssssssssssssuucc0bbbbbbbbbbb0",
-        ".0000ssssssssssssuu50.00000000000",
-        ".....000sssssssss000"
+        "......0000",
+        "....00qrrq0",
+        "...0qrrq8560",
+        "..0qrq8838560",
+        ".0qqp388388560",
+        ".0pq33883888560",
+        "0pp333343444560",
+        "0p0333347777770",
+        "0p0333343444560",
+        ".00333343447470",
+        "...03334347470",
+        "....033434560",
+        "...021344560",
+        "..01881111160",
+        "..044444444560",
+        "..044444444560",
+        "..0444444444160",
+        ".04122222221560",
+        ".04412222211560",
+        ".044411111314560.....00.000",
+        ".044441331111140..0008808560",
+        ".0333331188888100044411888560",
+        "..033331144444441444441444560",
+        "..0333331133333313333314444560",
+        "..03333311222222133333114441560",
+        "...0222133111111113331110014560",
+        "...0bbb3333333333311100331333560",
+        "...02221333333333111220033133356000",
+        "....022133333331122000..0021311145600",
+        ".....00002222100000.......011444444560",
+        ".........02000.............013333333560",
+        "..........0.................033333333560",
+        "............................0222222222160",
+        ".............................00011160000",
+        "................................0000"
     ];
 
     const KNIGHT_COLORS = {
-        "0": "#0b0c1c", "1": "#262c45", "2": "#3a4262", "3": "#57618a",
-        "4": "#7d88ae", "5": "#c4864e", "6": "#f0b46a", "7": "#070812",
+        "0": "#0b0c1c", "1": "#2e3346", "2": "#5a6280", "3": "#8a93ad",
+        "4": "#bcc3d6", "8": "#e9edf5", "5": "#c4864e", "6": "#f0b46a", "7": "#070812",
         p: "#7e1a32", q: "#b52a45", r: "#e25a6e",
         c: "#1f1730", d: "#33264a", e: "#5c3443",
         b: "#2b211e", n: "#4a3730", g: "#d0a43a",
@@ -69,7 +63,7 @@
     };
 
     // Il busto (righe sopra questa) si alza di un pixel quando respira
-    const KNIGHT_WAIST = 24;
+    const KNIGHT_WAIST = 20;
 
     // ---------- Colori della scena ----------
 
@@ -240,6 +234,7 @@
             }
         }
 
+        drawTree(set);
         drawBonfire(set);
 
         const off = document.createElement("canvas");
@@ -301,6 +296,44 @@
         }
         set(cx, top - 1, pal[2]);
         set(cx, top - 2, pal[3]);
+    }
+
+    // Il grande albero a cui si appoggia il cavaliere: il tronco sale fuori dall'inquadratura
+    function drawTree(set) {
+        const width = 18;
+        const right = knightX + 5;
+        const left = right - width;
+        const bark = ["#1c120e", "#2a1a14", "#3e2a1e", "#5a3d28"].map(rgb);
+        const warm = rgb("#9a6236");
+
+        // Tronco con venature verticali, più chiaro verso il fuoco
+        for (let y = 0; y <= groundY + 2; y++) {
+            const flare = y > groundY - 10 ? Math.round((y - (groundY - 10)) * 0.7) : 0;
+            for (let x = left - flare; x <= right + flare; x++) {
+                const t = (x - left + flare) / (width + flare * 2);
+                const grain = hash(x * 7, Math.floor(y / 3)) > 0.82 ? -1 : 0;
+                let s = t < 0.25 ? 0 : t < 0.55 ? 1 : t < 0.85 ? 2 : 3;
+                s = Math.max(0, s + grain);
+                let color = bark[s];
+                if (t > 0.88 && y > groundY - 50) color = mix(color, warm, 0.6);
+                set(x, y, color);
+            }
+        }
+
+        // Nodo nella corteccia
+        for (let y = 0; y < 5; y++) for (let x = 0; x < 3; x++) set(left + 6 + x, groundY - 46 + y, bark[y === 0 || y === 4 ? 1 : 0]);
+
+        // Radici che scendono nel prato
+        [[-1, 14, 3], [-1, 9, 5], [1, 10, 4], [1, 6, 6]].forEach(function (root) {
+            const dir = root[0], len = root[1], drop = root[2];
+            const start = dir < 0 ? left - 6 : right + 6;
+            for (let i = 0; i < len; i++) {
+                const x = start + dir * i;
+                const y = groundY - 1 + Math.round((i / len) * drop);
+                set(x, y, bark[2]);
+                set(x, y + 1, bark[1]);
+            }
+        });
     }
 
     // Cerchio di pietre, tronchi incrociati e spada piantata nel fuoco
@@ -508,8 +541,8 @@
         canvas.style.width = W * S + "px";
         canvas.style.height = H * S + "px";
 
-        fireX = Math.round(W * (W < 240 ? 0.6 : 0.56));
-        knightX = fireX - knightCanvas.width - 8;
+        fireX = Math.round(W * (W < 240 ? 0.68 : 0.44));
+        knightX = fireX - knightCanvas.width - 12;
         knightY = groundY - knightCanvas.height + 3;
 
         setupLife();
