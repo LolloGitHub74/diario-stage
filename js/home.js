@@ -51,61 +51,39 @@
     }
 
 
-    // ---------- Livello ed esperienza ----------
+    // ---------- Livello ed esperienza (calcolati in stage.js) ----------
 
-    // Ogni settimana è completata dal sabato successivo al suo lunedì
-    const stageStart = new Date(2026, 8, 7);
-    const totalWeeks = 16;
-    const dayMs = 24 * 60 * 60 * 1000;
-    const today = new Date();
-
-    let completed = 0;
-    for (let week = 1; week <= totalWeeks; week++) {
-        const saturday = new Date(stageStart.getTime() + ((week - 1) * 7 + 5) * dayMs);
-        if (today >= saturday) completed = week;
-    }
-
-    const started = today >= stageStart;
-    const finished = completed === totalWeeks;
-    const level = Math.max(1, Math.min(completed + 1, totalWeeks));
+    const stage = window.STAGE;
 
     document.querySelectorAll("[data-level]").forEach(function (element) {
-        element.textContent = finished ? "MAX" : String(level).padStart(2, "0");
+        element.textContent = stage.levelLabel;
     });
 
-    document.querySelectorAll("[data-xp], [data-fires]").forEach(function (element) {
-        element.textContent = completed;
+    // Numeri della barra e della scheda del personaggio
+    const stats = {
+        xp: stage.completed,
+        fires: stage.completed,
+        "days-done": stage.daysDone,
+        "days-left": stage.daysLeft,
+        "days-total": stage.daysTotal
+    };
+    Object.keys(stats).forEach(function (key) {
+        document.querySelectorAll("[data-" + key + "]").forEach(function (element) {
+            element.textContent = stats[key];
+        });
     });
 
     // Un blocco della barra per ogni settimana
-    const bar = document.querySelector(".hud-bar");
-    if (bar) {
+    document.querySelectorAll(".hud-bar").forEach(function (bar) {
         bar.innerHTML = "";
-        for (let week = 1; week <= totalWeeks; week++) {
+        for (let week = 1; week <= stage.totalWeeks; week++) {
             const block = document.createElement("i");
-            if (week <= completed) block.className = "is-done";
-            else if (week === completed + 1 && started) block.className = "is-now";
+            const state = stage.state(week);
+            if (state === "done") block.className = "is-done";
+            if (state === "current") block.className = "is-now";
             bar.appendChild(block);
         }
-        bar.setAttribute("aria-valuenow", completed);
-    }
-
-    // Stato di ogni livello: completato, in corso o bloccato
-    document.querySelectorAll(".week-card[data-week]").forEach(function (card) {
-        const week = Number(card.dataset.week);
-        const state = card.querySelector(".week-state");
-        const monday = new Date(stageStart.getTime() + (week - 1) * 7 * dayMs);
-
-        if (week <= completed) {
-            card.classList.add("is-done");
-            if (state) state.textContent = "FALÒ ACCESO";
-        } else if (week === completed + 1 && today >= monday) {
-            card.classList.add("is-current");
-            if (state) state.textContent = "IN CORSO";
-        } else {
-            card.classList.add("is-locked");
-            if (state) state.textContent = "BLOCCATO";
-        }
+        bar.setAttribute("aria-valuenow", stage.completed);
     });
 
 
@@ -141,4 +119,50 @@
         event.preventDefault();
         items[next].focus();
     });
+})();
+
+
+// ---------------------------------------------------
+// Menu in alto: evidenzia la sezione in cui ti trovi
+// ---------------------------------------------------
+
+(function () {
+    "use strict";
+
+    const links = Array.from(document.querySelectorAll('.navigation a[href^="#"]'));
+    if (links.length === 0 || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (link) {
+                link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id);
+            });
+        });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+
+    links.forEach(function (link) {
+        const section = document.querySelector(link.getAttribute("href"));
+        if (section) observer.observe(section);
+    });
+})();
+
+
+// ---------------------------------------------------
+// Sotto la scena del falò il menu resta fisso in alto
+// ---------------------------------------------------
+
+(function () {
+    "use strict";
+
+    const world = document.querySelector(".world");
+    if (!world) return;
+
+    function check() {
+        const floating = world.getBoundingClientRect().bottom < 80;
+        document.body.classList.toggle("nav-floating", floating);
+    }
+
+    window.addEventListener("scroll", check, { passive: true });
+    check();
 })();

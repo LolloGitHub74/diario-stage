@@ -526,12 +526,27 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
 
 
 /* =========================================================
-   I LIVELLI (SETTIMANE)
+   SEZIONI DELLA PAGINA
    ========================================================= */
 
-.levels {
+/* Ogni sezione continua la notte della scena, sempre più scura scendendo */
+.levels,
+.journey,
+.character,
+.credits {
     padding: 90px 5% 100px;
-    background: linear-gradient(#03060c, var(--night) 320px);
+}
+
+.levels {
+    background: linear-gradient(#03060c, #07101a 260px, #0a1420);
+}
+
+.journey {
+    background: linear-gradient(#0a1420, var(--night));
+}
+
+.character {
+    background: var(--night);
 }
 
 .section-header {
@@ -559,215 +574,9 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
     color: var(--muted);
 }
 
-.slider {
-    max-width: 1300px;
-    margin: 0 auto;
-
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* Lo spazio interno lascia posto alle ombre delle card */
-.slider-window {
-    flex: 1 1 auto;
-    min-width: 0;
-
-    padding: 6px 14px 18px 6px;
-    margin: -6px 0 -18px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    overscroll-behavior-x: contain;
-    scroll-padding-inline: 6px;
-    scrollbar-width: none;
-}
-
-.slider-window::-webkit-scrollbar {
-    display: none;
-}
-
-/* Il gap deve corrispondere a quello usato in script.js (25px) */
-.slider-track {
-    display: flex;
-    gap: 25px;
-}
-
-.week-card {
-    flex: 0 0 calc((100% - 50px) / 3);
-    min-height: 300px;
-    padding: 22px 24px 22px;
-
-    display: flex;
-    flex-direction: column;
-
-    background: var(--panel-solid);
-    border: 3px solid var(--edge);
-    box-shadow: 6px 6px 0 var(--ink);
-
-    scroll-snap-align: start;
-    transition: border-color 0.12s steps(2);
-}
-
-.week-card:hover {
-    border-color: var(--cream);
-}
-
-.week-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-}
-
-.week-number {
-    font-size: 24px;
-    letter-spacing: 1px;
-    color: var(--gold);
-    white-space: nowrap;
-}
-
-.week-state {
-    padding: 0 8px;
-    font-size: 18px;
-    letter-spacing: 1px;
-    white-space: nowrap;
-
-    border: 2px solid var(--edge);
-    color: var(--dim);
-}
-
-.week-card.is-done .week-state {
-    border-color: var(--ember);
-    color: var(--ember);
-}
-
-.week-card.is-current .week-state {
-    border-color: var(--green);
-    color: var(--green);
-    animation: blink 1.2s steps(1) infinite;
-}
-
-.week-date {
-    margin-bottom: 18px;
-    font-size: 21px;
-    color: var(--dim);
-}
-
-.week-card h3 {
-    margin-bottom: 10px;
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 1;
-}
-
-.week-card p {
-    margin-bottom: 22px;
-    font-size: 22px;
-    line-height: 1.2;
-    color: var(--muted);
-}
-
-.week-card a {
-    margin-top: auto;
-    align-self: flex-start;
-
-    font-size: 23px;
-    text-decoration: none;
-    white-space: nowrap;
-    color: var(--gold);
-}
-
-.week-card a:hover {
-    color: var(--cream);
-}
-
-/* I falò accesi hanno il bordo caldo, quelli futuri sono spenti */
-.week-card.is-done {
-    border-top-color: var(--ember);
-}
-
-.week-card.is-current {
-    border-top-color: var(--green);
-}
-
-.week-card.is-locked {
-    background: #0e1230;
-}
-
-.week-card.is-locked h3,
-.week-card.is-locked .week-number {
-    color: var(--dim);
-}
-
-.slider-button {
-    flex: 0 0 auto;
-    width: 50px;
-    height: 50px;
-
-    display: grid;
-    place-items: center;
-
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: var(--cream);
-    cursor: pointer;
-
-    background: var(--panel-solid);
-    border: 3px solid var(--cream);
-    box-shadow: 4px 4px 0 var(--ink);
-    transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
-}
-
-.slider-button:hover {
-    color: var(--ink);
-    background: var(--gold);
-}
-
-.slider-button:active {
-    transform: translate(4px, 4px);
-    box-shadow: 0 0 0 var(--ink);
-}
-
-.slider-button:disabled {
-    opacity: 0.3;
-    cursor: default;
-    color: var(--cream);
-    background: var(--panel-solid);
-}
-
-.slider-dots {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 34px;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    background: #262c5e;
-    cursor: pointer;
-}
-
-.dot.active {
-    background: var(--gold);
-}
-
-
 /* =========================================================
    RESPONSIVE
    ========================================================= */
-
-@media (max-width: 1100px) {
-    .week-card {
-        flex-basis: calc((100% - 25px) / 2);
-    }
-}
 
 @media (max-width: 768px) {
     .header {
@@ -859,22 +668,11 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
     }
 
 
-    .levels {
-        padding: 70px 16px 70px;
-    }
-
-    .week-card {
-        flex-basis: 100%;
-    }
-
-    .slider {
-        gap: 10px;
-    }
-
-    .slider-button {
-        width: 40px;
-        height: 40px;
-        font-size: 13px;
+    .levels,
+    .journey,
+    .character,
+    .credits {
+        padding: 70px 16px;
     }
 }
 
@@ -889,4 +687,949 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
     html.show-start .world-ui > * {
         opacity: 1;
     }
+}
+
+
+/* =========================================================
+   IL SENTIERO DEI FALÒ
+   ========================================================= */
+
+.trail-wrap {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Bosco, sentiero e falò disegnati da trail.js */
+.trail-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.trail {
+    position: relative;
+    list-style: none;
+    padding: 40px 0 60px;
+}
+
+/* Le tappe si alternano: falò a sinistra e cartello a destra, poi il contrario */
+.trail-stop {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-height: 190px;
+}
+
+.stop-fire {
+    width: 80px;
+    height: 80px;
+}
+
+.trail-stop:nth-child(odd) .stop-fire {
+    justify-self: end;
+    margin-right: 18%;
+}
+
+.trail-stop:nth-child(odd) .stop-card {
+    justify-self: start;
+}
+
+.trail-stop:nth-child(even) .stop-fire {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    margin-left: 18%;
+}
+
+.trail-stop:nth-child(even) .stop-card {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    text-align: right;
+}
+
+/* Cartello del livello */
+.stop-card {
+    width: min(320px, 100%);
+    padding: 12px 16px 14px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    font: inherit;
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+
+    background: var(--panel);
+    border: 3px solid var(--edge);
+    box-shadow: 5px 5px 0 var(--ink);
+
+    transition: transform 0.12s steps(2), border-color 0.12s steps(2), box-shadow 0.12s steps(2);
+}
+
+.stop-card:hover,
+.stop-card:focus-visible {
+    border-color: var(--cream);
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--ink);
+}
+
+.stop-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.trail-stop:nth-child(even) .stop-top {
+    flex-direction: row-reverse;
+}
+
+.stop-number {
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--gold);
+}
+
+.stop-state {
+    padding: 0 6px;
+    font-size: 17px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    border: 2px solid var(--edge);
+    color: var(--dim);
+}
+
+.stop-title {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.stop-date {
+    font-size: 20px;
+    color: var(--dim);
+}
+
+/* Falò accesi, falò di questa settimana e falò ancora spenti */
+.trail-stop.is-done .stop-state {
+    border-color: var(--ember);
+    color: var(--ember);
+}
+
+.trail-stop.is-current .stop-state {
+    border-color: var(--green);
+    color: var(--green);
+    animation: blink 1.2s steps(1) infinite;
+}
+
+.trail-stop.is-locked .stop-card {
+    background: rgba(9, 11, 34, 0.6);
+}
+
+.trail-stop.is-locked .stop-title,
+.trail-stop.is-locked .stop-number {
+    color: var(--dim);
+}
+
+/* Quando il sentiero raggiunge un falò acceso, il cartello si illumina */
+.trail-stop.is-done.is-reached .stop-card {
+    animation: lit 0.9s steps(4) both;
+}
+
+@keyframes lit {
+    0% { box-shadow: 5px 5px 0 var(--ink), 0 0 0 rgba(255, 140, 50, 0); }
+    40% { box-shadow: 5px 5px 0 var(--ink), 0 0 28px rgba(255, 140, 50, 0.7); border-color: var(--gold); }
+    100% { box-shadow: 5px 5px 0 var(--ink), 0 0 0 rgba(255, 140, 50, 0); }
+}
+
+
+/* =========================================================
+   FINESTRE: SCHERMATA DEL LIVELLO E PANNELLI DEL PROGETTO
+   ========================================================= */
+
+html.panel-open {
+    overflow: hidden;
+}
+
+.panel {
+    width: min(860px, calc(100% - 32px));
+    max-width: none;
+    max-height: 86vh;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+
+    color: var(--cream);
+    background: var(--panel-solid);
+    border: 4px solid var(--cream);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+.panel[open] {
+    animation: panel-in 0.3s steps(4);
+}
+
+@keyframes panel-in {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+}
+
+.panel::backdrop {
+    background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 2px, transparent 2px 4px),
+        rgba(4, 6, 20, 0.78);
+}
+
+.panel-inner {
+    max-height: 86vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 34px 34px;
+}
+
+/* Il titolo resta fisso in alto mentre si scorre la finestra */
+.panel-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 0 14px;
+    margin-bottom: 18px;
+
+    background: var(--panel-solid);
+    border-bottom: 3px solid var(--edge);
+}
+
+.panel-head h2 {
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.panel-close {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+
+    font-size: 30px;
+    line-height: 1;
+    color: var(--cream);
+    cursor: pointer;
+
+    background: transparent;
+    border: 3px solid var(--cream);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.panel-close:hover {
+    color: var(--ink);
+    background: var(--gold);
+}
+
+.panel-intro {
+    max-width: 680px;
+    font-size: 24px;
+    color: var(--muted);
+}
+
+.panel h3 {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--gold);
+}
+
+/* Schermata del livello */
+.level-kicker {
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--ember);
+}
+
+.level-kicker[data-state="current"] {
+    color: var(--green);
+}
+
+.level-kicker[data-state="locked"] {
+    color: var(--dim);
+}
+
+.level-date {
+    margin-top: 4px;
+    font-size: 22px;
+    color: var(--dim);
+}
+
+.level-body section {
+    padding: 18px 0;
+    border-top: 2px dashed var(--edge);
+}
+
+.level-body section:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.level-body h3::before {
+    content: "▸ ";
+    color: var(--ember);
+}
+
+.level-body p {
+    max-width: 68ch;
+    margin-top: 10px;
+    font-size: 23px;
+    line-height: 1.3;
+    color: var(--cream);
+}
+
+.level-body .placeholder-text,
+.level-locked {
+    color: var(--dim);
+    font-style: normal;
+}
+
+.level-locked {
+    margin-bottom: 18px;
+    padding: 10px 14px;
+    font-size: 22px;
+    border: 2px solid var(--edge);
+}
+
+.level-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 3px solid var(--edge);
+}
+
+.level-step {
+    padding: 6px 14px;
+    font-size: 22px;
+    color: var(--cream);
+    cursor: pointer;
+    background: transparent;
+    border: 3px solid var(--edge);
+}
+
+.level-step:hover:not(:disabled) {
+    color: var(--ink);
+    background: var(--gold);
+    border-color: var(--ink);
+}
+
+.level-step:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+
+/* =========================================================
+   IL VIAGGIO FINORA (PROGETTO)
+   ========================================================= */
+
+.project-tiles {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.project-tile {
+    min-height: 220px;
+    padding: 24px 26px 22px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    font: inherit;
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+
+    background: var(--panel-solid);
+    border: 3px solid var(--edge);
+    box-shadow: 6px 6px 0 var(--ink);
+
+    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), border-color 0.12s steps(2);
+}
+
+.project-tile:hover,
+.project-tile:focus-visible {
+    border-color: var(--cream);
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--ink);
+}
+
+.project-tile h3 {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.project-tile p {
+    font-size: 23px;
+    line-height: 1.2;
+    color: var(--muted);
+}
+
+.tile-meta {
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--gold);
+}
+
+.tile-more {
+    margin-top: auto;
+    padding-top: 6px;
+    font-size: 23px;
+    color: var(--gold);
+}
+
+/* Il simulatore è la missione principale: riquadro e pannello nel blu Skilla */
+.project-tile-simulator,
+.panel-simulator,
+.panel-simulator .panel-head {
+    background: #0b13a8;
+}
+
+.project-tile-simulator {
+    border-color: #4a5cff;
+}
+
+.project-tile-simulator p,
+.panel-simulator .panel-intro {
+    color: #c8d0ff;
+}
+
+.simulator-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--cream);
+    border: 2px solid var(--cream);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--green);
+    animation: blink 1.2s steps(1) infinite;
+}
+
+.panel-simulator .simulator-status {
+    margin-bottom: 4px;
+}
+
+/* Contenuto dei pannelli */
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.activity-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 20px;
+    border: 2px solid var(--edge);
+}
+
+.activity-item-wide {
+    grid-column: 1 / -1;
+}
+
+.activity-item p {
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--muted);
+}
+
+.week-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+.week-tags a {
+    padding: 0 8px;
+    font-size: 19px;
+    text-decoration: none;
+    color: var(--ember);
+    border: 2px solid var(--ember);
+}
+
+.week-tags a::before {
+    content: "🔥 ";
+    font-size: 14px;
+}
+
+.week-tags a:hover {
+    color: var(--ink);
+    background: var(--ember);
+}
+
+.lab-list {
+    list-style: none;
+    margin-top: 16px;
+}
+
+.lab-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 18px 0;
+    border-top: 2px dashed var(--edge);
+}
+
+.lab-item:first-child {
+    border-top: 0;
+}
+
+.lab-item > div {
+    min-width: 0;
+}
+
+.lab-week {
+    flex: 0 0 auto;
+    padding: 0 8px;
+    font-size: 19px;
+    white-space: nowrap;
+    color: #c9b8ff;
+    border: 2px solid #6a58b8;
+}
+
+.lab-item p {
+    margin-top: 4px;
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--muted);
+}
+
+.simulator-steps {
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.simulator-steps li {
+    counter-increment: step;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.simulator-steps li::before {
+    content: counter(step);
+    width: 30px;
+    height: 30px;
+    margin-bottom: 6px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    border: 2px solid var(--cream);
+}
+
+.simulator-steps li.step-done::before {
+    content: "✓";
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #0b13a8;
+    background: var(--cream);
+}
+
+.simulator-steps li.step-current {
+    border-color: var(--gold);
+}
+
+.simulator-steps strong {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.simulator-steps span {
+    font-size: 19px;
+    line-height: 1.15;
+    color: #c8d0ff;
+}
+
+.tech-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 18px;
+    border: 2px solid var(--edge);
+}
+
+.tech-item strong {
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--gold);
+}
+
+.tech-item span {
+    font-size: 20px;
+    line-height: 1.15;
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   SCHEDA DEL PERSONAGGIO
+   ========================================================= */
+
+.sheet {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+        "portrait list"
+        "stats stats";
+    gap: 28px 36px;
+
+    background: var(--panel-solid);
+    border: 4px solid var(--cream);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* Ritratto: il cavaliere ritagliato dall'illustrazione del falò */
+.sheet-portrait {
+    grid-area: portrait;
+    width: 264px;
+    height: 220px;
+    max-width: 100%;
+
+    background: #04080b url("../immagini/falo.webp") no-repeat;
+    background-size: 2006px auto;
+    background-position: -980px -742px;
+    image-rendering: pixelated;
+
+    border: 3px solid var(--edge);
+    box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+.sheet-list {
+    grid-area: list;
+    display: flex;
+    flex-direction: column;
+}
+
+.sheet-list > div {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 2px dashed var(--edge);
+}
+
+.sheet-list > div:last-child {
+    border-bottom: 0;
+}
+
+.sheet-list dt {
+    font-size: 21px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.sheet-list dd {
+    font-size: 26px;
+    line-height: 1.1;
+}
+
+.sheet-list small {
+    font-size: 19px;
+    color: var(--dim);
+}
+
+.sheet-stats {
+    grid-area: stats;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.stat {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border: 2px solid var(--edge);
+}
+
+.stat-label {
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--dim);
+}
+
+.stat-value {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--gold);
+}
+
+.sheet-bar {
+    grid-column: 1 / -1;
+    height: 26px;
+    padding: 3px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+    background: var(--ink);
+}
+
+
+/* =========================================================
+   TITOLI DI CODA
+   ========================================================= */
+
+.credits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+    background: linear-gradient(var(--night), #020309);
+}
+
+/* I nomi salgono lenti come alla fine di un gioco */
+.credits-window {
+    position: relative;
+    width: min(600px, 100%);
+    height: 420px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+    mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+
+.credits-roll {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 420px 0;
+    animation: roll 32s linear infinite;
+}
+
+@keyframes roll {
+    to { transform: translateY(-100%); }
+}
+
+.credits-title {
+    margin-bottom: 30px;
+    font-size: 64px;
+    text-transform: uppercase;
+    line-height: 0.9;
+    text-shadow: 4px 4px 0 var(--blue), 8px 8px 0 var(--ink);
+}
+
+.credits-role {
+    margin-top: 26px;
+    font-size: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+.credits-name {
+    font-size: 32px;
+    line-height: 1.05;
+}
+
+.credits-end {
+    margin-top: 60px;
+    font-size: 44px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.credits-back {
+    padding: 8px 18px;
+    font-size: 26px;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.credits-back:hover {
+    background: #ffe07a;
+}
+
+.credits-copy {
+    font-size: 20px;
+    color: var(--dim);
+}
+
+
+/* =========================================================
+   RESPONSIVE DELLE NUOVE SEZIONI
+   ========================================================= */
+
+@media (max-width: 860px) {
+    .simulator-steps,
+    .sheet-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sheet {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "portrait"
+            "list"
+            "stats";
+        justify-items: stretch;
+    }
+
+    .sheet-portrait {
+        justify-self: center;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Su telefono il sentiero va dritto: falò al centro e cartello sotto */
+    .trail-stop,
+    .trail-stop:nth-child(odd),
+    .trail-stop:nth-child(even) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 8px;
+        min-height: 0;
+        padding: 18px 0;
+    }
+
+    .trail-stop:nth-child(n) .stop-fire,
+    .trail-stop:nth-child(n) .stop-card {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: center;
+        margin: 0;
+        text-align: left;
+    }
+
+    .trail-stop:nth-child(even) .stop-top {
+        flex-direction: row;
+    }
+
+    .project-tiles,
+    .activity-grid,
+    .simulator-steps,
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border: 0;
+    }
+
+    .panel-inner {
+        height: 100%;
+        max-height: 100%;
+        padding: 0 18px 28px;
+    }
+
+    .panel-head h2 {
+        font-size: 36px;
+    }
+
+    .lab-item {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sheet {
+        padding: 18px;
+    }
+
+    .sheet-list > div {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .level-nav {
+        flex-direction: column;
+    }
+}
+
+
+/* =========================================================
+   MENU FISSO SOTTO LA SCENA
+   ========================================================= */
+
+body.nav-floating .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 64px;
+
+    background: rgba(5, 7, 22, 0.94);
+    border-bottom: 3px solid var(--edge);
+    animation: nav-drop 0.25s steps(3);
+}
+
+@keyframes nav-drop {
+    from { transform: translateY(-100%); }
+}
+
+/* Le sezioni non finiscono sotto il menu fisso quando ci salti */
+.levels,
+.journey,
+.character,
+.credits {
+    scroll-margin-top: 50px;
 }
