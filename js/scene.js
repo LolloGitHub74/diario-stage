@@ -480,19 +480,35 @@
     // ---------- Dimensioni e ciclo di animazione ----------
 
     function resize() {
-        const box = canvas.parentElement.getBoundingClientRect();
+        const world = canvas.parentElement;
+        const ui = world.querySelector(".world-ui");
+        knightCanvas = knightCanvas || buildKnight();
+
+        world.style.minHeight = "";
+        let box = world.getBoundingClientRect();
         S = Math.max(2, Math.round(Math.min(box.width / 360, box.height / 225)));
         W = Math.ceil(box.width / S);
         H = Math.ceil(box.height / S);
+
+        // Il cavaliere deve stare sempre sotto il menu: se lo schermo è
+        // troppo basso la scena si allunga e il falò resta visibile scorrendo
+        groundY = Math.round(H * (W < 240 ? 0.86 : 0.84));
+        if (ui) {
+            const uiBottom = (ui.getBoundingClientRect().bottom - box.top) / S;
+            groundY = Math.max(groundY, Math.ceil(uiBottom + knightCanvas.height + 4));
+        }
+        if (groundY > H - 14) {
+            world.style.minHeight = (groundY + 14) * S + "px";
+            box = world.getBoundingClientRect();
+            H = Math.ceil(box.height / S);
+        }
 
         canvas.width = W;
         canvas.height = H;
         canvas.style.width = W * S + "px";
         canvas.style.height = H * S + "px";
 
-        groundY = Math.round(H * (W < 240 ? 0.86 : 0.84));
         fireX = Math.round(W * (W < 240 ? 0.6 : 0.56));
-        knightCanvas = knightCanvas || buildKnight();
         knightX = fireX - knightCanvas.width - 8;
         knightY = groundY - knightCanvas.height + 3;
 
