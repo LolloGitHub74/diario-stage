@@ -1,30 +1,28 @@
 /* =========================================================
-   DIARIO DI STAGE — STILE PIXEL
-   Layout: pagina chiara con bordi pixel, ombre "dure" da 8-bit
-   e i colori dell'illustrazione (blu Skilla, ciano, rosa, oro).
+   DIARIO DI STAGE — IL FALÒ
+   Layout: la home è una scena notturna a tutto schermo con il
+   cavaliere al falò; sopra, titolo, barra del livello e menu di
+   gioco. Un unico font pixel per tutte le scritte.
    ========================================================= */
 
 :root {
-    /* Colori */
-    --ink: #12133d;
-    --muted: #555a85;
-    --paper: #eef0ff;
-    --card: #ffffff;
+    --night: #0a0c28;
+    --night-2: #12173c;
+    --ground: #0e211d;
+    --panel: rgba(9, 11, 34, 0.82);
+    --panel-solid: #12163a;
+    --edge: #2c3470;
+    --ink: #05060f;
+    --cream: #f4ead2;
+    --muted: #a9b1dc;
+    --dim: #6f78ad;
+    --gold: #ffcf4a;
+    --gold-dark: #c99a16;
+    --ember: #ff8a2b;
     --blue: #0000d0;
-    --blue-light: #dfe3ff;
-    --cyan: #1fc8ff;
-    --pink: #ff4f8b;
-    --coin: #ffcf33;
-    --green: #2bd96f;
+    --green: #5fe39a;
 
-    /* Caratteri */
-    --font-display: "Pixelify Sans", "Courier New", monospace;
-    --font-label: "Press Start 2P", "Courier New", monospace;
-    --font-body: "Nunito", "Segoe UI", Arial, sans-serif;
-
-    /* Misure pixel */
-    --px: 4px;
-    --shadow: 6px;
+    --font: "VT323", "Courier New", monospace;
 }
 
 * {
@@ -38,23 +36,12 @@ html {
 }
 
 body {
-    position: relative;
-    min-height: 100vh;
-
-    font-family: var(--font-body);
-    color: var(--ink);
-
-    /* Griglia leggerissima, come la carta a quadretti di un level editor */
-    background-color: var(--paper);
-    background-image:
-        linear-gradient(rgba(18, 19, 61, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(18, 19, 61, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-}
-
-main {
-    position: relative;
-    overflow-x: hidden;
+    font-family: var(--font);
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--cream);
+    background: var(--night);
+    -webkit-font-smoothing: none;
 }
 
 img {
@@ -66,253 +53,247 @@ a {
     color: inherit;
 }
 
+button {
+    font: inherit;
+}
+
 :focus-visible {
-    outline: var(--px) solid var(--cyan);
+    outline: 3px solid var(--gold);
     outline-offset: 3px;
 }
 
 
 /* =========================================================
-   CAMPO DI PIXEL SULLO SFONDO (creato da script.js)
+   SCHERMATA START
    ========================================================= */
 
-.pixel-field {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
+.start-screen {
+    display: none;
+}
+
+/* Visibile solo alla prima visita (vedi lo script nell'head) */
+html.show-start {
     overflow: hidden;
 }
 
-.pixel-field span {
-    position: absolute;
-    width: var(--size);
-    height: var(--size);
-    background: var(--color);
-    opacity: 0.18;
-    animation: twinkle var(--speed) steps(4) infinite;
-    animation-delay: var(--delay);
+html.show-start .start-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+
+    /* La scena del falò si intravede dietro, scurita */
+    background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px),
+        rgba(6, 8, 28, 0.84);
 }
 
-@keyframes twinkle {
-    0%, 100% { opacity: 0.18; }
-    50% { opacity: 0.04; }
+.start-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-
-/* =========================================================
-   LETTERE ANIMATE (create da script.js)
-   ========================================================= */
-
-.word {
-    display: inline-block;
-    white-space: nowrap;
+.start-kicker {
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--gold);
 }
 
-.char {
-    display: inline-block;
+.start-title {
+    margin: 10px 0 8px;
+
+    font-size: clamp(76px, 15vw, 168px);
+    font-weight: 400;
+    line-height: 0.82;
+    text-transform: uppercase;
+    color: var(--cream);
+
+    /* Rilievo a gradini, come i loghi dei giochi 8-bit */
+    text-shadow:
+        4px 4px 0 var(--blue),
+        8px 8px 0 var(--ink);
 }
 
-/* Scrittura lettera per lettera, come i dialoghi dei giochi retrò */
-.typing .char {
-    animation: char-in 1ms steps(1) both;
-    animation-delay: calc(var(--i) * 45ms);
+.start-sub {
+    font-size: 26px;
+    color: var(--muted);
 }
 
-@keyframes char-in {
-    from { visibility: hidden; }
+.start-button {
+    margin-top: 46px;
+    padding: 12px 54px 14px;
+
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: 6px;
+    color: var(--ink);
+    cursor: pointer;
+
+    background: var(--gold);
+    border: 4px solid var(--ink);
+    box-shadow:
+        inset -6px -6px 0 var(--gold-dark),
+        inset 6px 6px 0 #ffe79a,
+        8px 8px 0 var(--ink);
+
+    animation: start-pulse 1.4s steps(2) infinite;
+    transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
-/* Cursore a blocco che lampeggia alla fine del titolo */
-.type-caret {
-    display: inline-block;
-    width: 0.45em;
-    height: 0.8em;
-    margin-left: 0.08em;
-    background: var(--pink);
-    vertical-align: baseline;
-    animation: blink 0.9s steps(1) infinite;
+.start-button:hover {
+    background: #ffe07a;
+}
+
+.start-button:focus-visible {
+    outline: 4px solid var(--cream);
+    outline-offset: 6px;
+}
+
+.start-button.is-pressed {
+    animation: none;
+    transform: translate(8px, 8px);
+    box-shadow:
+        inset -6px -6px 0 var(--gold-dark),
+        inset 6px 6px 0 #ffe79a,
+        0 0 0 var(--ink);
+}
+
+@keyframes start-pulse {
+    50% { transform: translateY(-4px); }
+}
+
+.start-hint {
+    margin-top: 22px;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    animation: blink 1s steps(1) infinite;
 }
 
 @keyframes blink {
     50% { opacity: 0; }
 }
 
-/* Al passaggio del cursore le lettere saltano in sequenza */
-[data-wave]:hover .char,
-a:hover > [data-wave] .char,
-.project-tile:hover [data-wave] .char {
-    animation: char-wave 0.5s steps(4);
-    animation-delay: calc(var(--i) * 30ms);
+/* Uscita: la schermata si dissolve a scatti e il titolo si allontana */
+.start-screen.is-leaving {
+    animation: start-out 0.65s steps(6) forwards;
 }
 
-@keyframes char-wave {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-0.18em); }
+.start-screen.is-leaving .start-box {
+    animation: start-zoom 0.65s steps(6) forwards;
 }
 
-
-/* =========================================================
-   ELEMENTI COMUNI
-   ========================================================= */
-
-/* Riquadro pixel: bordo spesso e ombra piena senza sfumatura */
-.pixel-box,
-.info-item,
-.week-card,
-.xp-panel,
-.hero-image {
-    background: var(--card);
-    border: var(--px) solid var(--ink);
-    box-shadow: var(--shadow) var(--shadow) 0 var(--ink);
+@keyframes start-out {
+    to { opacity: 0; }
 }
 
-.eyebrow {
-    margin-bottom: 16px;
-
-    font-family: var(--font-label);
-    font-size: 11px;
-    line-height: 1.6;
-    letter-spacing: 1px;
-    color: var(--blue);
-}
-
-/* Pulsante che si "preme" come un tasto 8-bit */
-.pixel-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 22px;
-
-    font-family: var(--font-label);
-    font-size: 12px;
-    line-height: 1.4;
-    white-space: nowrap;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #ffffff;
-
-    background: var(--blue);
-    border: var(--px) solid var(--ink);
-    box-shadow: var(--shadow) var(--shadow) 0 var(--ink);
-
-    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), background-color 0.12s steps(2);
-}
-
-.pixel-button:hover {
-    background: var(--pink);
-    transform: translate(-2px, -2px);
-    box-shadow: calc(var(--shadow) + 2px) calc(var(--shadow) + 2px) 0 var(--ink);
-}
-
-.pixel-button:active {
-    transform: translate(var(--shadow), var(--shadow));
-    box-shadow: 0 0 0 var(--ink);
+@keyframes start-zoom {
+    to { transform: scale(1.18); }
 }
 
 
 /* =========================================================
-   HEADER
+   LA SCENA DEL FALÒ
    ========================================================= */
+
+.world {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    background: var(--night);
+}
+
+#scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+
+/* ---------- Header ---------- */
 
 .header {
     position: relative;
     z-index: 20;
 
-    height: 80px;
-    padding: 0 8%;
+    height: 84px;
+    padding: 0 5%;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-
-    background: var(--card);
-    border-bottom: var(--px) solid var(--ink);
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
     text-decoration: none;
-    color: var(--ink);
 }
 
 .logo-mark {
-    width: 108px;
-    height: 38px;
-    background: #0000d0 url("../immagini/logo-skilla.png") center / cover no-repeat;
+    width: 96px;
+    height: 34px;
+    background: var(--blue) url("../immagini/logo-skilla.png") center / cover no-repeat;
     border: 3px solid var(--ink);
     box-shadow: 3px 3px 0 var(--ink);
 }
 
 .logo-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    font-size: 28px;
+    color: var(--cream);
+    text-shadow: 2px 2px 0 var(--ink);
 }
 
-.logo-copy strong {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.logo-copy small {
-    font-family: var(--font-label);
-    font-size: 7px;
-    letter-spacing: 1px;
-    color: var(--muted);
-}
-
-/* Menu: i tre link dentro un'unica barra pixel */
 .navigation {
     display: flex;
-    gap: 4px;
-    padding: 4px;
-
-    background: var(--card);
-    border: 3px solid var(--ink);
-    box-shadow: 4px 4px 0 var(--ink);
+    gap: 34px;
 }
 
 .navigation a {
-    padding: 9px 16px;
-
-    font-family: var(--font-display);
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 27px;
     text-decoration: none;
-    color: var(--ink);
-
-    transition: background-color 0.12s steps(2), color 0.12s steps(2);
+    color: var(--muted);
+    text-shadow: 2px 2px 0 var(--ink);
 }
 
-.navigation a:hover {
-    background: var(--blue-light);
-    color: var(--blue);
+.navigation a::before {
+    content: "▸ ";
+    color: transparent;
+    text-shadow: none;
 }
 
-.navigation a.active,
-.navigation a.active:hover {
-    background: var(--blue);
-    color: #ffffff;
+.navigation a:hover,
+.navigation a.active {
+    color: var(--cream);
+}
+
+.navigation a.active::before,
+.navigation a:hover::before {
+    color: var(--ember);
 }
 
 /* Hamburger, visibile solo su mobile */
 .menu-toggle {
     display: none;
-
-    width: 44px;
-    height: 44px;
-
+    width: 46px;
+    height: 46px;
     align-items: center;
     justify-content: center;
 
-    background: var(--card);
-    border: 3px solid var(--ink);
+    background: var(--panel);
+    border: 3px solid var(--cream);
     box-shadow: 3px 3px 0 var(--ink);
     cursor: pointer;
 }
@@ -322,8 +303,8 @@ a:hover > [data-wave] .char,
 .menu-toggle span::after {
     display: block;
     width: 20px;
-    height: 4px;
-    background: var(--ink);
+    height: 3px;
+    background: var(--cream);
     position: relative;
 }
 
@@ -333,319 +314,230 @@ a:hover > [data-wave] .char,
     position: absolute;
 }
 
-.menu-toggle span::before {
-    top: -7px;
-}
+.menu-toggle span::before { top: -7px; }
+.menu-toggle span::after { top: 7px; }
 
-.menu-toggle span::after {
-    top: 7px;
-}
-
-.menu-toggle.active span {
-    background: transparent;
-}
-
-.menu-toggle.active span::before {
-    top: 0;
-    transform: rotate(45deg);
-}
-
-.menu-toggle.active span::after {
-    top: 0;
-    transform: rotate(-45deg);
-}
+.menu-toggle.active span { background: transparent; }
+.menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
+.menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
 
 
-/* =========================================================
-   HERO
-   ========================================================= */
+/* ---------- Titolo, barra e menu sopra la scena ---------- */
 
-.hero {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 64px 8% 0;
+.world-ui {
+    position: relative;
+    z-index: 10;
 
-    display: flex;
-    align-items: center;
-    gap: 64px;
-}
-
-.hero-text {
-    flex: 1 1 50%;
-    min-width: 0;
-}
-
-.status {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 26px;
-    padding: 9px 14px;
-
-    font-family: var(--font-label);
-    font-size: 10px;
-    letter-spacing: 1px;
-
-    background: #d8f8e5;
-    border: 3px solid var(--ink);
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    background: var(--green);
-    box-shadow: 0 0 0 2px var(--ink);
-    animation: blink 1.2s steps(1) infinite;
-}
-
-.hero h1 {
-    margin-bottom: 26px;
-
-    font-family: var(--font-display);
-    font-size: clamp(48px, 6.4vw, 92px);
-    font-weight: 700;
-    line-height: 0.98;
-    letter-spacing: -1px;
-    text-wrap: balance;
-}
-
-.hero h1 .highlight {
-    color: var(--blue);
-}
-
-.description {
-    max-width: 560px;
-    margin-bottom: 36px;
-
-    font-size: 19px;
-    line-height: 1.6;
-    color: var(--muted);
-}
-
-.hero-action {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-}
-
-.hero-action p {
-    max-width: 260px;
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--muted);
-}
-
-.hero-image {
-    flex: 1 1 46%;
-    max-width: 560px;
-    padding: 0;
-    overflow: hidden;
-    box-shadow: 10px 10px 0 var(--ink);
-}
-
-.hero-image img {
-    width: 100%;
-    aspect-ratio: 1.25;
-    object-fit: cover;
-}
-
-
-/* =========================================================
-   BARRA LIVELLO / XP
-   ========================================================= */
-
-.xp-panel {
-    max-width: calc(1400px - 16%);
-    margin: 64px 8% 0;
-
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 32px;
-    padding: 22px 28px;
-}
-
-@media (min-width: 1400px) {
-    .xp-panel {
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-.xp-label {
-    font-family: var(--font-label);
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: var(--muted);
-}
-
-.xp-level,
-.xp-next {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    padding: clamp(8px, 4vh, 48px) 16px 0;
+    text-align: center;
 }
 
-.xp-value {
-    font-family: var(--font-label);
-    font-size: 30px;
-    line-height: 1;
-    color: var(--blue);
+.world-title {
+    font-size: clamp(64px, 9.5vh, 104px);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: 1px;
+    text-wrap: balance;
+    text-shadow: 4px 4px 0 var(--ink);
 }
 
-.xp-next strong {
-    font-family: var(--font-display);
-    font-size: 22px;
+.world-title span {
+    color: var(--gold);
 }
 
-.xp-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.xp-count {
-    font-size: 15px;
+.world-sub {
+    margin-top: 14px;
+    font-size: 28px;
     color: var(--muted);
+    text-shadow: 2px 2px 0 var(--ink);
 }
 
-.xp-count strong {
-    font-family: var(--font-display);
-    font-size: 20px;
-    color: var(--ink);
+/* Barra del livello, come l'HUD di un gioco */
+.hud {
+    width: min(580px, 100%);
+    margin-top: clamp(16px, 3vh, 28px);
+    padding: 10px 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    background: var(--panel);
+    border: 3px solid var(--cream);
+    box-shadow: 5px 5px 0 var(--ink);
 }
 
-/* La barra è fatta a blocchi: il riempimento avanza a scatti */
-.xp-bar {
-    height: 28px;
+.hud-level {
+    font-size: 34px;
+    line-height: 1;
+    color: var(--gold);
+    white-space: nowrap;
+}
+
+.hud-bar {
+    flex: 1;
+    min-width: 0;
+    height: 24px;
     padding: 3px;
+
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+
     background: var(--ink);
 }
 
-.xp-fill {
-    display: block;
-    height: 100%;
-    width: var(--xp);
-
-    background:
-        repeating-linear-gradient(90deg, transparent 0 18px, rgba(18, 19, 61, 0.35) 18px 21px),
-        linear-gradient(var(--coin) 0 50%, #f2b600 50% 100%);
-
-    animation: xp-fill 1.2s steps(12) both;
-    animation-delay: 0.4s;
+.hud-bar i {
+    background: #262c5e;
 }
 
-@keyframes xp-fill {
-    from { width: 0; }
+.hud-bar i.is-done {
+    background: linear-gradient(var(--gold) 0 55%, var(--gold-dark) 55%);
 }
 
-
-/* =========================================================
-   SCHEDA PERSONAGGIO
-   ========================================================= */
-
-.character {
-    max-width: calc(1400px - 16%);
-    margin: 56px 8% 0;
+.hud-bar i.is-now {
+    background: #7a5a1a;
+    animation: blink 1.2s steps(1) infinite;
 }
 
-@media (min-width: 1400px) {
-    .character {
-        margin-left: auto;
-        margin-right: auto;
-    }
+.hud-xp {
+    font-size: 24px;
+    color: var(--muted);
+    white-space: nowrap;
 }
 
-.info {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 18px;
-}
-
-.info-item {
+/* Menu di gioco: la fiammella indica la voce selezionata */
+.game-menu {
+    margin-top: clamp(18px, 3.4vh, 34px);
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 6px;
-    padding: 20px;
-
-    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2);
 }
 
-.info-item:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: calc(var(--shadow) + 2px) calc(var(--shadow) + 2px) 0 var(--ink);
+.menu-item {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 2px 10px;
+
+    text-decoration: none;
+    color: var(--dim);
+    text-shadow: 2px 2px 0 var(--ink);
 }
 
-.info-icon-badge {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 12px;
-
-    display: grid;
-    place-items: center;
-
-    border: 3px solid var(--ink);
+/* La fiammella è agganciata all'etichetta, a sinistra */
+.menu-head {
+    position: relative;
+    display: inline-block;
 }
 
-.info-icon-badge svg {
-    width: 22px;
-    height: 22px;
+.menu-label {
+    font-size: 38px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.badge-blue { background: var(--blue-light); color: var(--blue); }
-.badge-cyan { background: #d4f4ff; color: #0077a6; }
-.badge-pink { background: #ffe0eb; color: #c4245c; }
-.badge-coin { background: #fff2c4; color: #8a6400; }
-.badge-green { background: #d8f8e5; color: #127a3b; }
+.menu-note {
+    font-size: 23px;
+    color: var(--dim);
+}
 
-.info-label {
-    font-family: var(--font-label);
-    font-size: 8px;
-    line-height: 1.6;
+.menu-flame {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    width: 21px;
+    height: 27px;
+    margin-top: -15px;
+    visibility: hidden;
+}
+
+.menu-item.is-selected {
+    color: var(--cream);
+    text-shadow:
+        2px 2px 0 var(--ink),
+        0 0 14px rgba(255, 150, 60, 0.55);
+}
+
+.menu-item.is-selected .menu-note {
     color: var(--muted);
 }
 
-.info-item strong {
-    font-family: var(--font-display);
-    font-size: 19px;
-    font-weight: 600;
-    line-height: 1.2;
+.menu-item.is-selected .menu-flame {
+    visibility: visible;
+    animation: flame 0.5s steps(2) infinite;
+}
+
+.menu-item:focus-visible {
+    outline: none;
+}
+
+@keyframes flame {
+    50% { transform: scaleY(0.85) translateY(2px); }
+}
+
+/* Entrata dopo START: gli elementi salgono a scatti uno dopo l'altro */
+html.show-start .world-ui > * {
+    opacity: 0;
+}
+
+body.started .world-ui > * {
+    animation: rise 0.5s steps(5) both;
+}
+
+body.started .world-ui > :nth-child(2) { animation-delay: 0.12s; }
+body.started .world-ui > :nth-child(3) { animation-delay: 0.24s; }
+body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
 }
 
 
 /* =========================================================
-   LIVELLI (SETTIMANE)
+   I LIVELLI (SETTIMANE)
    ========================================================= */
 
-.activities {
-    padding: 100px 8% 90px;
+.levels {
+    padding: 90px 5% 100px;
+    background: linear-gradient(var(--ground), var(--night) 320px);
 }
 
 .section-header {
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto 36px;
 }
 
-.section-header h2 {
-    margin-bottom: 14px;
+.eyebrow {
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--gold);
+}
 
-    font-family: var(--font-display);
-    font-size: clamp(34px, 4vw, 52px);
-    font-weight: 700;
-    line-height: 1.05;
+.section-header h2 {
+    margin: 4px 0 10px;
+    font-size: clamp(54px, 7vw, 80px);
+    font-weight: 400;
+    line-height: 0.95;
+    text-shadow: 4px 4px 0 var(--ink);
 }
 
 .section-header > p:last-child {
     max-width: 640px;
-    font-size: 17px;
-    line-height: 1.6;
+    font-size: 24px;
     color: var(--muted);
 }
 
 .slider {
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
 
     display: flex;
@@ -653,7 +545,7 @@ a:hover > [data-wave] .char,
     gap: 20px;
 }
 
-/* Lo spazio interno lascia posto alle ombre pixel delle card */
+/* Lo spazio interno lascia posto alle ombre delle card */
 .slider-window {
     flex: 1 1 auto;
     min-width: 0;
@@ -683,13 +575,21 @@ a:hover > [data-wave] .char,
 .week-card {
     flex: 0 0 calc((100% - 50px) / 3);
     min-height: 300px;
-    padding: 24px 24px 22px;
+    padding: 22px 24px 22px;
 
     display: flex;
     flex-direction: column;
 
+    background: var(--panel-solid);
+    border: 3px solid var(--edge);
+    box-shadow: 6px 6px 0 var(--ink);
+
     scroll-snap-align: start;
-    transition: background-color 0.12s steps(2);
+    transition: border-color 0.12s steps(2);
+}
+
+.week-card:hover {
+    border-color: var(--cream);
 }
 
 .week-top {
@@ -697,137 +597,111 @@ a:hover > [data-wave] .char,
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 6px;
 }
 
 .week-number {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: var(--gold);
     white-space: nowrap;
-    font-family: var(--font-label);
-    font-size: 10px;
-    color: var(--blue);
 }
 
 .week-state {
-    padding: 5px 8px;
-
-    font-family: var(--font-label);
-    font-size: 7px;
-    letter-spacing: 0.5px;
+    padding: 0 8px;
+    font-size: 18px;
+    letter-spacing: 1px;
     white-space: nowrap;
 
-    border: 2px solid var(--ink);
-    background: #e4e6f2;
-    color: var(--muted);
+    border: 2px solid var(--edge);
+    color: var(--dim);
 }
 
 .week-card.is-done .week-state {
-    background: var(--coin);
-    color: var(--ink);
-}
-
-/* Stellina disegnata con un carattere che il font pixel non ha */
-.week-card.is-done .week-state::before {
-    content: "★ ";
-    font-family: Arial, sans-serif;
-    font-size: 10px;
+    border-color: var(--ember);
+    color: var(--ember);
 }
 
 .week-card.is-current .week-state {
-    background: var(--green);
-    color: var(--ink);
+    border-color: var(--green);
+    color: var(--green);
     animation: blink 1.2s steps(1) infinite;
 }
 
 .week-date {
-    margin-bottom: 24px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
+    margin-bottom: 18px;
+    font-size: 21px;
+    color: var(--dim);
 }
 
 .week-card h3 {
-    margin-bottom: 12px;
-
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1.15;
+    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1;
 }
 
 .week-card p {
-    margin-bottom: 24px;
-    font-size: 15px;
-    line-height: 1.6;
+    margin-bottom: 22px;
+    font-size: 22px;
+    line-height: 1.2;
     color: var(--muted);
 }
 
 .week-card a {
-    white-space: nowrap;
     margin-top: auto;
     align-self: flex-start;
-    padding: 8px 12px;
 
-    font-family: var(--font-label);
-    font-size: 9px;
-    line-height: 1.4;
+    font-size: 23px;
     text-decoration: none;
-    color: var(--ink);
-
-    border: 3px solid var(--ink);
-    background: var(--card);
-
-    transition: background-color 0.12s steps(2), color 0.12s steps(2);
+    white-space: nowrap;
+    color: var(--gold);
 }
 
 .week-card a:hover {
-    background: var(--blue);
-    color: #ffffff;
+    color: var(--cream);
 }
 
-/* I livelli completati hanno una stella d'oro nel bordo in alto */
+/* I falò accesi hanno il bordo caldo, quelli futuri sono spenti */
 .week-card.is-done {
-    background:
-        linear-gradient(var(--coin), var(--coin)) top / 100% 6px no-repeat,
-        var(--card);
+    border-top-color: var(--ember);
 }
 
 .week-card.is-current {
-    background:
-        linear-gradient(var(--green), var(--green)) top / 100% 6px no-repeat,
-        var(--card);
+    border-top-color: var(--green);
 }
 
-/* I livelli futuri sono "bloccati": più spenti finché non arrivano */
 .week-card.is-locked {
-    background: #f6f7fd;
+    background: #0e1230;
 }
 
 .week-card.is-locked h3,
 .week-card.is-locked .week-number {
-    color: #8b8fb3;
+    color: var(--dim);
 }
 
 .slider-button {
     flex: 0 0 auto;
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
 
     display: grid;
     place-items: center;
 
+    font-family: Arial, sans-serif;
     font-size: 16px;
-    color: var(--ink);
+    color: var(--cream);
     cursor: pointer;
 
-    background: var(--card);
-    border: 3px solid var(--ink);
+    background: var(--panel-solid);
+    border: 3px solid var(--cream);
     box-shadow: 4px 4px 0 var(--ink);
-
-    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), background-color 0.12s steps(2);
+    transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
 .slider-button:hover {
-    background: var(--coin);
+    color: var(--ink);
+    background: var(--gold);
 }
 
 .slider-button:active {
@@ -836,9 +710,10 @@ a:hover > [data-wave] .char,
 }
 
 .slider-button:disabled {
-    opacity: 0.35;
+    opacity: 0.3;
     cursor: default;
-    background: var(--card);
+    color: var(--cream);
+    background: var(--panel-solid);
 }
 
 .slider-dots {
@@ -852,13 +727,12 @@ a:hover > [data-wave] .char,
 .dot {
     width: 12px;
     height: 12px;
-    background: #c9cde6;
-    border: 2px solid var(--ink);
+    background: #262c5e;
     cursor: pointer;
 }
 
 .dot.active {
-    background: var(--blue);
+    background: var(--gold);
 }
 
 
@@ -867,49 +741,24 @@ a:hover > [data-wave] .char,
    ========================================================= */
 
 @media (max-width: 1100px) {
-    .info {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
     .week-card {
         flex-basis: calc((100% - 25px) / 2);
-    }
-}
-
-@media (max-width: 860px) {
-    .hero {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 40px;
-    }
-
-    .hero-image {
-        max-width: none;
-        order: -1;
-    }
-
-    .xp-panel {
-        grid-template-columns: auto minmax(0, 1fr);
-    }
-
-    .xp-next {
-        display: none;
     }
 }
 
 @media (max-width: 768px) {
     .header {
         height: 72px;
-        padding: 0 6%;
+        padding: 0 16px;
     }
 
     .logo-mark {
-        width: 92px;
-        height: 34px;
+        width: 84px;
+        height: 30px;
     }
 
-    .logo-copy small {
-        display: none;
+    .logo-copy {
+        font-size: 24px;
     }
 
     .menu-toggle {
@@ -925,11 +774,8 @@ a:hover > [data-wave] .char,
 
         flex-direction: column;
         gap: 0;
-        padding: 0;
 
-        border: 0;
-        border-bottom: var(--px) solid var(--ink);
-        box-shadow: none;
+        background: var(--panel-solid);
 
         max-height: 0;
         overflow: hidden;
@@ -937,55 +783,56 @@ a:hover > [data-wave] .char,
     }
 
     .navigation.active {
-        max-height: 260px;
+        max-height: 240px;
+        border-bottom: 3px solid var(--cream);
     }
 
     .navigation a {
-        padding: 16px 6%;
-        border-top: 2px solid var(--blue-light);
+        padding: 12px 16px;
+        border-top: 2px solid var(--edge);
     }
 
-    .hero {
-        padding: 36px 6% 0;
+    .world-title {
+        font-size: clamp(54px, 15vw, 72px);
     }
 
-    .description {
-        font-size: 17px;
+    .world-sub {
+        font-size: 24px;
     }
 
-    .hero-action {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 18px;
+    .hud {
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        padding: 10px 14px;
     }
 
-    .xp-panel,
-    .character {
-        margin-left: 6%;
-        margin-right: 6%;
+    .hud-bar {
+        order: 3;
+        flex-basis: 100%;
     }
 
-    .xp-panel {
-        gap: 20px;
-        padding: 18px;
-    }
-
-    .xp-value {
+    .hud-xp {
+        margin-left: auto;
         font-size: 22px;
     }
 
-    .xp-row {
+    .menu-item {
         flex-direction: column;
-        gap: 6px;
+        align-items: center;
+        gap: 0;
     }
 
-    .info {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
+    .menu-label {
+        font-size: 32px;
     }
 
-    .activities {
-        padding: 70px 6% 60px;
+    .menu-note {
+        font-size: 21px;
+    }
+
+
+    .levels {
+        padding: 70px 16px 70px;
     }
 
     .week-card {
@@ -1003,45 +850,15 @@ a:hover > [data-wave] .char,
     }
 }
 
-@media (max-width: 480px) {
-    .info {
-        grid-template-columns: 1fr;
-    }
-
-    /* Su telefono l'icona va a sinistra, così le schede sono più basse */
-    .info-item {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        column-gap: 16px;
-        row-gap: 6px;
-        align-items: center;
-        padding: 16px;
-    }
-
-    .info-icon-badge {
-        grid-row: span 2;
-        margin-bottom: 0;
-    }
-
-    .week-top {
-        flex-wrap: wrap;
-    }
-
-    .xp-panel {
-        grid-template-columns: 1fr;
-    }
-
-    .pixel-button {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
         animation: none !important;
         transition: none !important;
+    }
+
+    html.show-start .world-ui > * {
+        opacity: 1;
     }
 }
