@@ -1,7 +1,7 @@
 // =========================================================
 // Scena del falò: l'illustrazione fa da sfondo alla home e
-// sopra si animano il cielo, le cime degli alberi e il fuoco.
-// Il cavaliere resta fermo.
+// sopra si anima il fuoco. Il cavaliere resta fermo.
+// Cielo e alberi si possono riaccendere da ANIMATE.
 // =========================================================
 
 (function () {
@@ -15,6 +15,9 @@
     const fx = canvas.getContext("2d");
     const ui = world.querySelector(".world-ui");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Cosa si muove: per ora solo il fuoco (fiamme, scintille, fumo e luce)
+    const ANIMATE = { sky: false, trees: false, fire: true };
 
     // ---------- Misure dell'illustrazione (in pixel dell'immagine) ----------
 
@@ -117,6 +120,9 @@
         // Il cielo "dietro" gli alberi: ogni pixel d'albero prende il colore
         // del cielo più vicino sulla stessa riga, così quando i rami si
         // spostano non compaiono buchi
+        if (ANIMATE.sky || ANIMATE.trees) buildSky();
+
+        function buildSky() {
         const plateData = new ImageData(IMAGE_W, SKY_H);
         const treeData = new ImageData(IMAGE_W, SKY_H);
         const left = new Int32Array(IMAGE_W), right = new Int32Array(IMAGE_W);
@@ -143,6 +149,7 @@
         }
         plate = fromData(plateData);
         trees = fromData(treeData);
+        }
 
         // Fiamme: solo i pixel arancioni e gialli, la spada resta ferma
         const a = FIRE_AREA;
@@ -167,6 +174,7 @@
 
         // Stelle dipinte: pixel chiari isolati nel cielo (non la luna)
         stars = [];
+        if (!ANIMATE.sky) return;
         for (let y = 4; y < 360; y += 2) {
             for (let x = 400; x < 1520; x += 2) {
                 if (sum(x, y) < 330) continue;
@@ -253,7 +261,7 @@
 
         // Ogni tanto una stella cadente
         nextShooting -= dt;
-        if (!shooting && nextShooting <= 0) {
+        if (ANIMATE.sky && !shooting && nextShooting <= 0) {
             shooting = { x: 520 + Math.random() * 700, y: 20 + Math.random() * 110, life: 0 };
             nextShooting = 9 + Math.random() * 10;
         }
@@ -284,55 +292,63 @@
     function draw(time) {
         const t = time / 1000;
         fx.clearRect(0, 0, canvas.width, canvas.height);
-        if (!plate) return drawFireParticles(t);
+        if (!flames) return drawFireParticles(t);
+        if (plate) drawSky(t);
+        drawFire(t);
+    }
 
+    function drawSky(t) {
         // Cielo: lo sfondo senza le cime degli alberi
         fx.drawImage(plate, 0, 0, IMAGE_W, SKY_H, 0, 0, IMAGE_W * scale, SKY_H * scale);
 
-        // Bagliore viola all'orizzonte e alone della luna, che respirano piano
-        fx.globalCompositeOperation = "lighter";
-        glowAt(HORIZON.x, HORIZON.y, 380, "rgba(140, 60, 130, ", 0.05 + Math.sin(t * 0.5) * 0.025);
-        glowAt(MOON.x, MOON.y, 110, "rgba(180, 190, 255, ", 0.07 + Math.sin(t * 0.7) * 0.03);
-        fx.globalCompositeOperation = "source-over";
+        if (ANIMATE.sky) {
+            // Bagliore viola all'orizzonte e alone della luna, che respirano piano
+            fx.globalCompositeOperation = "lighter";
+            glowAt(HORIZON.x, HORIZON.y, 380, "rgba(140, 60, 130, ", 0.05 + Math.sin(t * 0.5) * 0.025);
+            glowAt(MOON.x, MOON.y, 110, "rgba(180, 190, 255, ", 0.07 + Math.sin(t * 0.7) * 0.03);
+            fx.globalCompositeOperation = "source-over";
 
-        // Stelle che brillano a turno
-        stars.forEach(function (s) {
-            const k = Math.sin(t * s.speed + s.phase);
-            if (s.painted) {
-                if (k < -0.55) rect(s.x - 1, s.y - 1, PX + 2, PX + 2, s.bg);
-                else if (k > 0.85) {
-                    rect(s.x - PX, s.y, PX, PX, "#6f7cc0");
-                    rect(s.x + PX, s.y, PX, PX, "#6f7cc0");
-                    rect(s.x, s.y - PX, PX, PX, "#6f7cc0");
-                    rect(s.x, s.y + PX, PX, PX, "#6f7cc0");
+            // Stelle che brillano a turno
+            stars.forEach(function (s) {
+                const k = Math.sin(t * s.speed + s.phase);
+                if (s.painted) {
+                    if (k < -0.55) rect(s.x - 1, s.y - 1, PX + 2, PX + 2, s.bg);
+                    else if (k > 0.85) {
+                        rect(s.x - PX, s.y, PX, PX, "#6f7cc0");
+                        rect(s.x + PX, s.y, PX, PX, "#6f7cc0");
+                        rect(s.x, s.y - PX, PX, PX, "#6f7cc0");
+                        rect(s.x, s.y + PX, PX, PX, "#6f7cc0");
+                    }
+                } else if (k > -0.2) {
+                    rect(s.x, s.y, PX, PX, k > 0.7 ? "#dfe4ff" : "#7d89c8");
                 }
-            } else if (k > -0.2) {
-                rect(s.x, s.y, PX, PX, k > 0.7 ? "#dfe4ff" : "#7d89c8");
-            }
-        });
+            });
 
-        // Stella cadente con la scia che si spegne
-        if (shooting) {
-            for (let i = 0; i < 7; i++) {
-                const p = shooting.life - i * 0.03;
-                if (p < 0) continue;
-                const fade = 1 - shooting.life / 0.9;
-                fx.globalAlpha = Math.max(0, fade * (1 - i / 7));
-                rect(shooting.x + p * 420, shooting.y + p * 160, PX, PX, i === 0 ? "#ffffff" : "#aab6ff");
+            // Stella cadente con la scia che si spegne
+            if (shooting) {
+                for (let i = 0; i < 7; i++) {
+                    const p = shooting.life - i * 0.03;
+                    if (p < 0) continue;
+                    const fade = 1 - shooting.life / 0.9;
+                    fx.globalAlpha = Math.max(0, fade * (1 - i / 7));
+                    rect(shooting.x + p * 420, shooting.y + p * 160, PX, PX, i === 0 ? "#ffffff" : "#aab6ff");
+                }
+                fx.globalAlpha = 1;
             }
+
+            // Nuvole che scorrono dietro gli alberi
+            fx.globalAlpha = 0.85;
+            clouds.forEach(function (c) {
+                const w = c.image.width * PX;
+                const span = IMAGE_W + w;
+                const x = ((c.x + t * c.speed) % span + span) % span - w;
+                const sx = Math.round(x / PX) * PX;
+                fx.drawImage(c.image, sx * scale, c.y * scale, w * scale, c.image.height * PX * scale);
+            });
             fx.globalAlpha = 1;
         }
 
-        // Nuvole che scorrono dietro gli alberi
-        fx.globalAlpha = 0.85;
-        clouds.forEach(function (c) {
-            const w = c.image.width * PX;
-            const span = IMAGE_W + w;
-            const x = ((c.x + t * c.speed) % span + span) % span - w;
-            const sx = Math.round(x / PX) * PX;
-            fx.drawImage(c.image, sx * scale, c.y * scale, w * scale, c.image.height * PX * scale);
-        });
-        fx.globalAlpha = 1;
+        if (!ANIMATE.trees) return;
 
         // Cime degli alberi piegate dal vento: più in alto, più si muovono
         const gust = Math.sin(t * 0.9) * 0.7 + Math.sin(t * 2.1 + 1) * 0.3;
@@ -342,7 +358,9 @@
             const h = Math.min(PX, SKY_H - y);
             fx.drawImage(trees, 0, y, IMAGE_W, h, shift * scale, y * scale, IMAGE_W * scale, h * scale);
         }
+    }
 
+    function drawFire(t) {
         // La luce del fuoco pulsa su tronchi, rocce e terreno
         const flicker = 0.6 + Math.sin(t * 7) * 0.2 + Math.random() * 0.2;
         fx.globalCompositeOperation = "lighter";
