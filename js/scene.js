@@ -23,14 +23,18 @@
 
     const IMAGE_W = 1672, IMAGE_H = 941;
     const RATIO = IMAGE_W / IMAGE_H;
-    const PX = 7;                          // un pixel del disegno = 7 pixel dell'immagine
-    const FOCUS_X = 0.5;                   // tra il fuoco e il cavaliere
-    const SAFE_TOP = 0.6;                  // sopra questa altezza non ci sono né fuoco né cavaliere
+    const PX = 8;                          // un pixel del disegno = 8 pixel dell'immagine
+    const FOCUS_X = 0.33;                  // tra il fuoco e il protagonista
+    const SAFE_TOP = 0.6;                  // sopra questa altezza non ci sono né fuoco né protagonista
 
+    // Cielo e alberi (usati solo se si riaccendono in ANIMATE)
     const SKY_H = 560;                     // fin qui arrivano cielo e cime degli alberi
     const TRUNKS = [[80, 290], [1515, 1610]];   // colonne dei grandi tronchi, che restano fermi
-    const FIRE_AREA = { x: 628, y: 560, w: 190, h: 240 };
-    const FIRE_BASE = { x: 722, y: 795 };
+    const FIRE_AREA = { x: 495, y: 664, w: 160, h: 134 };     // fiamme sopra i tronchi
+    const FIRE_BASE = { x: 575, y: 795 };
+    // La spada piantata nel fuoco (lama ed elsa dorata) resta ferma
+    const SWORD = [{ x: 560, y: 640, w: 34, h: 170 }, { x: 512, y: 680, w: 120, h: 22 }];
+    const LIGHT_RADIUS = 330;              // fin dove arriva la luce del fuoco
     const MOON = { x: 1290, y: 145 };
     const HORIZON = { x: 1060, y: 395 };
 
@@ -157,15 +161,18 @@
         for (let y = 0; y < a.h; y++) {
             for (let x = 0; x < a.w; x++) {
                 const i = ((a.y + y) * IMAGE_W + a.x + x) * 4, o = (y * a.w + x) * 4;
-                if (d[i] > 150 && d[i] > d[i + 2] + 70) for (let k = 0; k < 4; k++) flameData.data[o + k] = d[i + k];
+                const px = a.x + x, py = a.y + y;
+                const sword = SWORD.some(function (r) { return px >= r.x && px < r.x + r.w && py >= r.y && py < r.y + r.h; });
+                if (!sword && d[i] > 150 && d[i] > d[i + 2] + 70) for (let k = 0; k < 4; k++) flameData.data[o + k] = d[i + k];
             }
         }
         flames = fromData(flameData);
 
-        // Tutto ciò che il fuoco illumina di arancio: tronchi, rocce, terreno
+        // Ciò che il fuoco illumina di arancio attorno a sé: terreno, pietre, tronco
         const litData = new ImageData(IMAGE_W, IMAGE_H);
         for (let y = 0; y < IMAGE_H; y++) {
             for (let x = 0; x < IMAGE_W; x++) {
+                if (Math.hypot(x - FIRE_BASE.x, (y - FIRE_BASE.y) * 1.6) > LIGHT_RADIUS) continue;
                 const i = (y * IMAGE_W + x) * 4;
                 if (d[i] > 70 && d[i] > d[i + 2] + 35) for (let k = 0; k < 4; k++) litData.data[i + k] = d[i + k];
             }
