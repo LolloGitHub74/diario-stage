@@ -448,7 +448,7 @@ body.nav-floating .world .header {
         0 0 calc(var(--u) * 20) rgba(5, 6, 15, 0.5);
 }
 
-.world-title span {
+.world-title .accent {
     color: var(--gold);
 }
 
@@ -2089,4 +2089,25 @@ body[data-screen="home"] .back-menu {
     .firefly { opacity: 0.8; }
     .fire-glow { opacity: 0.75; }
     .ember, .flame-glint { display: none; }
+}
+
+
+/* Titolo della home: un'onda che passa sulle lettere ogni pochi secondi.
+   Ogni lettera sale di un passo e riscende subito */
+.title-word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.title-letter {
+    display: inline-block;
+    animation: letter-hop 4.5s steps(1) calc(1.2s + var(--i) * 0.07s) infinite;
+}
+
+@keyframes letter-hop {
+    0%   { transform: translateY(0); }
+    1.5% { transform: translateY(-0.06em); }
+    3%   { transform: translateY(-0.1em); }
+    4.5% { transform: translateY(-0.04em); }
+    6%   { transform: translateY(0); }
 }

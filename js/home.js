@@ -120,3 +120,55 @@
         items[next].focus();
     });
 })();
+
+
+// ---------------------------------------------------
+// Titolo della home: ogni lettera salta e riscende,
+// una dopo l'altra, come un'onda
+// ---------------------------------------------------
+
+(function () {
+    "use strict";
+
+    const title = document.querySelector(".world-title");
+    if (!title) return;
+
+    // Il testo intero resta leggibile per i lettori di schermo
+    title.setAttribute("aria-label", title.textContent.trim());
+
+    let index = 0;
+
+    function wrap(node) {
+        Array.from(node.childNodes).forEach(function (child) {
+            if (child.nodeType === Node.ELEMENT_NODE) {
+                wrap(child);
+                return;
+            }
+            if (child.nodeType !== Node.TEXT_NODE) return;
+
+            const fragment = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(function (part) {
+                if (!part) return;
+                if (/^\s+$/.test(part)) {
+                    fragment.appendChild(document.createTextNode(part));
+                    return;
+                }
+                // Ogni parola resta intera quando va a capo
+                const word = document.createElement("span");
+                word.className = "title-word";
+                word.setAttribute("aria-hidden", "true");
+                Array.from(part).forEach(function (letter) {
+                    const span = document.createElement("span");
+                    span.className = "title-letter";
+                    span.textContent = letter;
+                    span.style.setProperty("--i", index++);
+                    word.appendChild(span);
+                });
+                fragment.appendChild(word);
+            });
+            child.replaceWith(fragment);
+        });
+    }
+
+    wrap(title);
+})();
