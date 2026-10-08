@@ -1952,18 +1952,18 @@ body[data-screen="home"] .back-menu {
     75%  { opacity: 1; }
 }
 
-/* Fuoco: i dieci disegni delle fiamme uno accanto all'altro in
-   fuoco.webp; si mostrano uno alla volta, a scatti, sopra il falò */
-.fire-anim {
-    left: 23.07%;
-    top: 55.21%;
-    width: 14.01%;
-    height: 35.83%;
-    background: url("../immagini/fuoco.webp") 0 0 / 1000% 100% no-repeat;
-    animation: fire-frames 1.5s steps(10, jump-none) infinite;
+/* Cavaliere e fuoco: i sei disegni uno accanto all'altro in
+   falo-animato.webp; si mostrano uno alla volta sopra la scena */
+.camp-anim {
+    left: 9.43%;
+    top: 62.43%;
+    width: 28.61%;
+    height: 27.99%;
+    background: url("../immagini/falo-animato.webp") 0 0 / 600% 100% no-repeat;
+    animation: camp-frames 1.2s steps(6, jump-none) infinite;
 }
 
-@keyframes fire-frames {
+@keyframes camp-frames {
     from { background-position: 0% 0; }
     to   { background-position: 100% 0; }
 }
