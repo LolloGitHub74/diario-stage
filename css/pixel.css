@@ -1852,6 +1852,50 @@ body[data-screen="home"] .back-menu {
     74%  { opacity: 0; }
 }
 
+/* Stelle piccole aggiunte nel cielo libero: sempre un po' visibili,
+   ogni tanto si accendono del tutto */
+.star-small {
+    width: 0.36cqw;
+    height: 0.36cqw;
+    margin: -0.18cqw 0 0 -0.18cqw;
+    background: #dfe6ff;
+    animation-name: twinkle-small;
+}
+
+.star-small::before,
+.star-small::after {
+    display: none;
+}
+
+@keyframes twinkle-small {
+    0%   { opacity: 0.4; }
+    30%  { opacity: 0.6; }
+    45%  { opacity: 0.9; }
+    50%  { opacity: 1; }
+    58%  { opacity: 0.7; }
+    70%  { opacity: 0.45; }
+}
+
+/* Stella cadente: ogni tanto una scia attraversa il cielo in alto a destra */
+.shooting-star {
+    left: 90%;
+    top: 3%;
+    width: 7cqw;
+    height: 0.3cqw;
+    background: linear-gradient(90deg, #ffffff, rgba(220, 230, 255, 0.6) 30%, rgba(255, 255, 255, 0));
+    transform: rotate(-24deg);
+    transform-origin: left center;
+    opacity: 0;
+    animation: shooting 11s linear 3s infinite;
+}
+
+@keyframes shooting {
+    0%   { opacity: 0; translate: 0 0; }
+    1%   { opacity: 1; }
+    7%   { opacity: 0; translate: -11cqw 5cqw; }
+    100% { opacity: 0; translate: -11cqw 5cqw; }
+}
+
 /* Luce del fuoco: un alone arancione sul prato che respira piano */
 .fire-glow {
     left: 30.2%;
@@ -1963,6 +2007,8 @@ body[data-screen="home"] .back-menu {
 
 @media (prefers-reduced-motion: reduce) {
     .star { opacity: 0; }
+    .star-small { opacity: 0.6; }
+    .shooting-star { display: none; }
     .firefly { opacity: 0.8; }
     .fire-glow { opacity: 0.75; }
 }
