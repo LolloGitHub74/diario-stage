@@ -507,9 +507,9 @@ body.nav-floating .world .header {
     image-rendering: pixelated;
 }
 
-/* Voce selezionata: il pannello avanza di un passo e si illumina */
+/* Voce selezionata: il pannello si illumina, senza spostarsi,
+   così i tre pannelli restano sempre allineati */
 .menu-item.is-selected {
-    transform: translateX(calc(var(--u) * 8));
     filter:
         brightness(1.15)
         drop-shadow(0 0 calc(var(--u) * 10) rgba(255, 207, 74, 0.45))
@@ -638,10 +638,6 @@ body.nav-floating .world .header {
         width: calc(var(--u) * 404);
         margin-top: calc(var(--u) * 24);
         gap: calc(var(--u) * 10);
-    }
-
-    .menu-item.is-selected {
-        transform: translateX(calc(var(--u) * 4));
     }
 }
 
