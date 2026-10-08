@@ -268,6 +268,10 @@ html.show-start .start-screen {
     height: calc(var(--u) * 84);
     padding: 0 calc(var(--u) * 110);
 
+    /* Barra blu scura con una linea più chiara sotto, come quando resta fissa */
+    background: rgba(5, 7, 22, 0.94);
+    border-bottom: max(2px, calc(var(--u) * 3)) solid var(--edge);
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -300,7 +304,7 @@ html.show-start .start-screen {
 }
 
 .logo-copy {
-    font-size: calc(var(--u) * 30);
+    font-size: calc(var(--u) * 32);
     color: var(--cream);
     text-shadow: calc(var(--u) * 2) calc(var(--u) * 2) 0 var(--ink);
 }
@@ -313,7 +317,7 @@ html.show-start .start-screen {
 .navigation a {
     position: relative;
     padding: calc(var(--u) * 6) 0;
-    font-size: calc(var(--u) * 26);
+    font-size: calc(var(--u) * 30);
     text-decoration: none;
     color: #dfe1f5;
     text-shadow: calc(var(--u) * 2) calc(var(--u) * 2) 0 var(--ink);
@@ -390,7 +394,7 @@ html.show-start .start-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: calc(var(--u) * 80) calc(var(--u) * 16) 0;
+    padding: calc(var(--u) * 60) calc(var(--u) * 16) 0;
     text-align: center;
 }
 
@@ -421,9 +425,9 @@ html.show-start .start-screen {
 /* Barra del livello: riquadro sottile, livello e settimane in alto,
    sotto i sedici blocchi delle settimane */
 .hud {
-    width: calc(var(--u) * 366);
-    margin-top: calc(var(--u) * 34);
-    padding: calc(var(--u) * 8) calc(var(--u) * 18) calc(var(--u) * 12);
+    width: calc(var(--u) * 470);
+    margin-top: calc(var(--u) * 30);
+    padding: calc(var(--u) * 10) calc(var(--u) * 22) calc(var(--u) * 16);
 
     display: grid;
     grid-template-columns: auto auto;
@@ -436,13 +440,13 @@ html.show-start .start-screen {
 
     background: rgba(9, 11, 34, 0.78);
     border: max(2px, calc(var(--u) * 2.5)) solid #e6e7f6;
-    border-radius: calc(var(--u) * 7);
+    border-radius: calc(var(--u) * 16);
     box-shadow: calc(var(--u) * 4) calc(var(--u) * 4) 0 rgba(5, 6, 15, 0.5);
 }
 
 .hud-level {
     grid-area: level;
-    font-size: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 32);
     line-height: 1;
     color: var(--cream);
     white-space: nowrap;
@@ -450,7 +454,7 @@ html.show-start .start-screen {
 
 .hud-xp {
     grid-area: xp;
-    font-size: calc(var(--u) * 20);
+    font-size: calc(var(--u) * 25);
     line-height: 1;
     color: #dfe1f5;
     white-space: nowrap;
@@ -470,9 +474,9 @@ html.show-start .start-screen {
 
 .hud .hud-bar {
     grid-area: bar;
-    height: calc(var(--u) * 14);
+    height: calc(var(--u) * 18);
     padding: 0;
-    gap: calc(var(--u) * 4);
+    gap: calc(var(--u) * 5);
     background: transparent;
 }
 
@@ -494,7 +498,7 @@ html.show-start .start-screen {
 
 /* Due pulsanti affiancati: percorso dei falò e viaggio */
 .game-menu {
-    margin-top: calc(var(--u) * 36);
+    margin-top: calc(var(--u) * 32);
     display: flex;
     justify-content: center;
     gap: calc(var(--u) * 28);
@@ -503,35 +507,35 @@ html.show-start .start-screen {
 .menu-item {
     display: flex;
     align-items: center;
-    gap: calc(var(--u) * 16);
-    height: calc(var(--u) * 64);
-    padding: 0 calc(var(--u) * 24);
+    gap: calc(var(--u) * 18);
+    height: calc(var(--u) * 84);
+    padding: 0 calc(var(--u) * 32);
 
-    font-size: calc(var(--u) * 27);
+    font-size: calc(var(--u) * 36);
     text-decoration: none;
     color: var(--cream);
     white-space: nowrap;
 
     background: rgba(9, 11, 34, 0.78);
     border: max(2px, calc(var(--u) * 2.5)) solid #e6e7f6;
-    border-radius: calc(var(--u) * 7);
+    border-radius: calc(var(--u) * 16);
     box-shadow: calc(var(--u) * 4) calc(var(--u) * 4) 0 rgba(5, 6, 15, 0.5);
 }
 
 .menu-icon {
-    width: calc(var(--u) * 28);
-    height: calc(var(--u) * 32);
+    width: calc(var(--u) * 35);
+    height: calc(var(--u) * 40);
     image-rendering: pixelated;
 }
 
 .menu-icon-map {
-    width: calc(var(--u) * 32);
-    height: calc(var(--u) * 28);
+    width: calc(var(--u) * 40);
+    height: calc(var(--u) * 35);
 }
 
 .menu-arrow {
-    width: calc(var(--u) * 10);
-    height: calc(var(--u) * 14);
+    width: calc(var(--u) * 12);
+    height: calc(var(--u) * 17);
     margin-left: calc(var(--u) * 4);
 }
 
@@ -635,7 +639,7 @@ html.show-start .start-screen {
     }
 
     .hud {
-        width: calc(var(--u) * 340);
+        width: calc(var(--u) * 360);
         margin-top: calc(var(--u) * 26);
     }
 
@@ -645,10 +649,10 @@ html.show-start .start-screen {
     }
 
     .menu-item {
-        height: calc(var(--u) * 54);
-        padding: 0 calc(var(--u) * 14);
+        height: calc(var(--u) * 60);
+        padding: 0 calc(var(--u) * 16);
         gap: calc(var(--u) * 10);
-        font-size: calc(var(--u) * 22);
+        font-size: calc(var(--u) * 25);
     }
 
     .menu-icon {
@@ -1685,7 +1689,6 @@ body.nav-floating .header {
     left: 0;
     right: 0;
     z-index: 50;
-    height: calc(var(--u) * 70);
 
     background: rgba(5, 7, 22, 0.94);
     border-bottom: max(2px, calc(var(--u) * 3)) solid var(--edge);
