@@ -72,7 +72,7 @@
     const OFF_LEFT = "translateX(calc(-100% - 64px))";
     const OFF_RIGHT = "translateX(calc(100% + 64px))";
     const COVER = "translateX(0)";
-    const SLIDE = { duration: 380, easing: "steps(10, end)", fill: "forwards" };
+    const SLIDE = { duration: 300, easing: "steps(8, end)", fill: "forwards" };
 
     function wipe(from, to) {
         return curtain.animate([{ transform: from }, { transform: to }], SLIDE).finished;
@@ -99,7 +99,7 @@
         return wipe(start, COVER)
             .then(function () {
                 show(name);
-                return wait(120);
+                return wait(80);
             })
             .then(function () {
                 return wipe(COVER, end);
