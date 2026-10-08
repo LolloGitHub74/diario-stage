@@ -14,8 +14,8 @@
     const ui = world.querySelector(".world-ui");
 
     // Misure dell'illustrazione
-    const RATIO = 1672 / 836;
-    const FOCUS_X = 0.28;      // tra il fuoco e il protagonista
+    const RATIO = 2000 / 1000;
+    const FOCUS_X = 0.27;      // tra il fuoco e il protagonista
     const SAFE_TOP = 0.6;      // sopra questa altezza non ci sono né fuoco né protagonista
     const SPARE_BOTTOM = 0.08; // erba in basso che si può tagliare se serve spazio
 
