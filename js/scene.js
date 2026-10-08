@@ -17,28 +17,32 @@
     const RATIO = 1672 / 836;
     const FOCUS_X = 0.28;      // tra il fuoco e il protagonista
     const SAFE_TOP = 0.6;      // sopra questa altezza non ci sono né fuoco né protagonista
+    const SPARE_BOTTOM = 0.08; // erba in basso che si può tagliare se serve spazio
 
     // L'immagine copre la scena; se lo schermo è basso si rimpicciolisce o la
     // scena si allunga, così il fuoco e il protagonista restano sotto il menu
     function layout() {
         world.style.minHeight = "";
         const box = world.getBoundingClientRect();
-        const uiBottom = ui ? ui.getBoundingClientRect().bottom - box.top + 12 : 0;
+        const uiBottom = ui ? ui.getBoundingClientRect().bottom - box.top + box.height * 0.015 : 0;
 
         let height = Math.max(box.height, box.width / RATIO);
         const limit = (box.height - uiBottom) / (1 - SAFE_TOP);
         if (height > limit) height = Math.max(limit, box.width / RATIO);
 
+        // Se il fuoco finirebbe sotto il menu, l'immagine scende un po'
+        // tagliando l'erba in basso; solo se non basta la scena si allunga
         let worldHeight = box.height;
-        const needed = Math.ceil(uiBottom + (1 - SAFE_TOP) * height);
-        if (needed > worldHeight) {
+        const drop = Math.min(SPARE_BOTTOM * height, Math.max(0, uiBottom - (worldHeight - (1 - SAFE_TOP) * height)));
+        const needed = Math.ceil(uiBottom + (1 - SAFE_TOP - SPARE_BOTTOM) * height);
+        if (needed > worldHeight + 1) {
             worldHeight = needed;
             world.style.minHeight = worldHeight + "px";
         }
 
         const width = height * RATIO;
         const left = Math.min(0, Math.max(box.width - width, box.width / 2 - FOCUS_X * width));
-        const top = worldHeight - height;
+        const top = worldHeight - height + drop;
 
         scene.style.width = width + "px";
         scene.style.height = height + "px";
