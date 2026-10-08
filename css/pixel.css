@@ -1786,3 +1786,130 @@ body:not([data-screen]) .back-menu,
 body[data-screen="home"] .back-menu {
     display: none;
 }
+
+
+/* =========================================================
+   ANIMAZIONI DELLA SCENA: stelle, lucciola e luce del fuoco
+   Le misure sono in cqw (centesimi della larghezza della
+   scena), così crescono e calano insieme all'illustrazione.
+   ========================================================= */
+
+.scene {
+    container-type: size;
+}
+
+.scene-fx {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.scene-fx i {
+    position: absolute;
+    display: block;
+}
+
+/* Stella: un pixel chiaro sopra quella disegnata, che si accende
+   e si spegne con una piccola croce di luce quando è al massimo */
+.star {
+    width: 0.5cqw;
+    height: 0.5cqw;
+    margin: -0.25cqw 0 0 -0.25cqw;
+    background: #ffffff;
+    opacity: 0;
+    animation: twinkle var(--d, 4s) steps(1) var(--l, 0s) infinite;
+}
+
+.star::before,
+.star::after {
+    content: "";
+    position: absolute;
+    background: rgba(220, 230, 255, 0.85);
+    opacity: var(--cross, 0);
+}
+
+.star::before {
+    left: -0.5cqw;
+    right: -0.5cqw;
+    top: 0.15cqw;
+    height: 0.2cqw;
+}
+
+.star::after {
+    top: -0.5cqw;
+    bottom: -0.5cqw;
+    left: 0.15cqw;
+    width: 0.2cqw;
+}
+
+@keyframes twinkle {
+    0%   { opacity: 0; }
+    40%  { opacity: 0.35; }
+    48%  { opacity: 0.8; }
+    52%  { opacity: 1; --cross: 1; }
+    58%  { opacity: 0.8; --cross: 0; }
+    66%  { opacity: 0.35; }
+    74%  { opacity: 0; }
+}
+
+/* Luce del fuoco: un alone arancione sul prato che respira piano */
+.fire-glow {
+    left: 30.2%;
+    top: 79%;
+    width: 36cqw;
+    height: 22cqw;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center, rgba(255, 150, 60, 0.32), rgba(255, 120, 40, 0.12) 45%, transparent 70%);
+    mix-blend-mode: screen;
+    animation: glow 1.6s steps(4) infinite alternate;
+}
+
+@keyframes glow {
+    0%   { opacity: 0.55; }
+    35%  { opacity: 0.9; }
+    60%  { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Lucciola: un puntino giallo-verde che gira attorno al grande
+   albero a sinistra, accendendosi e spegnendosi */
+.firefly {
+    left: 9%;
+    top: 52%;
+    width: 0.42cqw;
+    height: 0.42cqw;
+    background: #f8ffb0;
+    box-shadow:
+        0 0 0.5cqw 0.2cqw rgba(214, 255, 90, 0.85),
+        0 0 2cqw 0.8cqw rgba(190, 255, 80, 0.3);
+    opacity: 0.85;
+    animation:
+        firefly-path 14s linear infinite,
+        firefly-blink 2.3s steps(1) infinite;
+}
+
+@keyframes firefly-path {
+    0%   { left: 9%;    top: 52%; }
+    12%  { left: 11.5%; top: 47%; }
+    24%  { left: 14%;   top: 50%; }
+    36%  { left: 12.5%; top: 56%; }
+    48%  { left: 15%;   top: 60%; }
+    60%  { left: 12%;   top: 63%; }
+    72%  { left: 8.5%;  top: 59%; }
+    86%  { left: 7%;    top: 55%; }
+    100% { left: 9%;    top: 52%; }
+}
+
+@keyframes firefly-blink {
+    0%   { opacity: 0.9; }
+    30%  { opacity: 0.5; }
+    45%  { opacity: 0.1; }
+    60%  { opacity: 0.6; }
+    75%  { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .star { opacity: 0; }
+    .firefly { opacity: 0.8; }
+    .fire-glow { opacity: 0.75; }
+}
