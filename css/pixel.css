@@ -1786,3 +1786,229 @@ body:not([data-screen]) .back-menu,
 body[data-screen="home"] .back-menu {
     display: none;
 }
+
+
+/* =========================================================
+   ANIMAZIONI DELLA SCENA: stelle, lucciola e luce del fuoco
+   Le misure sono in cqw (centesimi della larghezza della
+   scena), così crescono e calano insieme all'illustrazione.
+   ========================================================= */
+
+.scene {
+    container-type: size;
+}
+
+.scene-fx {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.scene-fx i {
+    position: absolute;
+    display: block;
+}
+
+/* Stella: un pixel chiaro sopra quella disegnata, che si accende
+   e si spegne con una piccola croce di luce quando è al massimo */
+.star {
+    width: 0.5cqw;
+    height: 0.5cqw;
+    margin: -0.25cqw 0 0 -0.25cqw;
+    background: #ffffff;
+    opacity: 0;
+    animation: twinkle var(--d, 4s) steps(1) var(--l, 0s) infinite;
+}
+
+.star::before,
+.star::after {
+    content: "";
+    position: absolute;
+    background: rgba(220, 230, 255, 0.85);
+    opacity: var(--cross, 0);
+}
+
+.star::before {
+    left: -0.5cqw;
+    right: -0.5cqw;
+    top: 0.15cqw;
+    height: 0.2cqw;
+}
+
+.star::after {
+    top: -0.5cqw;
+    bottom: -0.5cqw;
+    left: 0.15cqw;
+    width: 0.2cqw;
+}
+
+@keyframes twinkle {
+    0%   { opacity: 0; }
+    40%  { opacity: 0.35; }
+    48%  { opacity: 0.8; }
+    52%  { opacity: 1; --cross: 1; }
+    58%  { opacity: 0.8; --cross: 0; }
+    66%  { opacity: 0.35; }
+    74%  { opacity: 0; }
+}
+
+/* Stelle piccole aggiunte nel cielo libero: sempre un po' visibili,
+   ogni tanto si accendono del tutto */
+.star-small {
+    width: 0.36cqw;
+    height: 0.36cqw;
+    margin: -0.18cqw 0 0 -0.18cqw;
+    background: #dfe6ff;
+    animation-name: twinkle-small;
+}
+
+.star-small::before,
+.star-small::after {
+    display: none;
+}
+
+@keyframes twinkle-small {
+    0%   { opacity: 0.4; }
+    30%  { opacity: 0.6; }
+    45%  { opacity: 0.9; }
+    50%  { opacity: 1; }
+    58%  { opacity: 0.7; }
+    70%  { opacity: 0.45; }
+}
+
+/* Stella cadente: ogni tanto una scia attraversa il cielo in alto a destra */
+.shooting-star {
+    left: 90%;
+    top: 3%;
+    width: 7cqw;
+    height: 0.3cqw;
+    background: linear-gradient(90deg, #ffffff, rgba(220, 230, 255, 0.6) 30%, rgba(255, 255, 255, 0));
+    transform: rotate(-24deg);
+    transform-origin: left center;
+    opacity: 0;
+    animation: shooting 11s linear 3s infinite;
+}
+
+@keyframes shooting {
+    0%   { opacity: 0; translate: 0 0; }
+    1%   { opacity: 1; }
+    7%   { opacity: 0; translate: -11cqw 5cqw; }
+    100% { opacity: 0; translate: -11cqw 5cqw; }
+}
+
+/* Luce del fuoco: un alone arancione sul prato che respira piano */
+.fire-glow {
+    left: 30.2%;
+    top: 79%;
+    width: 36cqw;
+    height: 22cqw;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center, rgba(255, 150, 60, 0.32), rgba(255, 120, 40, 0.12) 45%, transparent 70%);
+    mix-blend-mode: screen;
+    animation: glow 1.6s steps(4) infinite alternate;
+}
+
+@keyframes glow {
+    0%   { opacity: 0.55; }
+    35%  { opacity: 0.9; }
+    60%  { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Lucciola: un puntino giallo-verde che gira attorno al grande
+   albero a sinistra, accendendosi e spegnendosi */
+.firefly {
+    left: 9%;
+    top: 52%;
+    width: 0.42cqw;
+    height: 0.42cqw;
+    background: #f8ffb0;
+    box-shadow:
+        0 0 0.5cqw 0.2cqw rgba(214, 255, 90, 0.85),
+        0 0 2cqw 0.8cqw rgba(190, 255, 80, 0.3);
+    opacity: 0.85;
+    animation:
+        firefly-path 14s linear infinite,
+        firefly-blink 2.3s steps(1) infinite;
+}
+
+@keyframes firefly-path {
+    0%   { left: 9%;    top: 52%; }
+    12%  { left: 11.5%; top: 47%; }
+    24%  { left: 14%;   top: 50%; }
+    36%  { left: 12.5%; top: 56%; }
+    48%  { left: 15%;   top: 60%; }
+    60%  { left: 12%;   top: 63%; }
+    72%  { left: 8.5%;  top: 59%; }
+    86%  { left: 7%;    top: 55%; }
+    100% { left: 9%;    top: 52%; }
+}
+
+@keyframes firefly-blink {
+    0%   { opacity: 0.9; }
+    30%  { opacity: 0.5; }
+    45%  { opacity: 0.1; }
+    60%  { opacity: 0.6; }
+    75%  { opacity: 1; }
+}
+
+/* Fuoco: i dodici disegni delle fiamme uno accanto all'altro in
+   fuoco.webp; si mostrano uno alla volta, a scatti, sopra il falò */
+.fire-anim {
+    left: 23.18%;
+    top: 56.93%;
+    width: 13.54%;
+    height: 32.34%;
+    background: url("../immagini/fuoco.webp") 0 0 / 1200% 100% no-repeat;
+    animation: fire-frames 1.2s steps(12, jump-none) infinite;
+}
+
+@keyframes fire-frames {
+    from { background-position: 0% 0; }
+    to   { background-position: 100% 0; }
+}
+
+/* Altre due lucciole tra gli alberi a destra, con giri e ritmi diversi */
+.firefly-2 {
+    left: 88%;
+    top: 63%;
+    animation:
+        firefly-path-2 17s linear infinite,
+        firefly-blink 2.9s steps(1) 0.7s infinite;
+}
+
+.firefly-3 {
+    left: 92%;
+    top: 66%;
+    animation:
+        firefly-path-3 12s linear infinite,
+        firefly-blink 2.1s steps(1) 1.4s infinite;
+}
+
+@keyframes firefly-path-2 {
+    0%   { left: 88%;   top: 63%; }
+    15%  { left: 86%;   top: 59%; }
+    32%  { left: 84.5%; top: 63%; }
+    50%  { left: 86%;   top: 69%; }
+    66%  { left: 89%;   top: 71%; }
+    82%  { left: 91%;   top: 66%; }
+    100% { left: 88%;   top: 63%; }
+}
+
+
+@keyframes firefly-path-3 {
+    0%   { left: 92%;   top: 66%; }
+    20%  { left: 94.5%; top: 62%; }
+    40%  { left: 93%;   top: 57%; }
+    60%  { left: 90%;   top: 60%; }
+    80%  { left: 89.5%; top: 65%; }
+    100% { left: 92%;   top: 66%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .star { opacity: 0; }
+    .star-small { opacity: 0.6; }
+    .shooting-star { display: none; }
+    .firefly { opacity: 0.8; }
+    .fire-glow { opacity: 0.75; }
+}
