@@ -1908,6 +1908,59 @@ body[data-screen="home"] .back-menu {
     75%  { opacity: 1; }
 }
 
+/* Fuoco: i dodici disegni delle fiamme uno accanto all'altro in
+   fuoco.webp; si mostrano uno alla volta, a scatti, sopra il falò */
+.fire-anim {
+    left: 23.18%;
+    top: 56.93%;
+    width: 13.54%;
+    height: 32.34%;
+    background: url("../immagini/fuoco.webp") 0 0 / 1200% 100% no-repeat;
+    animation: fire-frames 1.2s steps(12, jump-none) infinite;
+}
+
+@keyframes fire-frames {
+    from { background-position: 0% 0; }
+    to   { background-position: 100% 0; }
+}
+
+/* Altre due lucciole tra gli alberi a destra, con giri e ritmi diversi */
+.firefly-2 {
+    left: 88%;
+    top: 63%;
+    animation:
+        firefly-path-2 17s linear infinite,
+        firefly-blink 2.9s steps(1) 0.7s infinite;
+}
+
+.firefly-3 {
+    left: 92%;
+    top: 66%;
+    animation:
+        firefly-path-3 12s linear infinite,
+        firefly-blink 2.1s steps(1) 1.4s infinite;
+}
+
+@keyframes firefly-path-2 {
+    0%   { left: 88%;   top: 63%; }
+    15%  { left: 86%;   top: 59%; }
+    32%  { left: 84.5%; top: 63%; }
+    50%  { left: 86%;   top: 69%; }
+    66%  { left: 89%;   top: 71%; }
+    82%  { left: 91%;   top: 66%; }
+    100% { left: 88%;   top: 63%; }
+}
+
+
+@keyframes firefly-path-3 {
+    0%   { left: 92%;   top: 66%; }
+    20%  { left: 94.5%; top: 62%; }
+    40%  { left: 93%;   top: 57%; }
+    60%  { left: 90%;   top: 60%; }
+    80%  { left: 89.5%; top: 65%; }
+    100% { left: 92%;   top: 66%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .star { opacity: 0; }
     .firefly { opacity: 0.8; }
