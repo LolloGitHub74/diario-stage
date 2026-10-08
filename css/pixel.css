@@ -1952,15 +1952,15 @@ body[data-screen="home"] .back-menu {
     75%  { opacity: 1; }
 }
 
-/* Fuoco: i dodici disegni delle fiamme uno accanto all'altro in
+/* Fuoco: i dieci disegni delle fiamme uno accanto all'altro in
    fuoco.webp; si mostrano uno alla volta, a scatti, sopra il falò */
 .fire-anim {
-    left: 23.18%;
-    top: 56.93%;
-    width: 13.54%;
-    height: 32.34%;
-    background: url("../immagini/fuoco.webp") 0 0 / 1200% 100% no-repeat;
-    animation: fire-frames 1.2s steps(12, jump-none) infinite;
+    left: 23.07%;
+    top: 55.21%;
+    width: 14.01%;
+    height: 35.83%;
+    background: url("../immagini/fuoco.webp") 0 0 / 1000% 100% no-repeat;
+    animation: fire-frames 1.5s steps(10, jump-none) infinite;
 }
 
 @keyframes fire-frames {
