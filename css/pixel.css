@@ -1,0 +1,1682 @@
+/* =========================================================
+   DIARIO DI STAGE — IL FALÒ
+   Layout: la home è una scena notturna a tutto schermo con il
+   cavaliere al falò; sopra, titolo, barra del livello e menu di
+   gioco. Un unico font pixel per tutte le scritte.
+   ========================================================= */
+
+:root {
+    --night: #0a0c28;
+    --night-2: #12173c;
+    --ground: #0e211d;
+    --panel: rgba(9, 11, 34, 0.82);
+    --panel-solid: #12163a;
+    --edge: #2c3470;
+    --ink: #05060f;
+    --cream: #f4ead2;
+    --muted: #a9b1dc;
+    --dim: #6f78ad;
+    --gold: #ffcf4a;
+    --gold-dark: #c99a16;
+    --ember: #ff8a2b;
+    --blue: #0000d0;
+    --green: #5fe39a;
+
+    --font: "VT323", "Courier New", monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font);
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--cream);
+    background: var(--night);
+    -webkit-font-smoothing: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+}
+
+button {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   SCHERMATA START
+   ========================================================= */
+
+.start-screen {
+    display: none;
+}
+
+/* Visibile solo alla prima visita (vedi lo script nell'head) */
+html.show-start {
+    overflow: hidden;
+}
+
+html.show-start .start-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+
+    /* La scena del falò si intravede dietro, scurita */
+    background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px),
+        rgba(6, 8, 28, 0.84);
+}
+
+.start-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.start-kicker {
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--gold);
+}
+
+.start-title {
+    margin: 10px 0 8px;
+
+    font-size: clamp(76px, 15vw, 168px);
+    font-weight: 400;
+    line-height: 0.82;
+    text-transform: uppercase;
+    color: var(--cream);
+
+    /* Rilievo a gradini, come i loghi dei giochi 8-bit */
+    text-shadow:
+        4px 4px 0 var(--blue),
+        8px 8px 0 var(--ink);
+}
+
+.start-sub {
+    font-size: 26px;
+    color: var(--muted);
+}
+
+.start-button {
+    margin-top: 46px;
+    padding: 12px 54px 14px;
+
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: 6px;
+    color: var(--ink);
+    cursor: pointer;
+
+    background: var(--gold);
+    border: 4px solid var(--ink);
+    box-shadow:
+        inset -6px -6px 0 var(--gold-dark),
+        inset 6px 6px 0 #ffe79a,
+        8px 8px 0 var(--ink);
+
+    animation: start-pulse 1.4s steps(2) infinite;
+    transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+}
+
+.start-button:hover {
+    background: #ffe07a;
+}
+
+.start-button:focus-visible {
+    outline: 4px solid var(--cream);
+    outline-offset: 6px;
+}
+
+.start-button.is-pressed {
+    animation: none;
+    transform: translate(8px, 8px);
+    box-shadow:
+        inset -6px -6px 0 var(--gold-dark),
+        inset 6px 6px 0 #ffe79a,
+        0 0 0 var(--ink);
+}
+
+@keyframes start-pulse {
+    50% { transform: translateY(-4px); }
+}
+
+.start-hint {
+    margin-top: 22px;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* Uscita: la schermata si dissolve a scatti e il titolo si allontana */
+.start-screen.is-leaving {
+    animation: start-out 0.65s steps(6) forwards;
+}
+
+.start-screen.is-leaving .start-box {
+    animation: start-zoom 0.65s steps(6) forwards;
+}
+
+@keyframes start-out {
+    to { opacity: 0; }
+}
+
+@keyframes start-zoom {
+    to { transform: scale(1.18); }
+}
+
+
+/* =========================================================
+   LA SCENA DEL FALÒ
+   ========================================================= */
+
+.world {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    /* Stesso blu del cielo dell'illustrazione, per quando l'immagine non arriva in cima */
+    background: linear-gradient(#132858, #1d2c63);
+}
+
+/* Illustrazione del falò: dimensione e posizione le calcola scene.js */
+.scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.scene-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    image-rendering: pixelated;
+}
+
+/* Velo scuro in alto: le scritte restano leggibili sopra il cielo */
+.world::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 55%;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(rgba(5, 8, 22, 0.28), rgba(5, 8, 22, 0));
+}
+
+
+/* ---------- Header ---------- */
+
+.header {
+    position: relative;
+    z-index: 20;
+
+    height: 84px;
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 96px;
+    height: 34px;
+    background: var(--blue) url("../immagini/logo-skilla.png") center / cover no-repeat;
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.logo-copy {
+    font-size: 28px;
+    color: var(--cream);
+    text-shadow: 2px 2px 0 var(--ink);
+}
+
+.navigation {
+    display: flex;
+    gap: 34px;
+}
+
+.navigation a {
+    font-size: 27px;
+    text-decoration: none;
+    color: var(--muted);
+    text-shadow: 2px 2px 0 var(--ink);
+}
+
+.navigation a::before {
+    content: "▸ ";
+    color: transparent;
+    text-shadow: none;
+}
+
+.navigation a:hover,
+.navigation a.active {
+    color: var(--cream);
+}
+
+.navigation a.active::before,
+.navigation a:hover::before {
+    color: var(--ember);
+}
+
+/* Hamburger, visibile solo su mobile */
+.menu-toggle {
+    display: none;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--panel);
+    border: 3px solid var(--cream);
+    box-shadow: 3px 3px 0 var(--ink);
+    cursor: pointer;
+}
+
+.menu-toggle span,
+.menu-toggle span::before,
+.menu-toggle span::after {
+    display: block;
+    width: 20px;
+    height: 3px;
+    background: var(--cream);
+    position: relative;
+}
+
+.menu-toggle span::before,
+.menu-toggle span::after {
+    content: "";
+    position: absolute;
+}
+
+.menu-toggle span::before { top: -7px; }
+.menu-toggle span::after { top: 7px; }
+
+.menu-toggle.active span { background: transparent; }
+.menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
+.menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
+
+
+/* ---------- Titolo, barra e menu sopra la scena ---------- */
+
+.world-ui {
+    position: relative;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(8px, 4vh, 48px) 16px 0;
+    text-align: center;
+}
+
+.world-title {
+    font-size: clamp(56px, 9vh, 96px);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: 1px;
+    text-wrap: balance;
+    text-shadow:
+        -3px 0 0 var(--ink), 3px 0 0 var(--ink), 0 -3px 0 var(--ink), 0 3px 0 var(--ink),
+        -3px -3px 0 var(--ink), 3px -3px 0 var(--ink), -3px 3px 0 var(--ink), 3px 3px 0 var(--ink),
+        6px 6px 0 var(--ink);
+}
+
+.world-title span {
+    color: var(--gold);
+}
+
+.world-sub {
+    margin-top: 14px;
+    font-size: 28px;
+    color: #eef0ff;
+    text-shadow:
+        -2px 0 0 var(--ink), 2px 0 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink),
+        3px 3px 0 var(--ink);
+}
+
+/* Barra del livello, come l'HUD di un gioco:
+   in alto livello e settimane, sotto la barra a blocchi.
+   La cornice è un piccolo disegno a pixel (angoli arrotondati,
+   filo e borchie d'oro) che si allunga sui lati. */
+.hud {
+    position: relative;
+    width: min(500px, 100%);
+    margin-top: clamp(14px, 2.6vh, 26px);
+    padding: 2px 8px 6px;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas:
+        "level xp"
+        "bar bar";
+    align-items: end;
+    justify-content: space-between;
+    gap: 8px 20px;
+
+    border: 16px solid transparent;
+    border-image: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%224%22%20y%3D%220%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%221%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%223%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%224%22%20width%3D%2214%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%225%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%226%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%227%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%229%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2210%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2211%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2212%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2213%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2215%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2216%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2217%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2218%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2219%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2219%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2220%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2221%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2222%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2223%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3C%2Fsvg%3E") 8 fill / 16px stretch;
+    image-rendering: pixelated;
+    filter: drop-shadow(4px 4px 0 rgba(6, 9, 24, 0.75));
+}
+
+/* Gioielli dorati al centro del bordo, sopra e sotto */
+.hud::before,
+.hud::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 40px;
+    height: 20px;
+    margin-left: -20px;
+    background: url("data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2010%205%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%223%22%20y%3D%220%22%20width%3D%224%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%228%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%223%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%224%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat;
+    image-rendering: pixelated;
+}
+
+.hud::before {
+    top: -24px;
+}
+
+.hud::after {
+    bottom: -24px;
+}
+
+.hud-level {
+    grid-area: level;
+    font-size: 40px;
+    line-height: 0.9;
+    letter-spacing: 1px;
+    color: var(--gold);
+    white-space: nowrap;
+    text-shadow: 2px 2px 0 #060918;
+}
+
+.hud-xp {
+    grid-area: xp;
+    font-size: 22px;
+    line-height: 1;
+    color: #d8dcf2;
+    white-space: nowrap;
+}
+
+.hud-bar {
+    min-width: 0;
+    height: 26px;
+    padding: 3px;
+
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+
+    background: #060918;
+}
+
+.hud .hud-bar {
+    grid-area: bar;
+    box-shadow: 0 0 0 2px var(--gold-dark);
+}
+
+/* Blocchi da fare: blu scuro con un filo di luce in alto */
+.hud-bar i {
+    background: linear-gradient(#323a78 0 3px, #262d62 3px);
+}
+
+/* Blocchi completati: oro con il riflesso chiaro in alto e l'ombra in basso */
+.hud-bar i.is-done {
+    background: linear-gradient(#ffe48a 0 3px, var(--gold) 3px 70%, var(--gold-dark) 70%);
+}
+
+/* Settimana in corso: un blocco che pulsa piano */
+.hud-bar i.is-now {
+    background: linear-gradient(#5a5070 0 3px, #3e3a66 3px);
+    animation: blink 1.4s steps(1) infinite;
+}
+
+/* Menu di gioco: la fiammella indica la voce selezionata */
+/* Su desktop le due voci stanno affiancate per lasciare spazio alla scena */
+.game-menu {
+    margin-top: clamp(14px, 3vh, 30px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 64px;
+}
+
+.menu-item {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 2px 10px;
+
+    text-decoration: none;
+    color: #cdd3f2;
+    text-shadow:
+        -2px 0 0 var(--ink), 2px 0 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink),
+        3px 3px 0 var(--ink);
+}
+
+/* La fiammella è agganciata all'etichetta, a sinistra */
+.menu-head {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-label {
+    font-size: 38px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu-note {
+    font-size: 23px;
+    color: #cdd3f2;
+}
+
+.menu-flame {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    width: 21px;
+    height: 27px;
+    margin-top: -15px;
+    visibility: hidden;
+}
+
+.menu-item.is-selected {
+    color: var(--gold);
+}
+
+.menu-item.is-selected .menu-note {
+    color: #ffffff;
+}
+
+.menu-item.is-selected .menu-flame {
+    visibility: visible;
+    animation: flame 0.5s steps(2) infinite;
+}
+
+.menu-item:focus-visible {
+    outline: none;
+}
+
+@keyframes flame {
+    50% { transform: scaleY(0.85) translateY(2px); }
+}
+
+/* Entrata dopo START: gli elementi salgono a scatti uno dopo l'altro */
+html.show-start .world-ui > * {
+    opacity: 0;
+}
+
+body.started .world-ui > * {
+    animation: rise 0.5s steps(5) both;
+}
+
+body.started .world-ui > :nth-child(2) { animation-delay: 0.12s; }
+body.started .world-ui > :nth-child(3) { animation-delay: 0.24s; }
+body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+}
+
+
+/* =========================================================
+   SEZIONI DELLA PAGINA
+   ========================================================= */
+
+/* Ogni sezione continua la notte della scena, sempre più scura scendendo */
+.levels,
+.journey,
+.character,
+.credits {
+    padding: 90px 5% 100px;
+}
+
+.levels {
+    background: linear-gradient(#112136, #0b1626 260px, #0a1420);
+}
+
+.journey {
+    background: linear-gradient(#0a1420, var(--night));
+}
+
+.character {
+    background: var(--night);
+}
+
+.section-header {
+    max-width: 1300px;
+    margin: 0 auto 36px;
+}
+
+.eyebrow {
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--gold);
+}
+
+.section-header h2 {
+    margin: 4px 0 10px;
+    font-size: clamp(54px, 7vw, 80px);
+    font-weight: 400;
+    line-height: 0.95;
+    text-shadow: 4px 4px 0 var(--ink);
+}
+
+.section-header > p:last-child {
+    max-width: 640px;
+    font-size: 24px;
+    color: var(--muted);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .header {
+        height: 72px;
+        padding: 0 16px;
+    }
+
+    .logo-mark {
+        width: 84px;
+        height: 30px;
+    }
+
+    .logo-copy {
+        font-size: 24px;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Il menu diventa una tendina sotto l'header */
+    .navigation {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        flex-direction: column;
+        gap: 0;
+
+        background: var(--panel-solid);
+
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s steps(4);
+    }
+
+    .navigation.active {
+        max-height: 240px;
+        border-bottom: 3px solid var(--cream);
+    }
+
+    .navigation a {
+        padding: 12px 16px;
+        border-top: 2px solid var(--edge);
+    }
+
+    .world-title {
+        font-size: clamp(54px, 15vw, 72px);
+    }
+
+    .world-sub {
+        font-size: 24px;
+    }
+
+    .hud {
+        padding: 0 4px 6px;
+    }
+
+    .hud-level {
+        font-size: 34px;
+    }
+
+    .hud-xp {
+        font-size: 20px;
+    }
+
+    .game-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-item {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+
+    .menu-label {
+        font-size: 32px;
+    }
+
+    .menu-note {
+        font-size: 21px;
+    }
+
+
+    .levels,
+    .journey,
+    .character,
+    .credits {
+        padding: 70px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    html.show-start .world-ui > * {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   IL SENTIERO DEI FALÒ
+   ========================================================= */
+
+.trail-wrap {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Bosco, sentiero e falò disegnati da trail.js */
+.trail-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.trail {
+    position: relative;
+    list-style: none;
+    padding: 40px 0 60px;
+}
+
+/* Le tappe si alternano: falò a sinistra e cartello a destra, poi il contrario */
+.trail-stop {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-height: 190px;
+}
+
+.stop-fire {
+    width: 80px;
+    height: 80px;
+}
+
+.trail-stop:nth-child(odd) .stop-fire {
+    justify-self: end;
+    margin-right: 18%;
+}
+
+.trail-stop:nth-child(odd) .stop-card {
+    justify-self: start;
+}
+
+.trail-stop:nth-child(even) .stop-fire {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    margin-left: 18%;
+}
+
+.trail-stop:nth-child(even) .stop-card {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    text-align: right;
+}
+
+/* Cartello del livello */
+.stop-card {
+    width: min(320px, 100%);
+    padding: 12px 16px 14px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    font: inherit;
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+
+    background: var(--panel);
+    border: 3px solid var(--edge);
+    box-shadow: 5px 5px 0 var(--ink);
+
+    transition: transform 0.12s steps(2), border-color 0.12s steps(2), box-shadow 0.12s steps(2);
+}
+
+.stop-card:hover,
+.stop-card:focus-visible {
+    border-color: var(--cream);
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--ink);
+}
+
+.stop-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.trail-stop:nth-child(even) .stop-top {
+    flex-direction: row-reverse;
+}
+
+.stop-number {
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--gold);
+}
+
+.stop-state {
+    padding: 0 6px;
+    font-size: 17px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    border: 2px solid var(--edge);
+    color: var(--dim);
+}
+
+.stop-title {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.stop-date {
+    font-size: 20px;
+    color: var(--dim);
+}
+
+/* Falò accesi, falò di questa settimana e falò ancora spenti */
+.trail-stop.is-done .stop-state {
+    border-color: var(--ember);
+    color: var(--ember);
+}
+
+.trail-stop.is-current .stop-state {
+    border-color: var(--green);
+    color: var(--green);
+    animation: blink 1.2s steps(1) infinite;
+}
+
+.trail-stop.is-locked .stop-card {
+    background: rgba(9, 11, 34, 0.6);
+}
+
+.trail-stop.is-locked .stop-title,
+.trail-stop.is-locked .stop-number {
+    color: var(--dim);
+}
+
+/* Quando il sentiero raggiunge un falò acceso, il cartello si illumina */
+.trail-stop.is-done.is-reached .stop-card {
+    animation: lit 0.9s steps(4) both;
+}
+
+@keyframes lit {
+    0% { box-shadow: 5px 5px 0 var(--ink), 0 0 0 rgba(255, 140, 50, 0); }
+    40% { box-shadow: 5px 5px 0 var(--ink), 0 0 28px rgba(255, 140, 50, 0.7); border-color: var(--gold); }
+    100% { box-shadow: 5px 5px 0 var(--ink), 0 0 0 rgba(255, 140, 50, 0); }
+}
+
+
+/* =========================================================
+   FINESTRE: SCHERMATA DEL LIVELLO E PANNELLI DEL PROGETTO
+   ========================================================= */
+
+html.panel-open {
+    overflow: hidden;
+}
+
+.panel {
+    width: min(860px, calc(100% - 32px));
+    max-width: none;
+    max-height: 86vh;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+
+    color: var(--cream);
+    background: var(--panel-solid);
+    border: 4px solid var(--cream);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+.panel[open] {
+    animation: panel-in 0.3s steps(4);
+}
+
+@keyframes panel-in {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+}
+
+.panel::backdrop {
+    background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 2px, transparent 2px 4px),
+        rgba(4, 6, 20, 0.78);
+}
+
+.panel-inner {
+    max-height: 86vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 34px 34px;
+}
+
+/* Il titolo resta fisso in alto mentre si scorre la finestra */
+.panel-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 0 14px;
+    margin-bottom: 18px;
+
+    background: var(--panel-solid);
+    border-bottom: 3px solid var(--edge);
+}
+
+.panel-head h2 {
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.panel-close {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+
+    font-size: 30px;
+    line-height: 1;
+    color: var(--cream);
+    cursor: pointer;
+
+    background: transparent;
+    border: 3px solid var(--cream);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.panel-close:hover {
+    color: var(--ink);
+    background: var(--gold);
+}
+
+.panel-intro {
+    max-width: 680px;
+    font-size: 24px;
+    color: var(--muted);
+}
+
+.panel h3 {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--gold);
+}
+
+/* Schermata del livello */
+.level-kicker {
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--ember);
+}
+
+.level-kicker[data-state="current"] {
+    color: var(--green);
+}
+
+.level-kicker[data-state="locked"] {
+    color: var(--dim);
+}
+
+.level-date {
+    margin-top: 4px;
+    font-size: 22px;
+    color: var(--dim);
+}
+
+.level-body section {
+    padding: 18px 0;
+    border-top: 2px dashed var(--edge);
+}
+
+.level-body section:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.level-body h3::before {
+    content: "▸ ";
+    color: var(--ember);
+}
+
+.level-body p {
+    max-width: 68ch;
+    margin-top: 10px;
+    font-size: 23px;
+    line-height: 1.3;
+    color: var(--cream);
+}
+
+.level-body .placeholder-text,
+.level-locked {
+    color: var(--dim);
+    font-style: normal;
+}
+
+.level-locked {
+    margin-bottom: 18px;
+    padding: 10px 14px;
+    font-size: 22px;
+    border: 2px solid var(--edge);
+}
+
+.level-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 3px solid var(--edge);
+}
+
+.level-step {
+    padding: 6px 14px;
+    font-size: 22px;
+    color: var(--cream);
+    cursor: pointer;
+    background: transparent;
+    border: 3px solid var(--edge);
+}
+
+.level-step:hover:not(:disabled) {
+    color: var(--ink);
+    background: var(--gold);
+    border-color: var(--ink);
+}
+
+.level-step:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+
+/* =========================================================
+   IL VIAGGIO FINORA (PROGETTO)
+   ========================================================= */
+
+.project-tiles {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.project-tile {
+    min-height: 220px;
+    padding: 24px 26px 22px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    font: inherit;
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+
+    background: var(--panel-solid);
+    border: 3px solid var(--edge);
+    box-shadow: 6px 6px 0 var(--ink);
+
+    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), border-color 0.12s steps(2);
+}
+
+.project-tile:hover,
+.project-tile:focus-visible {
+    border-color: var(--cream);
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--ink);
+}
+
+.project-tile h3 {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.project-tile p {
+    font-size: 23px;
+    line-height: 1.2;
+    color: var(--muted);
+}
+
+.tile-meta {
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--gold);
+}
+
+.tile-more {
+    margin-top: auto;
+    padding-top: 6px;
+    font-size: 23px;
+    color: var(--gold);
+}
+
+/* Il simulatore è la missione principale: riquadro e pannello nel blu Skilla */
+.project-tile-simulator,
+.panel-simulator,
+.panel-simulator .panel-head {
+    background: #0b13a8;
+}
+
+.project-tile-simulator {
+    border-color: #4a5cff;
+}
+
+.project-tile-simulator p,
+.panel-simulator .panel-intro {
+    color: #c8d0ff;
+}
+
+.simulator-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--cream);
+    border: 2px solid var(--cream);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--green);
+    animation: blink 1.2s steps(1) infinite;
+}
+
+.panel-simulator .simulator-status {
+    margin-bottom: 4px;
+}
+
+/* Contenuto dei pannelli */
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.activity-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 20px;
+    border: 2px solid var(--edge);
+}
+
+.activity-item-wide {
+    grid-column: 1 / -1;
+}
+
+.activity-item p {
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--muted);
+}
+
+.week-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+.week-tags a {
+    padding: 0 8px;
+    font-size: 19px;
+    text-decoration: none;
+    color: var(--ember);
+    border: 2px solid var(--ember);
+}
+
+.week-tags a::before {
+    content: "🔥 ";
+    font-size: 14px;
+}
+
+.week-tags a:hover {
+    color: var(--ink);
+    background: var(--ember);
+}
+
+.lab-list {
+    list-style: none;
+    margin-top: 16px;
+}
+
+.lab-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 18px 0;
+    border-top: 2px dashed var(--edge);
+}
+
+.lab-item:first-child {
+    border-top: 0;
+}
+
+.lab-item > div {
+    min-width: 0;
+}
+
+.lab-week {
+    flex: 0 0 auto;
+    padding: 0 8px;
+    font-size: 19px;
+    white-space: nowrap;
+    color: #c9b8ff;
+    border: 2px solid #6a58b8;
+}
+
+.lab-item p {
+    margin-top: 4px;
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--muted);
+}
+
+.simulator-steps {
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.simulator-steps li {
+    counter-increment: step;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.simulator-steps li::before {
+    content: counter(step);
+    width: 30px;
+    height: 30px;
+    margin-bottom: 6px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    border: 2px solid var(--cream);
+}
+
+.simulator-steps li.step-done::before {
+    content: "✓";
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #0b13a8;
+    background: var(--cream);
+}
+
+.simulator-steps li.step-current {
+    border-color: var(--gold);
+}
+
+.simulator-steps strong {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.simulator-steps span {
+    font-size: 19px;
+    line-height: 1.15;
+    color: #c8d0ff;
+}
+
+.tech-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 18px;
+    border: 2px solid var(--edge);
+}
+
+.tech-item strong {
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--gold);
+}
+
+.tech-item span {
+    font-size: 20px;
+    line-height: 1.15;
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   SCHEDA DEL PERSONAGGIO
+   ========================================================= */
+
+.sheet {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+        "portrait list"
+        "stats stats";
+    gap: 28px 36px;
+
+    background: var(--panel-solid);
+    border: 4px solid var(--cream);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* Ritratto: il protagonista ritagliato dall'illustrazione del falò */
+.sheet-portrait {
+    grid-area: portrait;
+    width: 264px;
+    height: 203px;
+    max-width: 100%;
+
+    background: #132858 url("../immagini/falo.webp") no-repeat;
+    background-size: 1672px auto;
+    background-position: -160px -548px;
+    image-rendering: pixelated;
+
+    border: 3px solid var(--edge);
+    box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+.sheet-list {
+    grid-area: list;
+    display: flex;
+    flex-direction: column;
+}
+
+.sheet-list > div {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 2px dashed var(--edge);
+}
+
+.sheet-list > div:last-child {
+    border-bottom: 0;
+}
+
+.sheet-list dt {
+    font-size: 21px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.sheet-list dd {
+    font-size: 26px;
+    line-height: 1.1;
+}
+
+.sheet-list small {
+    font-size: 19px;
+    color: var(--dim);
+}
+
+.sheet-stats {
+    grid-area: stats;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.stat {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border: 2px solid var(--edge);
+}
+
+.stat-label {
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--dim);
+}
+
+.stat-value {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--gold);
+}
+
+.sheet-bar {
+    grid-column: 1 / -1;
+    height: 26px;
+    padding: 3px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+    background: var(--ink);
+}
+
+
+/* =========================================================
+   TITOLI DI CODA
+   ========================================================= */
+
+.credits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+    background: linear-gradient(var(--night), #020309);
+}
+
+/* I nomi salgono lenti come alla fine di un gioco */
+.credits-window {
+    position: relative;
+    width: min(600px, 100%);
+    height: 420px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+    mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+
+.credits-roll {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 420px 0;
+    animation: roll 32s linear infinite;
+}
+
+@keyframes roll {
+    to { transform: translateY(-100%); }
+}
+
+.credits-title {
+    margin-bottom: 30px;
+    font-size: 64px;
+    text-transform: uppercase;
+    line-height: 0.9;
+    text-shadow: 4px 4px 0 var(--blue), 8px 8px 0 var(--ink);
+}
+
+.credits-role {
+    margin-top: 26px;
+    font-size: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+.credits-name {
+    font-size: 32px;
+    line-height: 1.05;
+}
+
+.credits-end {
+    margin-top: 60px;
+    font-size: 44px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.credits-back {
+    padding: 8px 18px;
+    font-size: 26px;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.credits-back:hover {
+    background: #ffe07a;
+}
+
+.credits-copy {
+    font-size: 20px;
+    color: var(--dim);
+}
+
+
+/* =========================================================
+   RESPONSIVE DELLE NUOVE SEZIONI
+   ========================================================= */
+
+@media (max-width: 860px) {
+    .simulator-steps,
+    .sheet-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sheet {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "portrait"
+            "list"
+            "stats";
+        justify-items: stretch;
+    }
+
+    .sheet-portrait {
+        justify-self: center;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Su telefono il sentiero va dritto: falò al centro e cartello sotto */
+    .trail-stop,
+    .trail-stop:nth-child(odd),
+    .trail-stop:nth-child(even) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 8px;
+        min-height: 0;
+        padding: 18px 0;
+    }
+
+    .trail-stop:nth-child(n) .stop-fire,
+    .trail-stop:nth-child(n) .stop-card {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: center;
+        margin: 0;
+        text-align: left;
+    }
+
+    .trail-stop:nth-child(even) .stop-top {
+        flex-direction: row;
+    }
+
+    .project-tiles,
+    .activity-grid,
+    .simulator-steps,
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border: 0;
+    }
+
+    .panel-inner {
+        height: 100%;
+        max-height: 100%;
+        padding: 0 18px 28px;
+    }
+
+    .panel-head h2 {
+        font-size: 36px;
+    }
+
+    .lab-item {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sheet {
+        padding: 18px;
+    }
+
+    .sheet-list > div {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .level-nav {
+        flex-direction: column;
+    }
+}
+
+
+/* =========================================================
+   MENU FISSO SOTTO LA SCENA
+   ========================================================= */
+
+body.nav-floating .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 64px;
+
+    background: rgba(5, 7, 22, 0.94);
+    border-bottom: 3px solid var(--edge);
+    animation: nav-drop 0.25s steps(3);
+}
+
+@keyframes nav-drop {
+    from { transform: translateY(-100%); }
+}
+
+/* Le sezioni non finiscono sotto il menu fisso quando ci salti */
+.levels,
+.journey,
+.character,
+.credits {
+    scroll-margin-top: 50px;
+}
+
+/* Se sopra l'illustrazione resta cielo libero, il bordo alto sfuma nel blu */
+.scene.is-floating .scene-art {
+    -webkit-mask-image: linear-gradient(transparent, #000 12%);
+    mask-image: linear-gradient(transparent, #000 12%);
+}

@@ -5,617 +5,1059 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diario di Stage</title>
-    <link rel="stylesheet" href="css/style.css">
+
+    <!-- La schermata START compare solo alla prima visita della sessione -->
+    <script>
+        (function () {
+            var seen = false;
+            try { seen = sessionStorage.getItem("diario-started") === "1"; } catch (error) {}
+            if (!seen && !location.hash) document.documentElement.classList.add("show-start");
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pixel.css">
 </head>
 
-<body>
+<body class="home">
 
-    <header class="header">
+    <!-- Schermata iniziale -->
 
-        <a href="#home" class="logo">
-            <span class="logo-mark" role="img" aria-label="Skilla"></span>
-            <span class="logo-copy">
-                <strong>Diario di Stage</strong>
-                <small>LORENZO CARDUCCI</small>
-            </span>
-        </a>
+    <div class="start-screen" id="start-screen">
+        <div class="start-box">
+            <p class="start-kicker">SKILLA · STAGE 2026</p>
+            <h1 class="start-title">Diario<br>di Stage</h1>
+            <p class="start-sub">un'avventura di Lorenzo Carducci</p>
+            <button type="button" class="start-button" id="start-button">START</button>
+            <p class="start-hint">premi INVIO</p>
+        </div>
+    </div>
 
-        <nav class="navigation">
-            <a href="#home" class="active">Home</a>
-            <a href="#attivita">Attività settimanali</a>
-            <a href="progetto.html">Progetto</a>
-        </nav>
 
-        <button class="menu-toggle" aria-label="Apri il menu">
-            <span></span>
-        </button>
+    <!-- Il falò -->
 
-    </header>
+    <section class="world" id="home">
+
+        <!-- Illustrazione del falò: scene.js la posiziona sotto il menu -->
+        <div class="scene" id="scene">
+            <img class="scene-art" src="immagini/falo.webp" alt="Un ragazzo in armatura riposa di notte accanto a un falò, tra i pini e un lago di montagna sotto la luna">
+        </div>
+
+        <header class="header">
+
+            <a href="#home" class="logo">
+                <span class="logo-mark" role="img" aria-label="Skilla"></span>
+                <span class="logo-copy">Diario di Stage</span>
+            </a>
+
+            <nav class="navigation">
+                <a href="#home" class="active">Home</a>
+                <a href="#livelli">Livelli</a>
+                <a href="#viaggio">Il viaggio</a>
+                <a href="#personaggio">Personaggio</a>
+            </nav>
+
+            <button class="menu-toggle" aria-label="Apri il menu">
+                <span></span>
+            </button>
+
+        </header>
+
+        <div class="world-ui">
+
+            <h2 class="world-title">Il mio stage in <span>Skilla</span></h2>
+
+            <p class="world-sub">Siediti al falò. Ecco il viaggio finora.</p>
+
+            <!-- Livello e settimane: calcolati dalle date dello stage in home.js -->
+            <div class="hud">
+                <span class="hud-level">LV <span data-level>05</span></span>
+                <div class="hud-bar" role="progressbar" aria-label="Settimane completate" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4">
+                    <i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <span class="hud-xp"><span data-xp>4</span>/16 settimane</span>
+            </div>
+
+            <nav class="game-menu" aria-label="Menu principale">
+                <a href="#livelli" class="menu-item is-selected">
+                    <span class="menu-head"><svg class="menu-flame" viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#e8452c" d="M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z"/><path fill="#ff9a2e" d="M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z"/><path fill="#ffe066" d="M3 5h1v1h1v2h-3v-2h1z"/></svg><span class="menu-label">Esperienza</span></span>
+                    <span class="menu-note">i livelli · <span data-fires>4</span> falò accesi</span>
+                </a>
+                <a href="#viaggio" class="menu-item">
+                    <span class="menu-head"><svg class="menu-flame" viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#e8452c" d="M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z"/><path fill="#ff9a2e" d="M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z"/><path fill="#ffe066" d="M3 5h1v1h1v2h-3v-2h1z"/></svg><span class="menu-label">Il viaggio finora</span></span>
+                    <span class="menu-note">il progetto</span>
+                </a>
+            </nav>
+
+        </div>
+
+    </section>
+
 
     <main>
 
-        <section class="intro" id="home">
+        <!-- =====================================================
+             IL SENTIERO DEI FALÒ: ogni settimana è un livello
+             ===================================================== -->
 
-
-            <div class="intro-content">
-
-                <div class="intro-text">
-
-                    <p class="status">
-                        <span class="status-dot"></span>
-                        STAGE IN CORSO
-                    </p>
-
-                    <p class="eyebrow">
-                        STAGE UNIVERSITARIO · 2026
-                    </p>
-
-                    <h1>
-                        Il mio stage<br><span class="highlight">in Skilla</span>
-                    </h1>
-
-                    <p class="description">
-                        Un'esperienza formativa dedicata all'esplorazione e
-                        allo sviluppo di soluzioni basate sull'intelligenza
-                        artificiale.
-                    </p>
-
-                    <div class="intro-action">
-
-                        <a href="progetto.html" class="hero-button">
-                            Scopri il progetto →
-                        </a>
-
-                        <p>
-                            Esplora gli strumenti e le attivita che stiamo svolgendo insieme
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="intro-image">
-
-                    <img src="immagini/animali_cubici.jpg" alt="Illustrazione Skilla">
-
-                </div>
-
-            </div>
-
-
-            <div class="info">
-
-                <div class="info-item">
-                    <div class="info-icon-badge badge-blue">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 22V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18Z" />
-                            <path d="M6 12H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2" />
-                            <path d="M18 9h2a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-2" />
-                            <path d="M10 6h4" />
-                            <path d="M10 10h4" />
-                            <path d="M10 14h4" />
-                            <path d="M10 18h4" />
-                        </svg>
-                    </div>
-                    <span class="info-label">Azienda</span>
-                    <strong>Skilla</strong>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon-badge badge-green">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 10v6" />
-                            <path d="M2 10l10-5 10 5-10 5z" />
-                            <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
-                        </svg>
-                    </div>
-                    <span class="info-label">Corso di laurea</span>
-                    <strong>Informatica</strong>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon-badge badge-purple">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="8" r="4" />
-                            <path d="M20 21a8 8 0 0 0-16 0" />
-                        </svg>
-                    </div>
-                    <span class="info-label">Tutor universitario</span>
-                    <strong>Guglielmo Lulli</strong>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon-badge badge-pink">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                        </svg>
-                    </div>
-                    <span class="info-label">Tutor aziendale</span>
-                    <strong>Silvia Innocenzi</strong>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon-badge badge-orange">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 2v3" />
-                            <path d="M16 2v3" />
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <path d="M3 9h18" />
-                        </svg>
-                    </div>
-                    <span class="info-label">Durata</span>
-                    <strong>07/09/2026 — 23/12/2026</strong>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section class="activities" id="attivita">
+        <section class="levels" id="livelli">
 
             <div class="section-header">
-                <p class="eyebrow">DIARIO DI STAGE</p>
-
-                <h2>Attività settimanali</h2>
-
+                <p class="eyebrow">ESPERIENZA</p>
+                <h2>Il sentiero dei falò</h2>
                 <p>
-                    Un resoconto delle attività svolte e delle conoscenze
-                    acquisite durante ogni settimana dello stage.
+                    Sedici settimane, un falò per ognuna. Scendi lungo il sentiero
+                    e fermati a un falò per leggere com'è andata quella settimana.
                 </p>
             </div>
 
-
-            <div class="slider">
-
-                <button class="slider-button previous" aria-label="Settimana precedente">
-                    ←
-                </button>
-
-
-                <div class="slider-window">
-
-                    <div class="slider-track">
-
-                        <!-- Settimana 01 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 01
-                            </div>
-
-                            <div class="week-date">
-                                7 — 11 settembre 2026
-                            </div>
-
-                            <h3>Introduzione e attività iniziali</h3>
-
-                            <p>
-                                Una breve descrizione delle attività
-                                svolte durante la prima settimana.
-                            </p>
-                            <a href="settimane/settimana-01.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 02 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 02
-                            </div>
-
-                            <div class="week-date">
-                                14 — 18 settembre 2026
-                            </div>
-
-                            <h3>Prime attività di sviluppo</h3>
-
-                            <p>
-                                Una breve descrizione delle attività
-                                svolte durante la seconda settimana.
-                            </p>
-
-                            <a href="settimane/settimana-02.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 03 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 03
-                            </div>
-
-                            <div class="week-date">
-                                21 — 25 settembre 2026
-                            </div>
-
-                            <h3>Sviluppo e sperimentazione</h3>
-
-                            <p>
-                                Una breve descrizione delle attività
-                                svolte durante la terza settimana.
-                            </p>
-
-                            <a href="settimane/settimana-03.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 04 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 04
-                            </div>
-
-                            <div class="week-date">
-                                28 settembre — 2 ottobre 2026
-                            </div>
-
-                            <h3>Settimana 04</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-04.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 05 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 05
-                            </div>
-
-                            <div class="week-date">
-                                5 — 9 ottobre 2026
-                            </div>
-
-                            <h3>Settimana 05</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-05.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 06 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 06
-                            </div>
-
-                            <div class="week-date">
-                                12 — 16 ottobre 2026
-                            </div>
-
-                            <h3>Settimana 06</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-06.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 07 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 07
-                            </div>
-
-                            <div class="week-date">
-                                19 — 23 ottobre 2026
-                            </div>
-
-                            <h3>Settimana 07</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-07.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 08 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 08
-                            </div>
-
-                            <div class="week-date">
-                                26 — 30 ottobre 2026
-                            </div>
-
-                            <h3>Settimana 08</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-08.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 09 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 09
-                            </div>
-
-                            <div class="week-date">
-                                2 — 6 novembre 2026
-                            </div>
-
-                            <h3>Settimana 09</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-09.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 10 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 10
-                            </div>
-
-                            <div class="week-date">
-                                9 — 13 novembre 2026
-                            </div>
-
-                            <h3>Settimana 10</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-10.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 11 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 11
-                            </div>
-
-                            <div class="week-date">
-                                16 — 20 novembre 2026
-                            </div>
-
-                            <h3>Settimana 11</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-11.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 12 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 12
-                            </div>
-
-                            <div class="week-date">
-                                23 — 27 novembre 2026
-                            </div>
-
-                            <h3>Settimana 12</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-12.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 13 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 13
-                            </div>
-
-                            <div class="week-date">
-                                30 novembre — 4 dicembre 2026
-                            </div>
-
-                            <h3>Settimana 13</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-13.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 14 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 14
-                            </div>
-
-                            <div class="week-date">
-                                7 — 11 dicembre 2026
-                            </div>
-
-                            <h3>Settimana 14</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-14.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 15 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 15
-                            </div>
-
-                            <div class="week-date">
-                                14 — 18 dicembre 2026
-                            </div>
-
-                            <h3>Settimana 15</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-15.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
-
-                        <!-- Settimana 16 -->
-
-                        <article class="week-card">
-
-                            <div class="week-number">
-                                SETTIMANA 16
-                            </div>
-
-                            <div class="week-date">
-                                21 — 23 dicembre 2026
-                            </div>
-
-                            <h3>Settimana 16</h3>
-
-                            <p class="placeholder-text">
-                                Contenuti in aggiornamento.
-                            </p>
-
-                            <a href="settimane/settimana-16.html">
-                                Leggi la settimana →
-                            </a>
-
-                        </article>
-
+            <div class="trail-wrap">
+                <canvas class="trail-canvas" aria-hidden="true"></canvas>
+                <ol class="trail">
+                <li class="trail-stop" data-week="1">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="1">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 01</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Introduzione e attività iniziali</span>
+                        <span class="stop-date">7 — 11 settembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="2">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="2">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 02</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Prime attività di sviluppo</span>
+                        <span class="stop-date">14 — 18 settembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="3">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="3">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 03</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Sviluppo e sperimentazione</span>
+                        <span class="stop-date">21 — 25 settembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="4">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="4">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 04</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 04</span>
+                        <span class="stop-date">28 settembre — 2 ottobre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="5">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="5">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 05</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 05</span>
+                        <span class="stop-date">5 — 9 ottobre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="6">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="6">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 06</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 06</span>
+                        <span class="stop-date">12 — 16 ottobre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="7">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="7">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 07</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 07</span>
+                        <span class="stop-date">19 — 23 ottobre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="8">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="8">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 08</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 08</span>
+                        <span class="stop-date">26 — 30 ottobre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="9">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="9">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 09</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 09</span>
+                        <span class="stop-date">2 — 6 novembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="10">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="10">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 10</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 10</span>
+                        <span class="stop-date">9 — 13 novembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="11">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="11">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 11</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 11</span>
+                        <span class="stop-date">16 — 20 novembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="12">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="12">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 12</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 12</span>
+                        <span class="stop-date">23 — 27 novembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="13">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="13">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 13</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 13</span>
+                        <span class="stop-date">30 novembre — 4 dicembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="14">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="14">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 14</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 14</span>
+                        <span class="stop-date">7 — 11 dicembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="15">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="15">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 15</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 15</span>
+                        <span class="stop-date">14 — 18 dicembre 2026</span>
+                    </button>
+                </li>
+                <li class="trail-stop" data-week="16">
+                    <span class="stop-fire" aria-hidden="true"></span>
+                    <button type="button" class="stop-card" data-level-open="16">
+                        <span class="stop-top">
+                            <span class="stop-number">LIVELLO 16</span>
+                            <span class="stop-state">BLOCCATO</span>
+                        </span>
+                        <span class="stop-title">Settimana 16</span>
+                        <span class="stop-date">21 — 23 dicembre 2026</span>
+                    </button>
+                </li>
+                </ol>
+            </div>
+
+            <!-- Contenuto dei livelli: viene mostrato nella schermata del livello -->
+
+            <!-- LIVELLO 01 · 7 — 11 settembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-01">
+                <section>
+                    <h3>Missioni</h3>
+                    <p>Gli obiettivi principali della prima settimana sono stati completare tutti i corsi della sicurezza necessari per poter procedere con le attività vere e proprie e iniziare ad esplorare SkillaCloud, provando i primi simulatori.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p>Durante la prima settimana ho completato i corsi di sicurezza richiesti per poter iniziare le attività dello stage, non senza qualche difficoltà e qualche momento di "entusiasmo".</p>
+                    <p>Ho inoltre iniziato a esplorare SkillaCloud, testando alcuni dei simulatori disponibili. In particolare, ho provato Flavio e Giulia & co, rimanendo sorpreso dalla loro efficienza e dalle possibilità offerte da questi strumenti. Ho già pensato ad alcune idee per entrambi ma vorrei testare ulteriormente</p>
+                    <p>Ho svolto il primo laboratorio di SkillaLab, il quale mi ha lasciato parecchia curiosità sui prossimi incontri. Promette di essere una riunione super formativa per noi stagisti.</p>
+                    <p>Ho iniziato a raccogliere le prime informazioni più dettagliate sulle attività che andrò a svolgere durante il periodo di stage tramite formazioni e call</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p>Posso dire di essere ormai diventato un esperto di sicurezza sul lavoro e cybersecurity, grazie ai corsi completati durante la settimana.</p>
+                    <p>Ho imparato ad utilizzare Microsoft Teams e Outlook, due piattaforme che non avevo mai utilizzato prima.</p>
+                    <p>Ho inoltre imparato a seguire una call di lavoro, esperienza che non avevo mai avuto modo di affrontare in precedenza.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p>La prima cosa a cui penso ripensando a questa settimana è quanto l'ambiente di lavoro sia stato diverso, in meglio, rispetto a come me lo ero immaginato. Sono rimasto felicemente sorpreso dall'entusiasmo e dall'accoglienza di tutti i ragazzi del team, oltre che dalla loro disponibilità.</p>
+                    <p>Ho apprezzato particolarmente il programma dedicato agli stagisti, attraverso gli Skilla Lab e le attività che ci permettono di avvicinarci gradualmente al mondo del lavoro. Sono sicuro che, con il passare del tempo, le attività diventeranno sempre più importanti e stimolanti.</p>
+                    <p>Ho percepito fin da subito una grande fiducia nei nostri confronti: non ho mai avuto la sensazione che la nostra presenza fosse vista come un peso o un disturbo. Al contrario, ho notato entusiasmo nel coinvolgerci nelle attività e questo mi ha motivato molto.</p>
+                    <p>Anche le attività che ci sono state consigliate non sono risultate noiose, ma anzi stimolanti e interessanti. In particolare, trovo molto originale l'idea di questo diario di bordo e la libertà di espressione che ci è stata lasciata nel realizzarlo. Non è qualcosa di scontato e rende questa esperienza ancora più personale e divertente.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 02 · 14 — 18 settembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-02">
+                <section>
+                    <h3>Missioni</h3>
+                    <p>Gli obiettvi di questa settimana sono stati principalmente di supporto al team, non solo Ai, e di apprendimento. Infatti i tutor ci stanno istruendo per iniziare a lavorare sul nostro simulatore Ai, e i ragazzi mi stanno consegnano i primi veri lavori utili all'azienda.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p>Le attività svolte questa settimana sono le seguenti:<br> Controllare e preparare i file contenente il testo di 2 simulatori (Chiara e Sebastiano), per procedere alla traduzione in inglese spagnolo.<br> Lucio ha tenuto una formazione interessantissima sui RAG, e su come "ragionano" i modelli Ai. Hp approfondito l'intero discorso imparando cosa sono i token, i chunk e come funziona l'embidding.<br> C'è stato il primo vero incontro dello Skilla lab sull'importanza del ricevere e dare feedback. Molto interessante in quanto non sapevo praticamente nulla sull'argomento, e ad essere onesto non sapevo nemmeno quanto fosse importante il feedback, e quanto possa effettivamente influenzare il lavoro.<br> Abbiamo iniziato il progetto gestito da Marti di gestione feedback lasciati dagli utenti, attualmente stiamo pensando a come poterli sfruttare nel concreto.<br> Elena Testoni ha affidato a me ed altri stagisti la revisione di contratti dei clienti per stabilire alcune info utili allo sviluppo di un progetto della quale non mi è chiaro lo scopo ahaha, settimana prossima ci sarà il continuo del lavoro.<br> Abbiamo ricevuto una formazione molto molto interessante da Marti e Ari sulla generazione di video e voci con l'Ai, in particolare con Google Flow e ElevenLabs. Non vedo l'ora di testare per bene e creare il mio personaggio.<br> Ho fatto molte call questa settiamana anche solo tra noi stagisti, e sento che il rapporto aumenti ad ogni settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p>Sento di aver imparato molto questa settimana, sia in ambito tecnico con la formazione sui RAG e generazione di video; ma anche in ambito umano e relazionale, proprio grazie alle numerose call e momenti di confronto con i miei colleghi stagisti.<br> Grazie anche allo skilla Lab ho imparato l'importanza del feedback, sia darlo sia riceverlo.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p>Sono molto soddisfatto dell'andamento della settimana, mi sento sempre più parte del team non avendo paura di dire la mia e confrontarmi con i colleghi. L'ambiente si è confermato fantastico e sarà sicuramente utile alla mia crescita sia personale che professionale.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 03 · 21 — 25 settembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-03">
+                <section>
+                    <h3>Missioni</h3>
+                    <p>Gli obiettivi della settimana erano quelli di esplorare i simulatori su skillacloud per iniziare a pensare al nostro simulatore; un altro obiettivo è quello di buttare, di conseguenza, delle idee sul simulatore e magari iniziare a scrivere la scheda di documentazione.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Ho testato i seguenti simulatori: Davide, Elena & co., Agata problem solving, Marina gestione dello stress. Ho completato la prima scheda di progettazione e non nascondo che non è facile per nulla ahaha, speriamo che la mia idea convinva gli altri membri del team. Ho partecipato alle solite riunioni di allineamento di team e di aggiornamento.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Ho imparato a capire come sviluppare un simulatore, a livello propriamente progettistico.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa settimana è stata scarica di attività, in quanto mi sono concentrato pienamente allo sviluppo del simulatore, esercitandomi con i simulatori stessi, e alla stesura della scheda di progettazione.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 04 · 28 settembre — 2 ottobre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-04">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Gli obiettivi della settimana erano principalmente due: discutere delle idee su come raccogliere e utilizzare i feedback degli utenti lasciati sui simulatori, e testare Aria in un ambiente apposito di test per diverse macro-categorie.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">È stata una settimana soddisfacente in quanto attività, non tanto per la quantità ma per il semmplice fatto che mi piaciute tutte. La prima attività è stata appunto quella di discutere assieme a Marti e Laura di come potevamo raccogliere i feedback, ma soprattutto biosgnava caprie come utilizzarli. Mi ha messo alla prova perché, oltre all'aspetto creativo, ho dovuto utilizzare ed imparare un minimo Excel (che non avevo mai usato prima). Ma grazie agli strumenti di oggi, imparare è troppo facile, veloce, ma sopratutto divertente e stimolante. Penso di aver fatto un bel progetto infatti ahaha.<br> La seconda attività è stata quella di testare Aria in un ambiente simulato della piattaforma Skillacloud; anche per questa attività mi sono divertito perché, a parer mio, testare agenti Ai è sempre una scoperta. Capisci effettivamente quanto supporto fornisce alle attività che svolgiamo.<br> Terza attività, ho svolto un corso obbbligatorio sul D.LGS 231/01. Uno in meno...<br> Infine venerdì c'è stato lo SkillaLab sullo scoprire il proprio talento. Davvero super stimolante, e che mi ha spinto a pensare tanto. Attualmente il migliore a cui ho partecipato.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">La cosa di cui sono più soddisfatto è quella di aver imaparato a creare e manipolare un documento excel, ovviamente c'è ancora tanto da imparare ma, ripeto, gli strumenti che abbiamo oggi facilitano troppo l'apprendimento. Grazie allo skillab invece ho capito che per fare una buona riflessione su un qualsiasi topic, non bisogna dare per scontato nulla, nemmeno la prima soluzione coerente che ci viene in mente</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Una settimana molto soddisfacente e di crescita formativa, grazie anche alle attività svolte. Forse mi azzardo a dire la settmimana più riflessiva e stimolante di tutte. Sento di essermi messo in gioco davvero sia in ambito pratico, che in quello riflessivo. Spero di portarmi dietro questa voglia di scoprire software e metodi di lavoro.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 05 · 5 — 9 ottobre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-05">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 06 · 12 — 16 ottobre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-06">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 07 · 19 — 23 ottobre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-07">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 08 · 26 — 30 ottobre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-08">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 09 · 2 — 6 novembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-09">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 10 · 9 — 13 novembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-10">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 11 · 16 — 20 novembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-11">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 12 · 23 — 27 novembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-12">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 13 · 30 novembre — 4 dicembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-13">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 14 · 7 — 11 dicembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-14">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 15 · 14 — 18 dicembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-15">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+            <!-- LIVELLO 16 · 21 — 23 dicembre 2026 · scrivi qui il resoconto della settimana -->
+            <template id="livello-16">
+                <section>
+                    <h3>Missioni</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Attività svolte</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Abilità sbloccate</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+                <section>
+                    <h3>Diario del cavaliere</h3>
+                    <p class="placeholder-text">Questa sezione verrà completata al termine della settimana.</p>
+                </section>
+            </template>
+
+        </section>
+
+
+        <!-- Schermata del livello: si riempie con il contenuto del falò scelto -->
+
+        <dialog class="panel level-screen" id="level-screen" aria-labelledby="level-title">
+            <div class="panel-inner">
+
+                <div class="panel-head">
+                    <div>
+                        <p class="level-kicker"></p>
+                        <h2 id="level-title"></h2>
+                        <p class="level-date"></p>
                     </div>
+                    <button type="button" class="panel-close" data-level-close aria-label="Chiudi">×</button>
+                </div>
+
+                <div class="level-body"></div>
+
+                <div class="level-nav">
+                    <button type="button" class="level-step" data-level-step="-1">◀ Livello precedente</button>
+                    <button type="button" class="level-step" data-level-step="1">Livello successivo ▶</button>
+                </div>
+
+            </div>
+        </dialog>
+
+
+        <!-- =====================================================
+             IL VIAGGIO FINORA: il progetto
+             ===================================================== -->
+
+        <section class="journey" id="viaggio">
+
+            <div class="section-header">
+                <p class="eyebrow">IL VIAGGIO FINORA</p>
+                <h2>Le mie esperienze</h2>
+                <p>
+                    Le attività, i laboratori e gli strumenti che hanno segnato il mio
+                    stage. Apri un riquadro per leggere i dettagli.
+                </p>
+            </div>
+
+        <section class="project-tiles">
+
+            <button type="button" class="project-tile" data-panel="attivita">
+                <span class="tile-meta">5 ATTIVITÀ</span>
+                <h3>Attività di lavoro</h3>
+                <p>
+                    I lavori affidati per supportare il team: feedback degli utenti,
+                    test di Aria, contratti, traduzioni e simulatori.
+                </p>
+                <span class="tile-more">Scopri di più →</span>
+            </button>
+
+            <button type="button" class="project-tile" data-panel="skillalab">
+                <span class="tile-meta">3 LABORATORI</span>
+                <h3>SkillaLab</h3>
+                <p>
+                    I laboratori dedicati a noi stagisti, per crescere anche oltre
+                    il lavoro tecnico.
+                </p>
+                <span class="tile-more">Scopri di più →</span>
+            </button>
+
+            <button type="button" class="project-tile project-tile-simulator" data-panel="simulatore">
+                <span class="simulator-status">
+                    <span class="status-dot"></span>
+                    IN LAVORAZIONE
+                </span>
+                <h3>Il mio simulatore</h3>
+                <p>
+                    Il progetto principale del mio stage: un simulatore AI tutto mio
+                    da pubblicare su SkillaCloud.
+                </p>
+                <span class="tile-more">Scopri di più →</span>
+            </button>
+
+            <button type="button" class="project-tile" data-panel="strumenti">
+                <span class="tile-meta">6 STRUMENTI</span>
+                <h3>Strumenti e tools</h3>
+                <p>
+                    Le piattaforme e i software con cui ho lavorato, molti dei quali
+                    non avevo mai usato prima.
+                </p>
+                <span class="tile-more">Scopri di più →</span>
+            </button>
+
+        </section>
+
+        <dialog class="panel" id="panel-attivita" aria-labelledby="titolo-attivita">
+            <div class="panel-inner">
+
+                <div class="panel-head">
+                    <h2 id="titolo-attivita">Attività di lavoro</h2>
+                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+                </div>
+
+                <p class="panel-intro">
+                    I lavori che mi sono stati affidati per supportare il team,
+                    dentro e fuori dall'area AI.
+                </p>
+
+                <div class="activity-grid">
+
+                    <article class="activity-item">
+                        <h3>Gestione dei feedback degli utenti</h3>
+                        <p>
+                            Con Marti e Laura abbiamo studiato come raccogliere i feedback
+                            lasciati dagli utenti sui simulatori e, soprattutto, come
+                            usarli nel concreto. Ho costruito la mia proposta in Excel.
+                        </p>
+                        <div class="week-tags">
+                            <a href="#livello-02">Settimana 02</a>
+                            <a href="#livello-04">Settimana 04</a>
+                        </div>
+                    </article>
+
+                    <article class="activity-item">
+                        <h3>Test di Aria</h3>
+                        <p>
+                            Ho testato Aria, l'agente AI di Skilla, in un ambiente di
+                            prova di SkillaCloud su diverse macro-categorie, per capire
+                            quanto supporto offre nel lavoro di tutti i giorni.
+                        </p>
+                        <div class="week-tags">
+                            <a href="#livello-04">Settimana 04</a>
+                        </div>
+                    </article>
+
+                    <article class="activity-item">
+                        <h3>Revisione dei contratti</h3>
+                        <p>
+                            Insieme ad altri stagisti ho analizzato i contratti dei
+                            clienti per Elena Testoni, raccogliendo le informazioni utili
+                            allo sviluppo di un progetto interno.
+                        </p>
+                        <div class="week-tags">
+                            <a href="#livello-02">Settimana 02</a>
+                        </div>
+                    </article>
+
+                    <article class="activity-item">
+                        <h3>Testi per le traduzioni</h3>
+                        <p>
+                            Ho controllato e preparato i file con i testi dei simulatori
+                            Chiara e Sebastiano, pronti per la traduzione in inglese e
+                            spagnolo.
+                        </p>
+                        <div class="week-tags">
+                            <a href="#livello-02">Settimana 02</a>
+                        </div>
+                    </article>
+
+                    <article class="activity-item activity-item-wide">
+                        <h3>Esplorazione dei simulatori</h3>
+                        <p>
+                            Ho provato in prima persona i simulatori di SkillaCloud per
+                            capire come sono costruiti: Flavio, Giulia &amp; co., Davide,
+                            Elena &amp; co., Agata (problem solving) e Marina (gestione
+                            dello stress).
+                        </p>
+                        <div class="week-tags">
+                            <a href="#livello-01">Settimana 01</a>
+                            <a href="#livello-03">Settimana 03</a>
+                        </div>
+                    </article>
 
                 </div>
 
+            </div>
+        </dialog>
 
-                <button class="slider-button next" aria-label="Settimana successiva">
-                    →
-                </button>
+        <dialog class="panel" id="panel-skillalab" aria-labelledby="titolo-skillalab">
+            <div class="panel-inner">
+
+                <div class="panel-head">
+                    <h2 id="titolo-skillalab">SkillaLab</h2>
+                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+                </div>
+
+                <p class="panel-intro">
+                    I laboratori del venerdì dedicati a noi stagisti: momenti di
+                    confronto che vanno oltre il lavoro tecnico.
+                </p>
+
+                <ul class="lab-list">
+
+                    <li class="lab-item">
+                        <span class="lab-week">Settimana 01</span>
+                        <div>
+                            <h3>Il primo laboratorio</h3>
+                            <p>
+                                L'incontro di apertura, che mi ha lasciato molta
+                                curiosità per i laboratori successivi.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="lab-item">
+                        <span class="lab-week">Settimana 02</span>
+                        <div>
+                            <h3>Dare e ricevere feedback</h3>
+                            <p>
+                                Ho scoperto quanto un feedback, dato o ricevuto, possa
+                                influenzare davvero il lavoro di un team.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="lab-item">
+                        <span class="lab-week">Settimana 04</span>
+                        <div>
+                            <h3>Scoprire il proprio talento</h3>
+                            <p>
+                                Il più stimolante finora: per riflettere bene su un tema
+                                non bisogna dare per scontato nulla, nemmeno la prima
+                                soluzione che sembra funzionare.
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
 
             </div>
+        </dialog>
+
+        <dialog class="panel panel-simulator" id="panel-simulatore" aria-labelledby="titolo-simulatore">
+            <div class="panel-inner">
+
+                <div class="panel-head">
+                    <h2 id="titolo-simulatore">Il mio simulatore</h2>
+                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+                </div>
+
+                <span class="simulator-status">
+                    <span class="status-dot"></span>
+                    IN LAVORAZIONE
+                </span>
+
+                <p class="panel-intro">
+                    Il progetto principale del mio stage: un simulatore AI tutto mio da
+                    pubblicare su SkillaCloud. Descrizione del simulatore in
+                    aggiornamento.
+                </p>
+
+                <ol class="simulator-steps">
+
+                    <li class="step-done">
+                        <strong>Esplorazione</strong>
+                        <span>Studio dei simulatori esistenti su SkillaCloud</span>
+                    </li>
+
+                    <li class="step-done">
+                        <strong>Scheda di progettazione</strong>
+                        <span>Prima versione completata nella settimana 03</span>
+                    </li>
+
+                    <li class="step-current">
+                        <strong>Personaggio</strong>
+                        <span>Video e voce creati con l'AI</span>
+                    </li>
+
+                    <li>
+                        <strong>Sviluppo e test</strong>
+                        <span>In aggiornamento</span>
+                    </li>
+
+                </ol>
+
+            </div>
+        </dialog>
+
+        <dialog class="panel" id="panel-strumenti" aria-labelledby="titolo-strumenti">
+            <div class="panel-inner">
+
+                <div class="panel-head">
+                    <h2 id="titolo-strumenti">Strumenti e tools</h2>
+                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+                </div>
+
+                <p class="panel-intro">
+                    Gli strumenti con cui ho lavorato durante lo stage, molti dei quali
+                    non avevo mai usato prima.
+                </p>
+
+                <ul class="tech-grid">
+
+                    <li class="tech-item">
+                        <strong>SkillaCloud</strong>
+                        <span>La piattaforma dei simulatori, dove ho testato simulatori e Aria</span>
+                    </li>
+
+                    <li class="tech-item">
+                        <strong>Google Flow</strong>
+                        <span>Generazione di video con l'AI</span>
+                    </li>
+
+                    <li class="tech-item">
+                        <strong>Veo</strong>
+                        <span>Il modello di Google per creare video con l'AI</span>
+                    </li>
+
+                    <li class="tech-item">
+                        <strong>ElevenLabs</strong>
+                        <span>Generazione di voci con l'AI</span>
+                    </li>
+
+                    <li class="tech-item">
+                        <strong>Excel</strong>
+                        <span>Il progetto sulla gestione dei feedback</span>
+                    </li>
+
+                    <li class="tech-item">
+                        <strong>Microsoft Teams e Outlook</strong>
+                        <span>Call, riunioni di allineamento e comunicazione con il team</span>
+                    </li>
+
+                </ul>
+
+            </div>
+        </dialog>
+
+        </section>
 
 
-            <div class="slider-dots">
+        <!-- =====================================================
+             SCHEDA DEL PERSONAGGIO: le informazioni sullo stage
+             ===================================================== -->
 
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+        <section class="character" id="personaggio">
+
+            <div class="section-header">
+                <p class="eyebrow">SCHEDA DEL PERSONAGGIO</p>
+                <h2>Il protagonista</h2>
+            </div>
+
+            <div class="sheet">
+
+                <div class="sheet-portrait" role="img" aria-label="Il cavaliere seduto accanto al falò"></div>
+
+                <dl class="sheet-list">
+                    <div>
+                        <dt>Protagonista</dt>
+                        <dd>Lorenzo Carducci</dd>
+                    </div>
+                    <div>
+                        <dt>Classe</dt>
+                        <dd>Stagista · Informatica</dd>
+                    </div>
+                    <div>
+                        <dt>Gilda</dt>
+                        <dd>Skilla</dd>
+                    </div>
+                    <div>
+                        <dt>Alleati</dt>
+                        <dd>
+                            Guglielmo Lulli <small>tutor universitario</small><br>
+                            Silvia Innocenzi <small>tutor aziendale</small>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Missione</dt>
+                        <dd>dal 07/09/2026 al 23/12/2026</dd>
+                    </div>
+                </dl>
+
+                <div class="sheet-stats">
+                    <div class="stat">
+                        <span class="stat-label">LIVELLO</span>
+                        <strong class="stat-value" data-level>05</strong>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">FALÒ ACCESI</span>
+                        <strong class="stat-value"><span data-fires>4</span>/16</strong>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">GIORNI DI VIAGGIO</span>
+                        <strong class="stat-value"><span data-days-done>30</span>/<span data-days-total>108</span></strong>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">GIORNI ALLA META</span>
+                        <strong class="stat-value" data-days-left>78</strong>
+                    </div>
+                    <div class="hud-bar sheet-bar" role="progressbar" aria-label="Settimane completate" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4"></div>
+                </div>
 
             </div>
 
         </section>
 
 
+        <!-- =====================================================
+             TITOLI DI CODA
+             ===================================================== -->
+
+        <section class="credits" id="titoli" aria-label="Titoli di coda">
+
+            <div class="credits-window">
+                <div class="credits-roll">
+                    <p class="credits-title">Diario di Stage</p>
+                    <p class="credits-role">un'avventura di</p>
+                    <p class="credits-name">Lorenzo Carducci</p>
+
+                    <p class="credits-role">Illustrazioni</p>
+                    <p class="credits-name">Lorenzo Carducci</p>
+
+                    <p class="credits-role">Tutor universitario</p>
+                    <p class="credits-name">Guglielmo Lulli</p>
+
+                    <p class="credits-role">Tutor aziendale</p>
+                    <p class="credits-name">Silvia Innocenzi</p>
+
+                    <p class="credits-role">Con la partecipazione di</p>
+                    <p class="credits-name">tutto il team di Skilla<br>e i compagni stagisti</p>
+
+                    <p class="credits-end">Grazie per aver giocato</p>
+                </div>
+            </div>
+
+            <a href="#home" class="credits-back">▲ Torna al falò</a>
+
+            <p class="credits-copy">Diario di Stage · Skilla · 2026</p>
+
+        </section>
+
     </main>
 
+    <script src="js/stage.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/scene.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/trail.js"></script>
 
 </body>
 
