@@ -209,7 +209,7 @@ html.show-start .start-screen {
     min-height: 560px;
     overflow: hidden;
     /* Stesso blu del cielo dell'illustrazione, per quando l'immagine non arriva in cima */
-    background: linear-gradient(#2a75c6, #3a88d2);
+    background: linear-gradient(#132858, #1d2c63);
 }
 
 /* Illustrazione del falò: dimensione e posizione le calcola scene.js */
@@ -1383,9 +1383,9 @@ html.panel-open {
     height: 203px;
     max-width: 100%;
 
-    background: #2d80ce url("../immagini/falo.webp") no-repeat;
-    background-size: 1919px auto;
-    background-position: -330px -640px;
+    background: #132858 url("../immagini/falo.webp") no-repeat;
+    background-size: 1672px auto;
+    background-position: -160px -548px;
     image-rendering: pixelated;
 
     border: 3px solid var(--edge);
