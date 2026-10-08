@@ -1948,52 +1948,29 @@ body[data-screen="home"] .back-menu {
     75%  { opacity: 1; }
 }
 
-/* Fiamme animate in codice: dal disegno sono ritagliate solo le fiamme
-   (fiamma.webp) e la spada (spada.webp). Le fiamme si allungano, ondeggiano
-   e cambiano luce a scatti; una seconda copia più chiara tremola sopra con
-   un altro ritmo; la spada resta ferma sopra a tutto */
-.flame,
-.flame-glint,
-.flame-sword {
+/* Falò animato in codice (campfire.js): sotto il falò con le fiamme
+   disegnate tolte (falo-spento.webp), poi le fiamme vive nel canvas,
+   sopra a tutto la spada ferma (spada.webp) */
+.scene-fx .campfire-base,
+.scene-fx .flame-sword {
     left: 22.92%;
     top: 60.42%;
     width: 14.58%;
     height: 27.08%;
-    background: url("../immagini/fiamma.webp") 0 0 / 100% 100% no-repeat;
-    transform-origin: 50.9% 75%;
+    background: url("../immagini/falo-spento.webp") 0 0 / 100% 100% no-repeat;
 }
 
-.flame {
-    animation: flame-dance 1.6s steps(1) infinite;
-}
-
-.flame-glint {
-    mix-blend-mode: screen;
-    opacity: 0.4;
-    animation: flame-glint 1.1s steps(1) infinite;
-}
-
-.flame-sword {
+.scene-fx .flame-sword {
     background-image: url("../immagini/spada.webp");
 }
 
-@keyframes flame-dance {
-    0%   { transform: scale(1.02, 1.03) skewX(0deg);    filter: brightness(1); }
-    12%  { transform: scale(1.04, 1.08) skewX(-1.5deg); filter: brightness(1.08); }
-    25%  { transform: scale(1.01, 1.05) skewX(1deg);    filter: brightness(1.02); }
-    37%  { transform: scale(1.05, 1.11) skewX(2deg);    filter: brightness(1.15); }
-    50%  { transform: scale(1.02, 1.04) skewX(-0.5deg); filter: brightness(1.04); }
-    62%  { transform: scale(1.04, 1.09) skewX(-2deg);   filter: brightness(1.12); }
-    75%  { transform: scale(1.01, 1.02) skewX(0.5deg);  filter: brightness(1); }
-    87%  { transform: scale(1.03, 1.07) skewX(1.5deg);  filter: brightness(1.1); }
-}
-
-@keyframes flame-glint {
-    0%   { transform: scale(1.06, 1.12) skewX(1deg);  opacity: 0.35; }
-    20%  { transform: scale(1.02, 1.05) skewX(-1deg); opacity: 0.15; }
-    40%  { transform: scale(1.07, 1.15) skewX(-2deg); opacity: 0.45; }
-    60%  { transform: scale(1.03, 1.08) skewX(2deg);  opacity: 0.25; }
-    80%  { transform: scale(1.05, 1.1) skewX(0deg);   opacity: 0.4; }
+.scene-fx .campfire {
+    position: absolute;
+    left: 25%;
+    top: 60.94%;
+    width: 10.94%;
+    height: 20.31%;
+    image-rendering: pixelated;
 }
 
 /* Il cavaliere sbatte le palpebre: una toppa con gli occhi chiusi
@@ -2084,7 +2061,7 @@ body[data-screen="home"] .back-menu {
     .shooting-star { display: none; }
     .firefly { opacity: 0.8; }
     .fire-glow { opacity: 0.75; }
-    .ember, .flame-glint { display: none; }
+    .ember { display: none; }
 }
 
 
