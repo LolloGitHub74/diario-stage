@@ -14,7 +14,7 @@
 
     // Griglia del fuoco: celle grandi circa come i "pixel" del disegno
     const W = 30;
-    const H = 28;
+    const H = 30;
     const MAX = 36;
     canvas.width = W;
     canvas.height = H;
@@ -54,10 +54,16 @@
         }
     }
 
+    let flip = false;
+
     function step() {
         feed();
+        // Una volta da sinistra a destra, una volta al contrario:
+        // così la fiamma non pende mai da un lato
+        flip = !flip;
         for (let y = 0; y < H - 1; y++) {
-            for (let x = 0; x < W; x++) {
+            for (let i = 0; i < W; i++) {
+                const x = flip ? i : W - 1 - i;
                 const below = heat[(y + 1) * W + x];
                 const d = Math.abs(x - center) / center;
                 // Si raffredda salendo, di più verso i lati: la fiamma si stringe in punta

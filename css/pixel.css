@@ -1894,8 +1894,8 @@ body[data-screen="home"] .back-menu {
 
 /* Luce del fuoco: un alone arancione sul prato che respira piano */
 .fire-glow {
-    left: 30.2%;
-    top: 79%;
+    left: 29.93%;
+    top: 81%;
     width: 36cqw;
     height: 22cqw;
     transform: translate(-50%, -50%);
@@ -1948,28 +1948,24 @@ body[data-screen="home"] .back-menu {
     75%  { opacity: 1; }
 }
 
-/* Falò animato in codice (campfire.js): sotto il falò con le fiamme
-   disegnate tolte (falo-spento.webp), poi le fiamme vive nel canvas,
-   sopra a tutto la spada ferma (spada.webp) */
-.scene-fx .campfire-base,
-.scene-fx .flame-sword {
-    left: 22.92%;
-    top: 60.42%;
-    width: 14.58%;
-    height: 27.08%;
-    background: url("../immagini/falo-spento.webp") 0 0 / 100% 100% no-repeat;
-}
-
-.scene-fx .flame-sword {
-    background-image: url("../immagini/spada.webp");
-}
-
+/* Falò animato in codice (campfire.js): lo sfondo ha il falò spento,
+   sopra le fiamme vive nel canvas e, sopra a tutto, la spada ferma
+   ritagliata dallo stesso disegno (spada.webp) */
 .scene-fx .campfire {
     position: absolute;
-    left: 25%;
-    top: 60.94%;
-    width: 10.94%;
-    height: 20.31%;
+    left: 24.58%;
+    top: 62.57%;
+    width: 10.71%;
+    height: 21.42%;
+    image-rendering: pixelated;
+}
+
+.scene-fx .flame-sword {
+    left: 29.03%;
+    top: 65.16%;
+    width: 4.51%;
+    height: 20.29%;
+    background: url("../immagini/spada.webp") 0 0 / 100% 100% no-repeat;
     image-rendering: pixelated;
 }
 
@@ -1977,10 +1973,10 @@ body[data-screen="home"] .back-menu {
    (occhi-chiusi.webp) compare per un attimo sopra i suoi occhi.
    Ogni chiusura è rapida, ogni tanto due battiti ravvicinati */
 .knight-eyes {
-    left: 18.44%;
-    top: 73.18%;
-    width: 1.77%;
-    height: 2.08%;
+    left: 18.38%;
+    top: 72.15%;
+    width: 1.80%;
+    height: 2.48%;
     background: url("../immagini/occhi-chiusi.webp") 0 0 / 100% 100% no-repeat;
     image-rendering: pixelated;
     opacity: 0;
@@ -2002,7 +1998,7 @@ body[data-screen="home"] .back-menu {
 /* Scintille: piccoli pixel arancioni che salgono dal fuoco e si spengono */
 .ember {
     left: 30%;
-    top: 72%;
+    top: 70%;
     width: 0.35cqw;
     height: 0.35cqw;
     background: #ffb347;
