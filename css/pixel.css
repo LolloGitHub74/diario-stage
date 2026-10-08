@@ -1691,3 +1691,98 @@ body.nav-floating .header {
     -webkit-mask-image: linear-gradient(transparent, #000 12%);
     mask-image: linear-gradient(transparent, #000 12%);
 }
+
+
+/* =========================================================
+   SCHERMATE E TENDA NERA
+   ========================================================= */
+
+/* Le sezioni delle altre schermate restano nascoste */
+[hidden] {
+    display: none !important;
+}
+
+html {
+    scroll-behavior: auto;
+}
+
+/* Ogni schermata riempie almeno tutto lo schermo */
+body[data-screen="viaggio"] main,
+body[data-screen="livelli"] main,
+body[data-screen="personaggio"] main {
+    min-height: 100vh;
+}
+
+/* Tenda: un blocco nero grande quanto lo schermo, con i due bordi
+   frastagliati a pixel; screens.js la fa scorrere a scatti */
+.curtain {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 300;
+
+    background: #000;
+    transform: translateX(calc(-100% - 64px));
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.curtain.is-active {
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.curtain::before,
+.curtain::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 48px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='12' viewBox='0 0 6 12' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h5v2h-5zM0 2h3v2h-3zM0 4h1v2h-1zM0 6h3v2h-3zM0 8h5v2h-5zM0 10h6v2h-6z'/%3E%3C/svg%3E") left top / 48px 96px repeat-y;
+    image-rendering: pixelated;
+}
+
+/* Bordo destro: i denti guardano a destra */
+.curtain::after {
+    left: 100%;
+}
+
+/* Bordo sinistro: lo stesso disegno, specchiato */
+.curtain::before {
+    right: 100%;
+    transform: scaleX(-1);
+}
+
+/* Pulsante "‹ Menu" in alto a sinistra nelle schermate interne */
+.back-menu {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 60;
+
+    padding: 6px 16px 8px;
+    font-size: 28px;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--cream);
+
+    background: rgba(9, 11, 34, 0.9);
+    border: 3px solid #cfd2ee;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 rgba(5, 6, 15, 0.7);
+}
+
+.back-menu:hover,
+.back-menu:focus-visible {
+    color: var(--gold);
+    border-color: var(--gold);
+    outline: none;
+}
+
+body:not([data-screen]) .back-menu,
+body[data-screen="home"] .back-menu {
+    display: none;
+}
