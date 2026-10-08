@@ -71,6 +71,11 @@
         else portrait(box);
     }
 
+    // Tornando alla home la scena si riposiziona subito
+    window.addEventListener("screen:show", function (event) {
+        if (event.detail === "home") layout();
+    });
+
     let resizeTimer = null;
     window.addEventListener("resize", function () {
         clearTimeout(resizeTimer);

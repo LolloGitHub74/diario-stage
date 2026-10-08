@@ -108,11 +108,8 @@
 
     document.addEventListener("keydown", function (event) {
         if (root.classList.contains("show-start") || items.length === 0) return;
+        if (body.dataset.screen && body.dataset.screen !== "home") return;
         if (forward.indexOf(event.key) === -1 && back.indexOf(event.key) === -1) return;
-
-        // Più in basso nella pagina le frecce tornano a far scorrere
-        const inMenu = items.indexOf(document.activeElement) !== -1;
-        if (!inMenu && window.scrollY > 40) return;
 
         const current = items.findIndex(function (item) { return item.classList.contains("is-selected"); });
         const next = forward.indexOf(event.key) !== -1
@@ -122,50 +119,4 @@
         event.preventDefault();
         items[next].focus();
     });
-})();
-
-
-// ---------------------------------------------------
-// Menu in alto: evidenzia la sezione in cui ti trovi
-// ---------------------------------------------------
-
-(function () {
-    "use strict";
-
-    const links = Array.from(document.querySelectorAll('.navigation a[href^="#"]'));
-    if (links.length === 0 || !("IntersectionObserver" in window)) return;
-
-    const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            links.forEach(function (link) {
-                link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id);
-            });
-        });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-
-    links.forEach(function (link) {
-        const section = document.querySelector(link.getAttribute("href"));
-        if (section) observer.observe(section);
-    });
-})();
-
-
-// ---------------------------------------------------
-// Sotto la scena del falò il menu resta fisso in alto
-// ---------------------------------------------------
-
-(function () {
-    "use strict";
-
-    const world = document.querySelector(".world");
-    if (!world) return;
-
-    function check() {
-        const floating = world.getBoundingClientRect().bottom < 80;
-        document.body.classList.toggle("nav-floating", floating);
-    }
-
-    window.addEventListener("scroll", check, { passive: true });
-    check();
 })();

@@ -253,6 +253,11 @@
         resizeTimer = setTimeout(layout, 150);
     });
 
+    // Quando si apre la schermata del diario il sentiero prende le misure vere
+    window.addEventListener("screen:show", function (event) {
+        if (event.detail === "livelli") layout();
+    });
+
     // Anima solo quando il sentiero è sullo schermo
     if ("IntersectionObserver" in window) {
         new IntersectionObserver(function (entries) {
