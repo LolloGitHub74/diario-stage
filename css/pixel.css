@@ -483,127 +483,50 @@ body.nav-floating .world .header {
 .world-sub::before { right: 100%; margin-right: calc(var(--u) * 4); }
 .world-sub::after { left: 100%; margin-left: calc(var(--u) * 4); }
 
-/* I tre pannelli del menu, uno sotto l'altro */
+/* I tre pannelli del menu, uno sotto l'altro: sono le illustrazioni
+   disegnate apposta, il testo vero resta nascosto per i lettori di schermo */
 .game-menu {
-    width: calc(var(--u) * 560);
-    margin-top: calc(var(--u) * 30);
+    width: calc(var(--u) * 580);
+    margin-top: calc(var(--u) * 26);
     display: flex;
     flex-direction: column;
-    gap: calc(var(--u) * 18);
+    gap: calc(var(--u) * 12);
 }
 
 .menu-item {
-    --accent: #e8742c;
-    --tint: rgba(58, 22, 14, 0.86);
-
-    position: relative;
-    display: grid;
-    grid-template-columns: calc(var(--u) * 64) 1fr auto;
-    align-items: center;
-    gap: calc(var(--u) * 20);
-    height: calc(var(--u) * 100);
-    padding: 0 calc(var(--u) * 26) 0 calc(var(--u) * 24);
-
-    text-align: left;
+    display: block;
     text-decoration: none;
-    color: var(--cream);
-
-    /* Bordo spesso colorato, filo scuro interno e contorno nero: cornice da 16 bit */
-    background: var(--tint);
-    border: calc(var(--u) * 4) solid var(--accent);
-    border-radius: calc(var(--u) * 8);
-    box-shadow:
-        inset 0 0 0 calc(var(--u) * 3) rgba(5, 6, 15, 0.55),
-        0 0 0 calc(var(--u) * 3) #05060f,
-        calc(var(--u) * 6) calc(var(--u) * 6) 0 rgba(5, 6, 15, 0.55);
+    filter: drop-shadow(calc(var(--u) * 5) calc(var(--u) * 5) 0 rgba(5, 6, 15, 0.55));
+    transition: transform 0.12s steps(2), filter 0.12s steps(2);
 }
 
-/* Borchie dorate sui quattro angoli */
-.menu-item::before {
-    content: "";
-    position: absolute;
-    inset: calc(var(--u) * -8);
-    pointer-events: none;
-    --stud: calc(var(--u) * 8);
-    background:
-        linear-gradient(#ffd77a, #c99a16) left top / var(--stud) var(--stud) no-repeat,
-        linear-gradient(#ffd77a, #c99a16) right top / var(--stud) var(--stud) no-repeat,
-        linear-gradient(#ffd77a, #c99a16) left bottom / var(--stud) var(--stud) no-repeat,
-        linear-gradient(#ffd77a, #c99a16) right bottom / var(--stud) var(--stud) no-repeat;
-}
-
-.menu-item.is-diary {
-    --accent: #5b7fd6;
-    --tint: rgba(14, 20, 58, 0.86);
-}
-
-.menu-item.is-hero {
-    --accent: #5fa86a;
-    --tint: rgba(12, 36, 28, 0.86);
-}
-
-.menu-icon {
-    width: calc(var(--u) * 52);
-    height: calc(var(--u) * 52);
-    justify-self: center;
+.menu-item img {
+    display: block;
+    width: 100%;
+    height: auto;
     image-rendering: pixelated;
 }
 
-.menu-text {
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--u) * 4);
-    min-width: 0;
-}
-
-.menu-label {
-    font-size: calc(var(--u) * 44);
-    line-height: 0.9;
-    text-shadow: calc(var(--u) * 3) calc(var(--u) * 3) 0 rgba(5, 6, 15, 0.8);
-}
-
-.menu-note {
-    font-size: calc(var(--u) * 22);
-    line-height: 1;
-    color: #e2d8c0;
-    white-space: nowrap;
-}
-
-.menu-arrow {
-    width: calc(var(--u) * 15);
-    height: calc(var(--u) * 21);
-    color: var(--cream);
-}
-
-/* Voce selezionata: bordo e freccia dorati, il pannello avanza di un passo */
+/* Voce selezionata: il pannello avanza di un passo e si illumina */
 .menu-item.is-selected {
-    border-color: var(--gold);
-    transform: translateX(calc(var(--u) * 6));
-}
-
-.menu-item.is-selected .menu-label {
-    color: var(--gold);
-}
-
-.menu-item.is-selected .menu-arrow {
-    color: var(--gold);
-    animation: nudge 0.6s steps(2) infinite;
-}
-
-.menu-item.is-selected .menu-icon-fire {
-    animation: flame 0.5s steps(2) infinite;
+    transform: translateX(calc(var(--u) * 8));
+    filter:
+        brightness(1.15)
+        drop-shadow(0 0 calc(var(--u) * 10) rgba(255, 207, 74, 0.45))
+        drop-shadow(calc(var(--u) * 5) calc(var(--u) * 5) 0 rgba(5, 6, 15, 0.55));
 }
 
 .menu-item:focus-visible {
     outline: none;
 }
 
-@keyframes flame {
-    50% { transform: scaleY(0.9) translateY(4%); }
-}
-
-@keyframes nudge {
-    50% { transform: translateX(calc(var(--u) * 4)); }
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
 
 /* Barra a blocchi delle settimane (scheda del personaggio) */
@@ -712,33 +635,13 @@ body.nav-floating .world .header {
     }
 
     .game-menu {
-        width: calc(var(--u) * 396);
+        width: calc(var(--u) * 404);
         margin-top: calc(var(--u) * 24);
-        gap: calc(var(--u) * 14);
-    }
-
-    .menu-item {
-        grid-template-columns: calc(var(--u) * 48) 1fr auto;
-        gap: calc(var(--u) * 14);
-        height: calc(var(--u) * 80);
-        padding: 0 calc(var(--u) * 18) 0 calc(var(--u) * 16);
-    }
-
-    .menu-icon {
-        width: calc(var(--u) * 40);
-        height: calc(var(--u) * 40);
-    }
-
-    .menu-label {
-        font-size: calc(var(--u) * 36);
-    }
-
-    .menu-note {
-        font-size: calc(var(--u) * 16);
+        gap: calc(var(--u) * 10);
     }
 
     .menu-item.is-selected {
-        transform: translateX(calc(var(--u) * 3));
+        transform: translateX(calc(var(--u) * 4));
     }
 }
 
