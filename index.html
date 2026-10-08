@@ -28,7 +28,7 @@
     <div class="start-screen" id="start-screen">
         <div class="start-box">
             <p class="start-kicker">SKILLA · STAGE 2026</p>
-            <h1 class="start-title">Diario<br>di Stage</h1>
+            <p class="start-title">Diario<br>di Stage</p>
             <p class="start-sub">un'avventura di Lorenzo Carducci</p>
             <button type="button" class="start-button" id="start-button">START</button>
             <p class="start-hint">premi INVIO</p>
@@ -67,22 +67,30 @@
 
         <div class="world-ui">
 
-            <h2 class="world-title">Il mio stage<br>in <span>Skilla</span></h2>
-
-            <p class="world-sub">Percorso, esperienza e tutto ciò che sto vivendo, falò dopo falò.</p>
-
-            <!-- Livello e settimane: calcolati dalle date dello stage in home.js -->
-            <div class="hud">
-                <span class="hud-level">LV <span data-level>05</span></span>
-                <div class="hud-bar" role="progressbar" aria-label="Settimane completate" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4">
-                    <i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                </div>
-                <span class="hud-xp"><span data-xp>4</span>/16 settimane</span>
+            <div class="world-brand">
+                <span class="logo-mark" role="img" aria-label="Skilla"></span>
             </div>
 
+            <h1 class="world-title">Diario di <span>Stage</span></h1>
+
+            <p class="world-sub">Il mio percorso in Skilla</p>
+
             <nav class="game-menu" aria-label="Menu principale">
-                <a href="#livelli" class="menu-item is-selected"><svg class="menu-icon" viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#e8452c" d="M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z"/><path fill="#ff9a2e" d="M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z"/><path fill="#ffe066" d="M3 5h1v1h1v2h-3v-2h1z"/></svg><span>Percorso falò</span><svg class="menu-arrow" viewBox="0 0 5 7" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z"/></svg></a>
-                <a href="#viaggio" class="menu-item"><svg class="menu-icon menu-icon-map" viewBox="0 0 9 8" aria-hidden="true" shape-rendering="crispEdges"><path fill="#8db4e2" d="M0 1h3v7h-3zM6 1h3v7h-3z"/><path fill="#5f86c0" d="M3 0h3v7h-3z"/><path fill="#2a3570" d="M3 0h1v7h-1zM6 1h1v7h-1z"/><path fill="#e8452c" d="M1 3h1v1h-1zM4 4h1v1h-1zM7 2h1v1h-1z"/></svg><span>Viaggio</span><svg class="menu-arrow" viewBox="0 0 5 7" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z"/></svg></a>
+                <a href="#viaggio" class="menu-item is-selected">
+                    <svg class="menu-icon menu-icon-fire" viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#e8452c" d="M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z"/><path fill="#ff9a2e" d="M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z"/><path fill="#ffe066" d="M3 5h1v1h1v2h-3v-2h1z"/></svg>
+                    <span class="menu-text"><span class="menu-label">Il progetto</span><span class="menu-note">Cosa sto facendo in Skilla</span></span>
+                    <svg class="menu-arrow" viewBox="0 0 5 7" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z"/></svg>
+                </a>
+                <a href="#livelli" class="menu-item is-diary">
+                    <svg class="menu-icon" viewBox="0 0 12 10" aria-hidden="true" shape-rendering="crispEdges"><path fill="#6b3f1d" d="M0 8h12v2h-12z"/><path fill="#f1e3c2" d="M0 1h2v-1h3v1h1v7h-6z"/><path fill="#e2cfa4" d="M6 1h1v-1h3v1h2v7h-6z"/><path fill="#8a6a3a" d="M6 1h1v7h-1z"/><path fill="#b0946a" d="M1 3h4v1h-4zM1 5h3v1h-3zM7 3h4v1h-4zM7 5h4v1h-4z"/></svg>
+                    <span class="menu-text"><span class="menu-label">Diario</span><span class="menu-note">La mia esperienza settimana per settimana</span></span>
+                    <svg class="menu-arrow" viewBox="0 0 5 7" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z"/></svg>
+                </a>
+                <a href="#personaggio" class="menu-item is-hero">
+                    <svg class="menu-icon" viewBox="0 0 10 10" aria-hidden="true" shape-rendering="crispEdges"><path fill="#8b5426" d="M1 0h8v3h1v3h-1v-2h-1v-1h-2v1h-2v-1h-1v1h-1v3h-1v-4h1z"/><path fill="#f2c59c" d="M2 4h1v-1h1v1h2v-1h2v1h1v3h-7z"/><path fill="#1b1b2a" d="M3 4h1v2h-1zM6 4h1v2h-1z"/><path fill="#c23a2e" d="M1 7h8v2h-8z"/><path fill="#9aa3b5" d="M0 9h10v1h-10z"/></svg>
+                    <span class="menu-text"><span class="menu-label">Chi sono</span><span class="menu-note">Il mio percorso e le mie competenze</span></span>
+                    <svg class="menu-arrow" viewBox="0 0 5 7" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z"/></svg>
+                </a>
             </nav>
 
         </div>
