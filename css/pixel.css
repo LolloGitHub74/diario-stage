@@ -206,7 +206,6 @@ html.show-start .start-screen {
     position: relative;
     height: 100vh;
     height: 100svh;
-    min-height: 560px;
     overflow: hidden;
     /* Stesso blu del cielo dell'illustrazione, per quando l'immagine non arriva in cima */
     background: linear-gradient(#132858, #1d2c63);
@@ -240,81 +239,126 @@ html.show-start .start-screen {
 }
 
 
+/* ---------- Unità della home ----------
+   Tutte le misure della prima schermata sono multipli di --u, che
+   dipende solo dalla finestra: così con lo zoom del browser la scena
+   resta identica, come lo schermo di un videogioco.
+   Riferimento: una finestra di 1536 × 1100. */
+
+:root {
+    --u: min(calc(100vw / 1536), calc(100vh / 1100));
+    --u: min(calc(100vw / 1536), calc(100svh / 1100));
+}
+
+/* Schermi verticali (telefoni): riferimento 430 × 860 */
+@media (max-aspect-ratio: 1/1) {
+    :root {
+        --u: min(calc(100vw / 430), calc(100vh / 860));
+        --u: min(calc(100vw / 430), calc(100svh / 860));
+    }
+}
+
+
 /* ---------- Header ---------- */
 
 .header {
     position: relative;
     z-index: 20;
 
-    height: 84px;
-    padding: 0 5%;
+    height: calc(var(--u) * 84);
+    padding: 0 calc(var(--u) * 110);
+
+    /* Barra blu scura con una linea più chiara sotto, come quando resta fissa */
+    background: rgba(5, 7, 22, 0.94);
+    border-bottom: max(2px, calc(var(--u) * 3)) solid var(--edge);
 
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: calc(var(--u) * 20);
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: calc(var(--u) * 44);
     text-decoration: none;
 }
 
 .logo-mark {
-    width: 96px;
-    height: 34px;
+    position: relative;
+    width: calc(var(--u) * 98);
+    height: calc(var(--u) * 42);
     background: var(--blue) url("../immagini/logo-skilla.png") center / cover no-repeat;
-    border: 3px solid var(--ink);
-    box-shadow: 3px 3px 0 var(--ink);
+}
+
+/* Filo verticale tra il logo e il nome del sito */
+.logo-mark::after {
+    content: "";
+    position: absolute;
+    top: 15%;
+    right: calc(var(--u) * -22);
+    width: max(1px, calc(var(--u) * 1.5));
+    height: 70%;
+    background: rgba(220, 222, 245, 0.45);
 }
 
 .logo-copy {
-    font-size: 28px;
+    white-space: nowrap;
+    font-size: calc(var(--u) * 32);
     color: var(--cream);
-    text-shadow: 2px 2px 0 var(--ink);
+    text-shadow: calc(var(--u) * 2) calc(var(--u) * 2) 0 var(--ink);
 }
 
 .navigation {
     display: flex;
-    gap: 34px;
+    gap: calc(var(--u) * 50);
 }
 
 .navigation a {
-    font-size: 27px;
+    position: relative;
+    padding: calc(var(--u) * 6) 0;
+    font-size: calc(var(--u) * 30);
     text-decoration: none;
-    color: var(--muted);
-    text-shadow: 2px 2px 0 var(--ink);
+    color: #dfe1f5;
+    text-shadow: calc(var(--u) * 2) calc(var(--u) * 2) 0 var(--ink);
 }
 
-.navigation a::before {
-    content: "▸ ";
-    color: transparent;
-    text-shadow: none;
+/* Linea dorata sotto la voce attiva */
+.navigation a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: max(1px, calc(var(--u) * 2.5));
+    background: var(--gold);
+    transform: scaleX(0);
 }
 
-.navigation a:hover,
-.navigation a.active {
+.navigation a:hover {
     color: var(--cream);
 }
 
-.navigation a.active::before,
-.navigation a:hover::before {
-    color: var(--ember);
+.navigation a.active {
+    color: var(--gold);
 }
 
-/* Hamburger, visibile solo su mobile */
+.navigation a.active::after {
+    transform: scaleX(1);
+}
+
+/* Hamburger, visibile solo sugli schermi verticali */
 .menu-toggle {
     display: none;
-    width: 46px;
-    height: 46px;
+    width: calc(var(--u) * 46);
+    height: calc(var(--u) * 46);
     align-items: center;
     justify-content: center;
 
     background: var(--panel);
-    border: 3px solid var(--cream);
-    box-shadow: 3px 3px 0 var(--ink);
+    border: max(2px, calc(var(--u) * 2.5)) solid #e6e7f6;
+    border-radius: calc(var(--u) * 6);
     cursor: pointer;
 }
 
@@ -322,8 +366,8 @@ html.show-start .start-screen {
 .menu-toggle span::before,
 .menu-toggle span::after {
     display: block;
-    width: 20px;
-    height: 3px;
+    width: calc(var(--u) * 20);
+    height: calc(var(--u) * 3);
     background: var(--cream);
     position: relative;
 }
@@ -334,15 +378,24 @@ html.show-start .start-screen {
     position: absolute;
 }
 
-.menu-toggle span::before { top: -7px; }
-.menu-toggle span::after { top: 7px; }
+.menu-toggle span::before { top: calc(var(--u) * -7); }
+.menu-toggle span::after { top: calc(var(--u) * 7); }
 
 .menu-toggle.active span { background: transparent; }
 .menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
 .menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
 
 
-/* ---------- Titolo, barra e menu sopra la scena ---------- */
+/* ---------- Home: titolo e menu da gioco di ruolo ---------- */
+
+/* Nella home non c'è la barra in alto: compare solo scendendo nella pagina */
+.world .header {
+    display: none;
+}
+
+body.nav-floating .world .header {
+    display: flex;
+}
 
 .world-ui {
     position: relative;
@@ -351,99 +404,132 @@ html.show-start .start-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: clamp(8px, 4vh, 48px) 16px 0;
+    padding: calc(var(--u) * 54) calc(var(--u) * 16) 0;
     text-align: center;
 }
 
+/* Logo piccolo tra due fili sottili */
+.world-brand {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 18);
+}
+
+.world-brand::before,
+.world-brand::after {
+    content: "";
+    width: calc(var(--u) * 90);
+    height: calc(var(--u) * 8);
+    background:
+        linear-gradient(#cfd2ee, #cfd2ee) center / 100% max(1px, calc(var(--u) * 2)) no-repeat,
+        linear-gradient(#cfd2ee, #cfd2ee) left center / calc(var(--u) * 6) calc(var(--u) * 6) no-repeat,
+        linear-gradient(#cfd2ee, #cfd2ee) right center / calc(var(--u) * 6) calc(var(--u) * 6) no-repeat;
+    opacity: 0.7;
+}
+
+.world-brand .logo-mark {
+    width: calc(var(--u) * 96);
+    height: calc(var(--u) * 40);
+}
+
+.world-brand .logo-mark::after {
+    display: none;
+}
+
 .world-title {
-    font-size: clamp(56px, 9vh, 96px);
+    margin-top: calc(var(--u) * 16);
+    font-size: calc(var(--u) * 116);
     font-weight: 400;
-    line-height: 0.92;
-    letter-spacing: 1px;
-    text-wrap: balance;
+    line-height: 0.9;
+    letter-spacing: calc(var(--u) * 2);
+    color: var(--cream);
     text-shadow:
-        -3px 0 0 var(--ink), 3px 0 0 var(--ink), 0 -3px 0 var(--ink), 0 3px 0 var(--ink),
-        -3px -3px 0 var(--ink), 3px -3px 0 var(--ink), -3px 3px 0 var(--ink), 3px 3px 0 var(--ink),
-        6px 6px 0 var(--ink);
+        calc(var(--u) * 4) calc(var(--u) * 4) 0 rgba(5, 6, 15, 0.9),
+        0 0 calc(var(--u) * 20) rgba(5, 6, 15, 0.5);
 }
 
 .world-title span {
     color: var(--gold);
 }
 
+/* Sottotitolo in un nastro con due ornamenti ai lati */
 .world-sub {
-    margin-top: 14px;
-    font-size: 28px;
-    color: #eef0ff;
-    text-shadow:
-        -2px 0 0 var(--ink), 2px 0 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink),
-        3px 3px 0 var(--ink);
-}
-
-/* Barra del livello, come l'HUD di un gioco:
-   in alto livello e settimane, sotto la barra a blocchi.
-   La cornice è un piccolo disegno a pixel (angoli arrotondati,
-   filo e borchie d'oro) che si allunga sui lati. */
-.hud {
     position: relative;
-    width: min(500px, 100%);
-    margin-top: clamp(14px, 2.6vh, 26px);
-    padding: 2px 8px 6px;
+    margin-top: calc(var(--u) * 18);
+    padding: calc(var(--u) * 6) calc(var(--u) * 30);
 
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-areas:
-        "level xp"
-        "bar bar";
-    align-items: end;
-    justify-content: space-between;
-    gap: 8px 20px;
+    font-size: calc(var(--u) * 28);
+    line-height: 1.1;
+    color: #eef0ff;
 
-    border: 16px solid transparent;
-    border-image: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%224%22%20y%3D%220%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%221%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%223%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%224%22%20width%3D%2214%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%224%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%225%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%226%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%227%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%227%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%228%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%228%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%229%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%229%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2210%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2210%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2211%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2211%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2212%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2212%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2213%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2213%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2214%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2215%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2215%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2216%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2216%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2217%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2217%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2218%22%20width%3D%2210%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2218%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2218%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2219%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%221%22%20fill%3D%22%230d1330%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2219%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2223%22%20y%3D%2219%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2220%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2220%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%2221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2221%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%2222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2222%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%2220%22%20y%3D%2222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%2223%22%20width%3D%2216%22%20height%3D%221%22%20fill%3D%22%23f4ead2%22%2F%3E%3C%2Fsvg%3E") 8 fill / 16px stretch;
-    image-rendering: pixelated;
-    filter: drop-shadow(4px 4px 0 rgba(6, 9, 24, 0.75));
+    background: rgba(9, 11, 34, 0.75);
+    border: max(2px, calc(var(--u) * 2.5)) solid #cfd2ee;
+    border-radius: calc(var(--u) * 14);
 }
 
-/* Gioielli dorati al centro del bordo, sopra e sotto */
-.hud::before,
-.hud::after {
+.world-sub::before,
+.world-sub::after {
     content: "";
     position: absolute;
-    left: 50%;
-    width: 40px;
-    height: 20px;
-    margin-left: -20px;
-    background: url("data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2010%205%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%223%22%20y%3D%220%22%20width%3D%224%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%221%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23fff3c4%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%222%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%228%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23ffcf4a%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%223%22%20width%3D%222%22%20height%3D%221%22%20fill%3D%22%23c99a16%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%224%22%20height%3D%221%22%20fill%3D%22%23060918%22%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat;
+    top: 50%;
+    width: calc(var(--u) * 34);
+    height: calc(var(--u) * 10);
+    margin-top: calc(var(--u) * -5);
+    background:
+        linear-gradient(#cfd2ee, #cfd2ee) center / 100% max(1px, calc(var(--u) * 2)) no-repeat,
+        linear-gradient(#cfd2ee, #cfd2ee) center / calc(var(--u) * 6) 100% no-repeat;
+}
+
+.world-sub::before { right: 100%; margin-right: calc(var(--u) * 4); }
+.world-sub::after { left: 100%; margin-left: calc(var(--u) * 4); }
+
+/* I tre pannelli del menu, uno sotto l'altro: sono le illustrazioni
+   disegnate apposta, il testo vero resta nascosto per i lettori di schermo */
+.game-menu {
+    width: calc(var(--u) * 580);
+    margin-top: calc(var(--u) * 26);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 12);
+}
+
+.menu-item {
+    display: block;
+    text-decoration: none;
+    filter: drop-shadow(calc(var(--u) * 5) calc(var(--u) * 5) 0 rgba(5, 6, 15, 0.55));
+    transition: transform 0.12s steps(2), filter 0.12s steps(2);
+}
+
+.menu-item img {
+    display: block;
+    width: 100%;
+    height: auto;
     image-rendering: pixelated;
 }
 
-.hud::before {
-    top: -24px;
+/* Voce selezionata: il pannello avanza di un passo e si illumina */
+.menu-item.is-selected {
+    transform: translateX(calc(var(--u) * 8));
+    filter:
+        brightness(1.15)
+        drop-shadow(0 0 calc(var(--u) * 10) rgba(255, 207, 74, 0.45))
+        drop-shadow(calc(var(--u) * 5) calc(var(--u) * 5) 0 rgba(5, 6, 15, 0.55));
 }
 
-.hud::after {
-    bottom: -24px;
+.menu-item:focus-visible {
+    outline: none;
 }
 
-.hud-level {
-    grid-area: level;
-    font-size: 40px;
-    line-height: 0.9;
-    letter-spacing: 1px;
-    color: var(--gold);
-    white-space: nowrap;
-    text-shadow: 2px 2px 0 #060918;
-}
-
-.hud-xp {
-    grid-area: xp;
-    font-size: 22px;
-    line-height: 1;
-    color: #d8dcf2;
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
     white-space: nowrap;
 }
 
+/* Barra a blocchi delle settimane (scheda del personaggio) */
 .hud-bar {
     min-width: 0;
     height: 26px;
@@ -456,98 +542,109 @@ html.show-start .start-screen {
     background: #060918;
 }
 
-.hud .hud-bar {
-    grid-area: bar;
-    box-shadow: 0 0 0 2px var(--gold-dark);
-}
-
-/* Blocchi da fare: blu scuro con un filo di luce in alto */
 .hud-bar i {
-    background: linear-gradient(#323a78 0 3px, #262d62 3px);
+    background: #262d62;
 }
 
-/* Blocchi completati: oro con il riflesso chiaro in alto e l'ombra in basso */
 .hud-bar i.is-done {
-    background: linear-gradient(#ffe48a 0 3px, var(--gold) 3px 70%, var(--gold-dark) 70%);
+    background: linear-gradient(#ffe48a 0 18%, var(--gold) 18% 75%, var(--gold-dark) 75%);
 }
 
-/* Settimana in corso: un blocco che pulsa piano */
 .hud-bar i.is-now {
-    background: linear-gradient(#5a5070 0 3px, #3e3a66 3px);
+    background: #3e3a66;
     animation: blink 1.4s steps(1) infinite;
 }
 
-/* Menu di gioco: la fiammella indica la voce selezionata */
-/* Su desktop le due voci stanno affiancate per lasciare spazio alla scena */
-.game-menu {
-    margin-top: clamp(14px, 3vh, 30px);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px 64px;
+
+/* ---------- Schermi verticali ---------- */
+
+@media (max-aspect-ratio: 1/1) {
+    .header {
+        height: calc(var(--u) * 72);
+        padding: 0 calc(var(--u) * 16);
+    }
+
+    .logo {
+        gap: calc(var(--u) * 32);
+    }
+
+    .logo-mark {
+        width: calc(var(--u) * 84);
+        height: calc(var(--u) * 36);
+    }
+
+    .logo-mark::after {
+        right: calc(var(--u) * -16);
+    }
+
+    .logo-copy {
+        font-size: calc(var(--u) * 26);
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Il menu diventa una tendina sotto l'header */
+    .navigation {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        flex-direction: column;
+        gap: 0;
+
+        background: var(--panel-solid);
+
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s steps(4);
+    }
+
+    .navigation.active {
+        max-height: calc(var(--u) * 260);
+        border-bottom: max(2px, calc(var(--u) * 3)) solid var(--cream);
+    }
+
+    .navigation a {
+        padding: calc(var(--u) * 12) calc(var(--u) * 16);
+        border-top: max(1px, calc(var(--u) * 2)) solid var(--edge);
+    }
+
+    .navigation a::after {
+        display: none;
+    }
+
+    .world-ui {
+        padding-top: calc(var(--u) * 34);
+    }
+
+    .world-brand::before,
+    .world-brand::after {
+        width: calc(var(--u) * 60);
+    }
+
+    .world-title {
+        font-size: calc(var(--u) * 78);
+    }
+
+    .world-sub {
+        font-size: calc(var(--u) * 22);
+        padding: calc(var(--u) * 5) calc(var(--u) * 20);
+    }
+
+    .game-menu {
+        width: calc(var(--u) * 404);
+        margin-top: calc(var(--u) * 24);
+        gap: calc(var(--u) * 10);
+    }
+
+    .menu-item.is-selected {
+        transform: translateX(calc(var(--u) * 4));
+    }
 }
 
-.menu-item {
-    position: relative;
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    padding: 2px 10px;
-
-    text-decoration: none;
-    color: #cdd3f2;
-    text-shadow:
-        -2px 0 0 var(--ink), 2px 0 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink),
-        3px 3px 0 var(--ink);
-}
-
-/* La fiammella è agganciata all'etichetta, a sinistra */
-.menu-head {
-    position: relative;
-    display: inline-block;
-}
-
-.menu-label {
-    font-size: 38px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.menu-note {
-    font-size: 23px;
-    color: #cdd3f2;
-}
-
-.menu-flame {
-    position: absolute;
-    left: -30px;
-    top: 50%;
-    width: 21px;
-    height: 27px;
-    margin-top: -15px;
-    visibility: hidden;
-}
-
-.menu-item.is-selected {
-    color: var(--gold);
-}
-
-.menu-item.is-selected .menu-note {
-    color: #ffffff;
-}
-
-.menu-item.is-selected .menu-flame {
-    visibility: visible;
-    animation: flame 0.5s steps(2) infinite;
-}
-
-.menu-item:focus-visible {
-    outline: none;
-}
-
-@keyframes flame {
-    50% { transform: scaleY(0.85) translateY(2px); }
-}
 
 /* Entrata dopo START: gli elementi salgono a scatti uno dopo l'altro */
 html.show-start .world-ui > * {
@@ -624,91 +721,6 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
    ========================================================= */
 
 @media (max-width: 768px) {
-    .header {
-        height: 72px;
-        padding: 0 16px;
-    }
-
-    .logo-mark {
-        width: 84px;
-        height: 30px;
-    }
-
-    .logo-copy {
-        font-size: 24px;
-    }
-
-    .menu-toggle {
-        display: flex;
-    }
-
-    /* Il menu diventa una tendina sotto l'header */
-    .navigation {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-
-        flex-direction: column;
-        gap: 0;
-
-        background: var(--panel-solid);
-
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.2s steps(4);
-    }
-
-    .navigation.active {
-        max-height: 240px;
-        border-bottom: 3px solid var(--cream);
-    }
-
-    .navigation a {
-        padding: 12px 16px;
-        border-top: 2px solid var(--edge);
-    }
-
-    .world-title {
-        font-size: clamp(54px, 15vw, 72px);
-    }
-
-    .world-sub {
-        font-size: 24px;
-    }
-
-    .hud {
-        padding: 0 4px 6px;
-    }
-
-    .hud-level {
-        font-size: 34px;
-    }
-
-    .hud-xp {
-        font-size: 20px;
-    }
-
-    .game-menu {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .menu-item {
-        flex-direction: column;
-        align-items: center;
-        gap: 0;
-    }
-
-    .menu-label {
-        font-size: 32px;
-    }
-
-    .menu-note {
-        font-size: 21px;
-    }
-
-
     .levels,
     .journey,
     .character,
@@ -1383,7 +1395,7 @@ html.panel-open {
     height: 203px;
     max-width: 100%;
 
-    background: #132858 url("../immagini/falo.webp") no-repeat;
+    background: #132858 url("../immagini/home4k.webp") no-repeat;
     background-size: 1672px auto;
     background-position: -160px -548px;
     image-rendering: pixelated;
@@ -1656,10 +1668,9 @@ body.nav-floating .header {
     left: 0;
     right: 0;
     z-index: 50;
-    height: 64px;
 
     background: rgba(5, 7, 22, 0.94);
-    border-bottom: 3px solid var(--edge);
+    border-bottom: max(2px, calc(var(--u) * 3)) solid var(--edge);
     animation: nav-drop 0.25s steps(3);
 }
 

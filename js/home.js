@@ -102,17 +102,20 @@
         item.addEventListener("focus", function () { select(item); });
     });
 
-    // Frecce su e giù per spostare la fiammella, come in un vero menu
+    // Frecce per passare da un pulsante all'altro, come in un vero menu
+    const forward = ["ArrowDown", "ArrowRight"];
+    const back = ["ArrowUp", "ArrowLeft"];
+
     document.addEventListener("keydown", function (event) {
         if (root.classList.contains("show-start") || items.length === 0) return;
-        if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+        if (forward.indexOf(event.key) === -1 && back.indexOf(event.key) === -1) return;
 
         // Più in basso nella pagina le frecce tornano a far scorrere
         const inMenu = items.indexOf(document.activeElement) !== -1;
         if (!inMenu && window.scrollY > 40) return;
 
         const current = items.findIndex(function (item) { return item.classList.contains("is-selected"); });
-        const next = event.key === "ArrowDown"
+        const next = forward.indexOf(event.key) !== -1
             ? (current + 1) % items.length
             : (current - 1 + items.length) % items.length;
 

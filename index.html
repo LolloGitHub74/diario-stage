@@ -28,7 +28,7 @@
     <div class="start-screen" id="start-screen">
         <div class="start-box">
             <p class="start-kicker">SKILLA · STAGE 2026</p>
-            <h1 class="start-title">Diario<br>di Stage</h1>
+            <p class="start-title">Diario<br>di Stage</p>
             <p class="start-sub">un'avventura di Lorenzo Carducci</p>
             <button type="button" class="start-button" id="start-button">START</button>
             <p class="start-hint">premi INVIO</p>
@@ -42,7 +42,7 @@
 
         <!-- Illustrazione del falò: scene.js la posiziona sotto il menu -->
         <div class="scene" id="scene">
-            <img class="scene-art" src="immagini/falo.webp" alt="Un ragazzo in armatura riposa di notte accanto a un falò, tra i pini e un lago di montagna sotto la luna">
+            <img class="scene-art" src="immagini/home4k.webp" alt="Un ragazzo in armatura riposa di notte accanto a un falò, tra i pini e un lago di montagna sotto la luna">
         </div>
 
         <header class="header">
@@ -54,9 +54,9 @@
 
             <nav class="navigation">
                 <a href="#home" class="active">Home</a>
-                <a href="#livelli">Livelli</a>
-                <a href="#viaggio">Il viaggio</a>
-                <a href="#personaggio">Personaggio</a>
+                <a href="#viaggio">Il progetto</a>
+                <a href="#livelli">Diario</a>
+                <a href="#personaggio">Chi sono</a>
             </nav>
 
             <button class="menu-toggle" aria-label="Apri il menu">
@@ -67,27 +67,26 @@
 
         <div class="world-ui">
 
-            <h2 class="world-title">Il mio stage in <span>Skilla</span></h2>
-
-            <p class="world-sub">Siediti al falò. Ecco il viaggio finora.</p>
-
-            <!-- Livello e settimane: calcolati dalle date dello stage in home.js -->
-            <div class="hud">
-                <span class="hud-level">LV <span data-level>05</span></span>
-                <div class="hud-bar" role="progressbar" aria-label="Settimane completate" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4">
-                    <i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                </div>
-                <span class="hud-xp"><span data-xp>4</span>/16 settimane</span>
+            <div class="world-brand">
+                <span class="logo-mark" role="img" aria-label="Skilla"></span>
             </div>
 
+            <h1 class="world-title">Diario di <span>Stage</span></h1>
+
+            <p class="world-sub">Il mio percorso in Skilla</p>
+
             <nav class="game-menu" aria-label="Menu principale">
-                <a href="#livelli" class="menu-item is-selected">
-                    <span class="menu-head"><svg class="menu-flame" viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#e8452c" d="M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z"/><path fill="#ff9a2e" d="M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z"/><path fill="#ffe066" d="M3 5h1v1h1v2h-3v-2h1z"/></svg><span class="menu-label">Esperienza</span></span>
-                    <span class="menu-note">i livelli · <span data-fires>4</span> falò accesi</span>
+                <a href="#viaggio" class="menu-item is-selected">
+                    <img src="immagini/menu-progetto.webp" alt="" width="1320" height="245">
+                    <span class="visually-hidden">Il progetto: cosa sto facendo in Skilla</span>
                 </a>
-                <a href="#viaggio" class="menu-item">
-                    <span class="menu-head"><svg class="menu-flame" viewBox="0 0 7 9" aria-hidden="true" shape-rendering="crispEdges"><path fill="#e8452c" d="M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z"/><path fill="#ff9a2e" d="M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z"/><path fill="#ffe066" d="M3 5h1v1h1v2h-3v-2h1z"/></svg><span class="menu-label">Il viaggio finora</span></span>
-                    <span class="menu-note">il progetto</span>
+                <a href="#livelli" class="menu-item">
+                    <img src="immagini/menu-diario.webp" alt="" width="1320" height="245">
+                    <span class="visually-hidden">Diario: la mia esperienza settimana per settimana</span>
+                </a>
+                <a href="#personaggio" class="menu-item">
+                    <img src="immagini/menu-chi-sono.webp" alt="" width="1320" height="245">
+                    <span class="visually-hidden">Chi sono: il mio percorso e le mie competenze</span>
                 </a>
             </nav>
 
