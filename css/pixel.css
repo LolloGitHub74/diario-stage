@@ -2107,3 +2107,111 @@ body[data-screen="home"] .back-menu {
     4.5% { transform: translateY(-0.04em); }
     6%   { transform: translateY(0); }
 }
+
+
+/* =========================================================
+   MONDI DEL DIARIO: mappa illustrata con i falò cliccabili
+   ========================================================= */
+
+.world-map-wrap {
+    max-width: 1400px;
+    margin: 0 auto 70px;
+}
+
+.world-map-name {
+    margin-bottom: 12px;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 var(--ink);
+}
+
+/* Sugli schermi stretti la mappa resta grande e si scorre di lato */
+.world-map-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border: 3px solid var(--edge);
+    box-shadow: 6px 6px 0 rgba(5, 6, 15, 0.6);
+}
+
+.world-map {
+    position: relative;
+    min-width: 900px;
+    container-type: inline-size;
+}
+
+.world-map img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+/* Cartellino sopra ogni falò: piccolo rettangolo cliccabile */
+.world-stop {
+    position: absolute;
+    transform: translate(-50%, -100%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 10px 5px;
+
+    font-family: var(--font);
+    color: var(--cream);
+    white-space: nowrap;
+    cursor: pointer;
+
+    background: rgba(9, 11, 34, 0.88);
+    border: 3px solid #cfd2ee;
+    border-radius: 6px;
+    box-shadow: 3px 3px 0 rgba(5, 6, 15, 0.7);
+}
+
+/* Punta del cartellino verso il falò */
+.world-stop::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: #cfd2ee;
+}
+
+.world-stop-lv {
+    font-size: max(18px, 1.6cqw);
+    line-height: 1;
+}
+
+.world-stop-state {
+    font-size: max(13px, 1.05cqw);
+    line-height: 1;
+    color: var(--muted);
+}
+
+.world-stop[data-state="done"] .world-stop-state { color: var(--green); }
+.world-stop[data-state="current"] .world-stop-state { color: var(--gold); }
+
+.world-stop:hover,
+.world-stop:focus-visible {
+    color: var(--gold);
+    border-color: var(--gold);
+    outline: none;
+}
+
+.world-stop:hover::after,
+.world-stop:focus-visible::after {
+    border-top-color: var(--gold);
+}
+
+@media (max-width: 768px) {
+    .world-map-wrap {
+        margin-bottom: 50px;
+    }
+
+    .world-map-name {
+        font-size: 22px;
+    }
+}
