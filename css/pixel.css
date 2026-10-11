@@ -2110,46 +2110,13 @@ body[data-screen="home"] .back-menu {
 
 
 /* =========================================================
-   MONDI DEL DIARIO: mappa illustrata con i falò cliccabili
+   MONDI DEL DIARIO: cartellini cliccabili sopra i falò
    ========================================================= */
-
-.world-map-wrap {
-    max-width: 1400px;
-    margin: 0 auto 70px;
-}
-
-.world-map-name {
-    margin-bottom: 12px;
-    font-size: 26px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    text-shadow: 2px 2px 0 var(--ink);
-}
-
-/* Sugli schermi stretti la mappa resta grande e si scorre di lato */
-.world-map-scroll {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    border: 3px solid var(--edge);
-    box-shadow: 6px 6px 0 rgba(5, 6, 15, 0.6);
-}
-
-.world-map {
-    position: relative;
-    min-width: 900px;
-    container-type: inline-size;
-}
-
-.world-map img {
-    display: block;
-    width: 100%;
-    height: auto;
-    image-rendering: pixelated;
-}
 
 /* Cartellino sopra ogni falò: piccolo rettangolo cliccabile */
 .world-stop {
     position: absolute;
+    z-index: 2;
     transform: translate(-50%, -100%);
 
     display: flex;
@@ -2181,12 +2148,12 @@ body[data-screen="home"] .back-menu {
 }
 
 .world-stop-lv {
-    font-size: max(18px, 1.6cqw);
+    font-size: max(18px, 1.5cqw);
     line-height: 1;
 }
 
 .world-stop-state {
-    font-size: max(13px, 1.05cqw);
+    font-size: max(13px, 0.95cqw);
     line-height: 1;
     color: var(--muted);
 }
@@ -2206,12 +2173,202 @@ body[data-screen="home"] .back-menu {
     border-top-color: var(--gold);
 }
 
+
+
+/* =========================================================
+   DIARIO A TUTTO SCHERMO: un mondo alla volta, come la home
+   ========================================================= */
+
+.levels {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    padding: 0;
+    overflow: hidden;
+    background: #04050d;
+}
+
+body[data-screen="livelli"] main {
+    min-height: 0;
+}
+
+/* La pagina del mondo: se la mappa è più larga dello schermo
+   (telefono, finestre strette) si scorre di lato */
+.world-page {
+    position: absolute;
+    inset: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+
+.world-page::-webkit-scrollbar {
+    display: none;
+}
+
+/* La mappa riempie lo schermo in altezza, o in larghezza se lo
+   schermo è molto largo; resta appoggiata in basso */
+.world-stage {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: max(100vh, 50vw);
+    height: max(100svh, 50vw);
+    width: max(200vh, 100vw);
+    width: max(200svh, 100vw);
+    container-type: size;
+}
+
+.world-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+/* Velo scuro in alto, così nome del mondo e frecce si leggono */
+.levels::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 30%;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(rgba(4, 5, 13, 0.55), rgba(4, 5, 13, 0));
+}
+
+/* Mondi ancora da disegnare: la stessa mappa, quasi nera */
+.world-page.is-wip .world-art {
+    filter: brightness(0.12) saturate(0.4);
+}
+
+.world-wip {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 0 24px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.world-wip-title {
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 1;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 4px 4px 0 var(--ink);
+}
+
+.world-wip-text {
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.25;
+    color: var(--muted);
+}
+
+/* Nome del mondo e quattro tacche, in alto al centro */
+.world-hud {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.world-hud-name {
+    font-size: clamp(22px, 2.4vw, 34px);
+    letter-spacing: 2px;
+    color: var(--cream);
+    white-space: nowrap;
+    text-shadow: 3px 3px 0 var(--ink);
+}
+
+.world-hud-name [data-world-label] {
+    color: var(--gold);
+}
+
+.world-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.world-dots i {
+    width: 22px;
+    height: 8px;
+    background: rgba(207, 210, 238, 0.3);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.world-dots i.is-on {
+    background: var(--gold);
+}
+
+/* Frecce ai lati per cambiare mondo */
+.world-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    width: 54px;
+    height: 70px;
+    margin-top: -35px;
+
+    font-family: var(--font);
+    font-size: 54px;
+    line-height: 1;
+    color: var(--cream);
+    cursor: pointer;
+
+    background: rgba(9, 11, 34, 0.8);
+    border: 3px solid #cfd2ee;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 rgba(5, 6, 15, 0.7);
+}
+
+.world-prev { left: 16px; }
+.world-next { right: 16px; }
+
+.world-arrow:hover,
+.world-arrow:focus-visible {
+    color: var(--gold);
+    border-color: var(--gold);
+    outline: none;
+}
+
+.world-arrow:disabled {
+    opacity: 0.25;
+    cursor: default;
+    pointer-events: none;
+}
+
 @media (max-width: 768px) {
-    .world-map-wrap {
-        margin-bottom: 50px;
+    .world-hud {
+        top: 74px;
     }
 
-    .world-map-name {
-        font-size: 22px;
+    .world-hud-name {
+        font-size: 20px;
     }
+
+    .world-arrow {
+        width: 42px;
+        height: 56px;
+        margin-top: -28px;
+        font-size: 42px;
+    }
+
+    .world-prev { left: 8px; }
+    .world-next { right: 8px; }
 }

@@ -164,224 +164,89 @@
              IL SENTIERO DEI FALÒ: ogni settimana è un livello
              ===================================================== -->
 
-        <section class="levels" id="livelli">
+        <section class="levels" id="livelli" aria-label="Diario: i mondi delle settimane">
 
-            <div class="section-header">
-                <p class="eyebrow">ESPERIENZA</p>
-                <h2>Il sentiero dei falò</h2>
-                <p>
-                    Sedici settimane, un falò per ognuna. Scendi lungo il sentiero
-                    e fermati a un falò per leggere com'è andata quella settimana.
-                </p>
+            <h2 class="visually-hidden">Diario</h2>
+
+            <!-- I quattro mondi, uno per mese: si vede uno alla volta, a tutto schermo -->
+            <div class="world-page" data-world="1" data-name="La foresta" data-month="Settembre">
+                <div class="world-stage">
+                    <img class="world-art" src="immagini/mondo-1.webp" alt="La foresta del primo mondo: un sentiero con quattro falò tra i pini, un lago e un villaggio, verso un castello" width="1774" height="887">
+                        <button type="button" class="world-stop" data-level-open="1" data-world-week="1" style="left: 10.43%; top: 59.75%">
+                            <span class="world-stop-lv">LV 01</span>
+                            <span class="world-stop-state"></span>
+                        </button>
+                        <button type="button" class="world-stop" data-level-open="2" data-world-week="2" style="left: 35.12%; top: 61.44%">
+                            <span class="world-stop-lv">LV 02</span>
+                            <span class="world-stop-state"></span>
+                        </button>
+                        <button type="button" class="world-stop" data-level-open="3" data-world-week="3" style="left: 58.17%; top: 60.09%">
+                            <span class="world-stop-lv">LV 03</span>
+                            <span class="world-stop-state"></span>
+                        </button>
+                        <button type="button" class="world-stop" data-level-open="4" data-world-week="4" style="left: 84.84%; top: 58.40%">
+                            <span class="world-stop-lv">LV 04</span>
+                            <span class="world-stop-state"></span>
+                        </button>
+                </div>
             </div>
-
-            <!-- Mondo 1: la mappa illustrata con un cartellino cliccabile sopra ogni falò -->
-            <div class="world-map-wrap">
-                <p class="world-map-name">MONDO 1 · La foresta · Settembre</p>
-                <div class="world-map-scroll">
-                    <div class="world-map">
-                        <img src="immagini/mondo-1.webp" alt="La foresta del primo mondo: un sentiero con quattro falò tra i pini, un lago e un villaggio, verso un castello" width="1774" height="887">
-                    <button type="button" class="world-stop" data-level-open="1" data-world-week="1" style="left: 10.43%; top: 59.75%">
-                        <span class="world-stop-lv">LV 01</span>
-                        <span class="world-stop-state"></span>
-                    </button>
-                    <button type="button" class="world-stop" data-level-open="2" data-world-week="2" style="left: 35.12%; top: 61.44%">
-                        <span class="world-stop-lv">LV 02</span>
-                        <span class="world-stop-state"></span>
-                    </button>
-                    <button type="button" class="world-stop" data-level-open="3" data-world-week="3" style="left: 58.17%; top: 60.09%">
-                        <span class="world-stop-lv">LV 03</span>
-                        <span class="world-stop-state"></span>
-                    </button>
-                    <button type="button" class="world-stop" data-level-open="4" data-world-week="4" style="left: 84.84%; top: 58.40%">
-                        <span class="world-stop-lv">LV 04</span>
-                        <span class="world-stop-state"></span>
-                    </button>
-                    </div>
+            <div class="world-page is-wip" data-world="2" data-name="Le cascate" data-month="Ottobre" hidden>
+                <div class="world-stage">
+                    <img class="world-art" src="immagini/mondo-1.webp" alt="" width="1774" height="887">
+                </div>
+                <div class="world-wip">
+                    <p class="world-wip-title">In lavorazione</p>
+                    <p class="world-wip-text">Questo mondo si sta ancora disegnando.<br>Torna più avanti, cavaliere.</p>
+                </div>
+            </div>
+            <div class="world-page is-wip" data-world="3" data-name="La montagna" data-month="Novembre" hidden>
+                <div class="world-stage">
+                    <img class="world-art" src="immagini/mondo-1.webp" alt="" width="1774" height="887">
+                </div>
+                <div class="world-wip">
+                    <p class="world-wip-title">In lavorazione</p>
+                    <p class="world-wip-text">Questo mondo si sta ancora disegnando.<br>Torna più avanti, cavaliere.</p>
+                </div>
+            </div>
+            <div class="world-page is-wip" data-world="4" data-name="Il castello" data-month="Dicembre" hidden>
+                <div class="world-stage">
+                    <img class="world-art" src="immagini/mondo-1.webp" alt="" width="1774" height="887">
+                </div>
+                <div class="world-wip">
+                    <p class="world-wip-title">In lavorazione</p>
+                    <p class="world-wip-text">Questo mondo si sta ancora disegnando.<br>Torna più avanti, cavaliere.</p>
                 </div>
             </div>
 
-            <div class="trail-wrap">
-                <canvas class="trail-canvas" aria-hidden="true"></canvas>
-                <ol class="trail">
-                <li class="trail-stop" data-week="1">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="1">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 01</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Introduzione e attività iniziali</span>
-                        <span class="stop-date">7 — 11 settembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="2">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="2">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 02</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Prime attività di sviluppo</span>
-                        <span class="stop-date">14 — 18 settembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="3">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="3">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 03</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Sviluppo e sperimentazione</span>
-                        <span class="stop-date">21 — 25 settembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="4">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="4">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 04</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 04</span>
-                        <span class="stop-date">28 settembre — 2 ottobre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="5">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="5">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 05</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 05</span>
-                        <span class="stop-date">5 — 9 ottobre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="6">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="6">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 06</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 06</span>
-                        <span class="stop-date">12 — 16 ottobre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="7">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="7">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 07</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 07</span>
-                        <span class="stop-date">19 — 23 ottobre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="8">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="8">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 08</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 08</span>
-                        <span class="stop-date">26 — 30 ottobre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="9">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="9">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 09</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 09</span>
-                        <span class="stop-date">2 — 6 novembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="10">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="10">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 10</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 10</span>
-                        <span class="stop-date">9 — 13 novembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="11">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="11">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 11</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 11</span>
-                        <span class="stop-date">16 — 20 novembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="12">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="12">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 12</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 12</span>
-                        <span class="stop-date">23 — 27 novembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="13">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="13">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 13</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 13</span>
-                        <span class="stop-date">30 novembre — 4 dicembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="14">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="14">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 14</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 14</span>
-                        <span class="stop-date">7 — 11 dicembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="15">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="15">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 15</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 15</span>
-                        <span class="stop-date">14 — 18 dicembre 2026</span>
-                    </button>
-                </li>
-                <li class="trail-stop" data-week="16">
-                    <span class="stop-fire" aria-hidden="true"></span>
-                    <button type="button" class="stop-card" data-level-open="16">
-                        <span class="stop-top">
-                            <span class="stop-number">LIVELLO 16</span>
-                            <span class="stop-state">BLOCCATO</span>
-                        </span>
-                        <span class="stop-title">Settimana 16</span>
-                        <span class="stop-date">21 — 23 dicembre 2026</span>
-                    </button>
-                </li>
-                </ol>
+            <!-- Nome del mondo e tacche, in alto al centro -->
+            <div class="world-hud">
+                <p class="world-hud-name"><span data-world-label>MONDO 1</span> · <span data-world-name>La foresta</span> · <span data-world-month>Settembre</span></p>
+                <p class="world-dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></p>
             </div>
+
+            <!-- Frecce per passare da un mondo all'altro -->
+            <button type="button" class="world-arrow world-prev" data-world-step="-1" aria-label="Mondo precedente">‹</button>
+            <button type="button" class="world-arrow world-next" data-world-step="1" aria-label="Mondo successivo">›</button>
+
+            <!-- Titolo e date di ogni settimana, usati dalla scheda del livello -->
+            <ol class="week-data" hidden>
+                <li data-week="1"><span class="stop-title">Introduzione e attività iniziali</span> <span class="stop-date">7 — 11 settembre 2026</span></li>
+                <li data-week="2"><span class="stop-title">Prime attività di sviluppo</span> <span class="stop-date">14 — 18 settembre 2026</span></li>
+                <li data-week="3"><span class="stop-title">Sviluppo e sperimentazione</span> <span class="stop-date">21 — 25 settembre 2026</span></li>
+                <li data-week="4"><span class="stop-title">Settimana 04</span> <span class="stop-date">28 settembre — 2 ottobre 2026</span></li>
+                <li data-week="5"><span class="stop-title">Settimana 05</span> <span class="stop-date">5 — 9 ottobre 2026</span></li>
+                <li data-week="6"><span class="stop-title">Settimana 06</span> <span class="stop-date">12 — 16 ottobre 2026</span></li>
+                <li data-week="7"><span class="stop-title">Settimana 07</span> <span class="stop-date">19 — 23 ottobre 2026</span></li>
+                <li data-week="8"><span class="stop-title">Settimana 08</span> <span class="stop-date">26 — 30 ottobre 2026</span></li>
+                <li data-week="9"><span class="stop-title">Settimana 09</span> <span class="stop-date">2 — 6 novembre 2026</span></li>
+                <li data-week="10"><span class="stop-title">Settimana 10</span> <span class="stop-date">9 — 13 novembre 2026</span></li>
+                <li data-week="11"><span class="stop-title">Settimana 11</span> <span class="stop-date">16 — 20 novembre 2026</span></li>
+                <li data-week="12"><span class="stop-title">Settimana 12</span> <span class="stop-date">23 — 27 novembre 2026</span></li>
+                <li data-week="13"><span class="stop-title">Settimana 13</span> <span class="stop-date">30 novembre — 4 dicembre 2026</span></li>
+                <li data-week="14"><span class="stop-title">Settimana 14</span> <span class="stop-date">7 — 11 dicembre 2026</span></li>
+                <li data-week="15"><span class="stop-title">Settimana 15</span> <span class="stop-date">14 — 18 dicembre 2026</span></li>
+                <li data-week="16"><span class="stop-title">Settimana 16</span> <span class="stop-date">21 — 23 dicembre 2026</span></li>
+            </ol>
 
             <!-- Contenuto dei livelli: viene mostrato nella schermata del livello -->
 
@@ -1145,8 +1010,7 @@
     <script src="js/script.js"></script>
     <script src="js/scene.js"></script>
     <script src="js/home.js"></script>
-    <script src="js/trail.js"></script>
-    <script src="js/world.js"></script>
+    <script src="js/diario.js"></script>
     <script src="js/screens.js"></script>
 
 </body>

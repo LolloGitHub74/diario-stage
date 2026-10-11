@@ -82,13 +82,13 @@
         return new Promise(function (resolve) { setTimeout(resolve, ms); });
     }
 
-    function go(name, direction) {
-        if (busy || name === current) return Promise.resolve();
+    // Tenda nera: entra, a schermo coperto esegue "swap", poi esce
+    function curtainSwap(swap, direction) {
+        if (busy) return Promise.resolve(false);
 
         if (reduceMotion || !curtain || !curtain.animate) {
-            show(name);
-            focusScreen(name);
-            return Promise.resolve();
+            swap();
+            return Promise.resolve(true);
         }
 
         busy = true;
@@ -98,7 +98,7 @@
         curtain.classList.add("is-active");
         return wipe(start, COVER)
             .then(function () {
-                show(name);
+                swap();
                 return wait(80);
             })
             .then(function () {
@@ -108,8 +108,18 @@
                 curtain.classList.remove("is-active");
                 curtain.getAnimations().forEach(function (animation) { animation.cancel(); });
                 busy = false;
-                focusScreen(name);
+                return true;
             });
+    }
+
+    // La usa anche il diario per passare da un mondo all'altro
+    window.curtainSwap = curtainSwap;
+
+    function go(name, direction) {
+        if (busy || name === current) return Promise.resolve();
+        return curtainSwap(function () { show(name); }, direction).then(function (done) {
+            if (done) focusScreen(name);
+        });
     }
 
     function directionTo(name) {
@@ -122,7 +132,7 @@
         if (!link || event.defaultPrevented) return;
 
         const hash = link.getAttribute("href");
-        if (/^#livello-/.test(hash)) return;   // i livelli li apre trail.js
+        if (/^#livello-/.test(hash)) return;   // i livelli li apre diario.js
 
         const name = screenFor(hash);
         if (!name) return;
