@@ -2359,7 +2359,8 @@ body[data-screen="livelli"] main {
     }
 
     .world-hud-name {
-        font-size: 20px;
+        font-size: 18px;
+        white-space: normal;
     }
 
     .world-arrow {
@@ -2371,4 +2372,43 @@ body[data-screen="livelli"] main {
 
     .world-prev { left: 8px; }
     .world-next { right: 8px; }
+}
+
+
+/* Il cavaliere sulla mappa: sei disegni della camminata in
+   cavaliere-cammina.webp. Da fermo respira, camminando scorre
+   i disegni; verso sinistra si specchia */
+.knight-walker {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    height: 11.5%;
+    aspect-ratio: 160 / 196;
+    transform: translate(-57.5%, -100%);
+    background: url("../immagini/cavaliere-cammina.webp") 0 0 / 600% 100% no-repeat;
+    image-rendering: pixelated;
+    pointer-events: none;
+    animation: knight-breathe 1.8s steps(1) infinite;
+}
+
+.knight-walker.is-walking {
+    animation: knight-walk 0.6s steps(6, jump-none) infinite;
+}
+
+.knight-walker.is-left {
+    transform: translate(-57.5%, -100%) scaleX(-1);
+}
+
+@keyframes knight-walk {
+    from { background-position: 0% 0; }
+    to   { background-position: 100% 0; }
+}
+
+@keyframes knight-breathe {
+    0%  { translate: 0 0; }
+    50% { translate: 0 1.5%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .knight-walker { animation: none; }
 }

@@ -42,6 +42,7 @@
     // ---------- Mondi ----------
 
     let world = 1;
+    let knight = null;
 
     function showWorld(n) {
         world = n;
@@ -56,6 +57,7 @@
         section.querySelector(".world-prev").disabled = n === 1;
         section.querySelector(".world-next").disabled = n === pages.length;
         page.scrollLeft = 0;
+        if (knight && document.body.dataset.screen === "livelli") knight.enter();
     }
 
     function goWorld(n) {
@@ -90,6 +92,144 @@
     });
 
     showWorld(1);
+
+
+    // ---------- Il cavaliere ----------
+
+    knight = makeKnight();
+
+    // Entrando nel diario (o tornando al mondo 1) il cavaliere arriva da sinistra
+    window.addEventListener("screen:show", function (event) {
+        if (event.detail === "livelli" && !(dialog && dialog.open)) knight.enter();
+    });
+
+    function makeKnight() {
+        const el = section.querySelector(".knight-walker");
+        const noop = { enter: function () {}, walkTo: function () { return Promise.resolve(); }, placeAt: function () {} };
+        if (!el) return noop;
+
+        const page = el.closest(".world-page");
+        const pageWorld = Number(page.dataset.world);
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Dove si ferma per ogni settimana: a sinistra del falò, in % della mappa
+        const spots = {};
+        page.querySelectorAll(".world-stop").forEach(function (stop) {
+            spots[Number(stop.dataset.worldWeek)] = {
+                x: Number(stop.dataset.standX),
+                y: Number(stop.dataset.standY)
+            };
+        });
+        const weeksHere = Object.keys(spots).map(Number).sort(function (a, b) { return a - b; });
+        const START = { x: -5, y: spots[weeksHere[0]].y };
+
+        let pos = { x: START.x, y: START.y };
+        let at = 0;            // settimana a cui è fermo (0 = nessuna)
+        let walk = null;       // camminata in corso
+        let timer = null;
+
+        function draw() {
+            el.style.left = pos.x + "%";
+            el.style.top = pos.y + "%";
+        }
+
+        // Riposa al falò della settimana in corso; se il mondo è finito, all'ultimo
+        function restWeek() {
+            const current = weeksHere.find(function (w) { return stage.state(w) === "current"; });
+            if (current) return current;
+            const done = weeksHere.filter(function (w) { return stage.state(w) === "done"; });
+            return done.length ? done[done.length - 1] : weeksHere[0];
+        }
+
+        // Tiene il cavaliere al centro quando la mappa è più larga dello schermo
+        function follow() {
+            if (page.scrollWidth <= page.clientWidth) return;
+            const stageEl = el.parentElement;
+            const x = stageEl.clientWidth * pos.x / 100;
+            page.scrollLeft = x - page.clientWidth / 2;
+        }
+
+        function finish() {
+            if (!walk) return;
+            const done = walk;
+            walk = null;
+            pos = { x: done.to.x, y: done.to.y };
+            draw();
+            follow();
+            el.classList.remove("is-walking", "is-left");
+            done.resolve();
+        }
+
+        // speed: % della larghezza della mappa al secondo
+        function moveTo(to, speed, maxMs) {
+            finish();
+            const from = { x: pos.x, y: pos.y };
+            const distance = Math.abs(to.x - from.x);
+            if (reduceMotion || distance < 0.5) {
+                pos = { x: to.x, y: to.y };
+                draw();
+                follow();
+                return Promise.resolve();
+            }
+            const duration = Math.min(maxMs, Math.max(250, distance / speed * 1000));
+            el.classList.add("is-walking");
+            el.classList.toggle("is-left", to.x < from.x);
+
+            return new Promise(function (resolve) {
+                const start = performance.now();
+                walk = { to: to, resolve: resolve };
+                function step(now) {
+                    if (!walk || walk.to !== to) return;
+                    const t = Math.min(1, (now - start) / duration);
+                    pos = { x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t };
+                    draw();
+                    follow();
+                    if (t < 1) requestAnimationFrame(step);
+                    else finish();
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        function enter() {
+            if (world !== pageWorld || page.hidden) return;
+            clearTimeout(timer);
+            finish();
+            const target = restWeek();
+            pos = { x: START.x, y: START.y };
+            at = 0;
+            draw();
+            page.scrollLeft = 0;
+            // Aspetta che la tenda si sia aperta, poi entra camminando
+            timer = setTimeout(function () {
+                moveTo(spots[target], 34, 2600).then(function () { at = target; });
+            }, reduceMotion ? 0 : 380);
+        }
+
+        function walkTo(week) {
+            if (!spots[week]) return Promise.resolve();
+            // Se stava già camminando verso questo falò, un secondo clic apre subito
+            if (walk && walk.to === spots[week]) {
+                finish();
+                return Promise.resolve();
+            }
+            clearTimeout(timer);
+            if (at === week && !walk) return Promise.resolve();
+            return moveTo(spots[week], 60, 1000).then(function () { at = week; });
+        }
+
+        function placeAt(week) {
+            const target = spots[week] ? week : restWeek();
+            clearTimeout(timer);
+            finish();
+            pos = { x: spots[target].x, y: spots[target].y };
+            at = target;
+            draw();
+        }
+
+        placeAt(restWeek());
+        return { enter: enter, walkTo: walkTo, placeAt: placeAt };
+    }
 
 
     // ---------- Schermata del livello ----------
@@ -160,9 +300,17 @@
         return match ? Number(match[1]) : 0;
     }
 
-    document.querySelectorAll("[data-level-open]").forEach(function (button) {
+    document.querySelectorAll("[data-level-open]:not(.world-stop)").forEach(function (button) {
         button.addEventListener("click", function () {
             open(Number(button.dataset.levelOpen), false);
+        });
+    });
+
+    // Cartellini sopra i falò: il cavaliere cammina fin lì, poi si apre la scheda
+    section.querySelectorAll(".world-stop").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const week = Number(button.dataset.levelOpen);
+            knight.walkTo(week).then(function () { open(week, false); });
         });
     });
 
@@ -212,5 +360,8 @@
 
     // Un link come diario-stage/#livello-03 apre subito quel livello
     const initial = weekFromHash();
-    if (initial) open(initial, true);
+    if (initial) {
+        knight.placeAt(initial);
+        open(initial, true);
+    }
 })();
