@@ -34,6 +34,7 @@
         const title = weeks[week - 1] ? weeks[week - 1].querySelector(".stop-title").textContent : "";
         stop.dataset.state = state;
         stop.querySelector(".world-stop-state").textContent = STOP_LABEL[state];
+        stop.querySelector(".state-icon").dataset.state = state;
         stop.setAttribute("aria-label", "Livello " + week + ": " + title + " — " + STOP_LABEL[state]);
         stop.title = title;
     });
@@ -339,13 +340,95 @@
         });
     });
 
-    // Cartellini sopra i falò: il cavaliere cammina fin lì, poi si apre la scheda
+    // ---------- Riquadro del falò ----------
+    // Clic su un cartellino: il cavaliere cammina fin lì, poi sopra il falò
+    // si apre il riquadro con le quattro sezioni e "Scopri i dettagli"
+
+    const firePanel = section.querySelector(".fire-panel");
+    let panelWeek = 0;
+
+    function closePanel() {
+        if (!firePanel || !firePanel.open) return;
+        firePanel.close();
+        section.classList.remove("has-panel");
+        section.querySelectorAll(".world-stop.is-open").forEach(function (stop) { stop.classList.remove("is-open"); });
+        panelWeek = 0;
+    }
+
+    function openPanel(week, stop) {
+        if (!firePanel) { open(week, false); return; }
+        const state = weeks[week - 1].dataset.state;
+        firePanel.querySelector(".fp-lv").textContent = "LV " + pad(week);
+        firePanel.querySelector(".fp-state").textContent = STOP_LABEL[state];
+        firePanel.querySelector(".fp-head .state-icon").dataset.state = state;
+        firePanel.dataset.state = state;
+        firePanel.style.left = stop.style.left;
+        firePanel.style.top = stop.style.top;
+        firePanel.style.setProperty("--shift", "0px");
+        firePanel.style.setProperty("--drop", "0px");
+        stop.classList.add("is-open");
+        section.classList.add("has-panel");
+        panelWeek = week;
+        firePanel.show();
+
+        // Resta dentro la parte visibile dello schermo
+        const page = firePanel.closest(".world-page");
+        const box = firePanel.getBoundingClientRect();
+        const view = page.getBoundingClientRect();
+        let shift = 0;
+        if (box.left < view.left + 8) shift = view.left + 8 - box.left;
+        if (box.right > view.right - 8) shift = view.right - 8 - box.right;
+        firePanel.style.setProperty("--shift", shift + "px");
+        // Non sale sotto il pulsante Menu: se serve scende un po'
+        const minTop = view.top + 66;
+        if (box.top < minTop) firePanel.style.setProperty("--drop", (minTop - box.top) + "px");
+        const first = firePanel.querySelector(".fp-row");
+        if (first) first.focus({ preventScroll: true });
+    }
+
     section.querySelectorAll(".world-stop").forEach(function (button) {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function (event) {
+            event.stopPropagation();
             const week = Number(button.dataset.levelOpen);
-            knight.walkTo(week).then(function () { open(week, false); });
+            closePanel();
+            knight.walkTo(week).then(function () { openPanel(week, button); });
         });
     });
+
+    if (firePanel) {
+        // Una sezione apre la scheda della settimana direttamente su quella sezione
+        firePanel.querySelectorAll(".fp-row").forEach(function (row) {
+            row.addEventListener("click", function () {
+                const week = panelWeek;
+                const index = Number(row.dataset.section);
+                closePanel();
+                open(week, false);
+                const target = body.querySelectorAll("section")[index];
+                const inner = dialog.querySelector(".panel-inner");
+                if (target && inner) inner.scrollTop = target.offsetTop - inner.offsetTop - 12;
+            });
+        });
+
+        firePanel.querySelector(".fp-cta").addEventListener("click", function () {
+            const week = panelWeek;
+            closePanel();
+            open(week, false);
+        });
+
+        firePanel.addEventListener("click", function (event) { event.stopPropagation(); });
+
+        // Clic fuori, Esc, cambio di mondo o di schermata: si chiude
+        section.addEventListener("click", closePanel);
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && firePanel.open) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                closePanel();
+            }
+        }, true);
+        window.addEventListener("screen:show", closePanel);
+        section.querySelectorAll("[data-world-step]").forEach(function (b) { b.addEventListener("click", closePanel); });
+    }
 
     // I link "Settimana 02" nei pannelli del progetto aprono il livello
     document.querySelectorAll('a[href^="#livello-"]').forEach(function (link) {

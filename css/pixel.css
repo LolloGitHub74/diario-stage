@@ -2673,3 +2673,253 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         transition: none !important;
     }
 }
+
+
+/* =========================================================
+   CARTELLINI DEI FALÒ, RIQUADRO DEL FALÒ E PULSANTE MENU
+   La cornice dorata è un piccolo disegno (ui-cornice.webp)
+   che si allunga sui lati (border-image), come nei giochi
+   ========================================================= */
+
+.world-stop,
+.fire-panel,
+.back-menu {
+    border: 14px solid transparent;
+    border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
+}
+
+/* Cartellino: icona di stato + livello e stato, con la punta verso il falò */
+.world-stop {
+    flex-direction: row;
+    gap: 10px;
+    padding: 2px 10px 2px 6px;
+    transform: translate(-50%, calc(-100% - 12px));
+}
+
+.world-stop::after {
+    content: "";
+    top: calc(100% + 10px);
+    left: 50%;
+    width: 26px;
+    height: 16px;
+    margin-left: -13px;
+    border: 0;
+    background: url("../immagini/ui-punta.webp") center / contain no-repeat;
+}
+
+.world-stop:hover::after,
+.world-stop:focus-visible::after {
+    border: 0;
+}
+
+.world-stop-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.world-stop-lv {
+    font-size: max(20px, 1.45cqw);
+}
+
+.world-stop-state {
+    font-size: max(15px, 1.05cqw);
+}
+
+.world-stop:hover,
+.world-stop:focus-visible {
+    filter: brightness(1.15) drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
+}
+
+/* Il cartellino del falò aperto lascia il posto al riquadro */
+.world-stop.is-open {
+    visibility: hidden;
+}
+
+/* Icona di stato: spunta verde, fiammella per la settimana in corso, lucchetto */
+.state-icon {
+    display: block;
+    flex: none;
+    width: max(26px, 1.9cqw);
+    height: max(26px, 1.9cqw);
+    background: url("../immagini/ui-check.webp") center / contain no-repeat;
+    image-rendering: pixelated;
+}
+
+.state-icon[data-state="current"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 9' shape-rendering='crispEdges'%3E%3Cpath fill='%23e8452c' d='M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z'/%3E%3Cpath fill='%23ff9a2e' d='M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z'/%3E%3Cpath fill='%23ffe066' d='M3 5h1v1h1v2h-3v-2h1z'/%3E%3C/svg%3E");
+}
+
+.state-icon[data-state="locked"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 9' shape-rendering='crispEdges'%3E%3Cpath fill='%239aa3b5' d='M2 0h4v1h1v3h-1v-3h-4v3h-1v-3h1z'/%3E%3Cpath fill='%23c99a16' d='M0 4h8v5h-8z'/%3E%3Cpath fill='%23ffcf4a' d='M1 4h6v1h-6z'/%3E%3Cpath fill='%2305060f' d='M3 6h2v2h-2z'/%3E%3C/svg%3E");
+}
+
+/* Riquadro del falò, sopra il falò scelto */
+.fire-panel {
+    position: absolute;
+    z-index: 3;
+    inset: auto;
+    margin: 0;
+    width: clamp(260px, 19cqw, 360px);
+    padding: 2px 6px 6px;
+    color: var(--cream);
+    font-family: var(--font);
+    transform: translate(calc(-50% + var(--shift, 0px)), calc(-100% - 6px + var(--drop, 0px)));
+    animation: panel-pop 0.18s steps(3);
+}
+
+.fire-panel:not([open]) {
+    display: none;
+}
+
+@keyframes panel-pop {
+    from { transform: translate(calc(-50% + var(--shift, 0px)), calc(-100% + 10px + var(--drop, 0px))) scale(0.85); opacity: 0; }
+}
+
+.fp-head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 0 4px;
+}
+
+.fp-head::before,
+.fp-head::after {
+    content: "";
+    flex: 1;
+    max-width: 34px;
+    height: 2px;
+    background: var(--gold-dark);
+}
+
+.fp-lv {
+    font-size: max(24px, 1.7cqw);
+    line-height: 1;
+}
+
+.fp-state,
+.world-stop-state {
+    color: var(--green);
+}
+
+.fire-panel[data-state="current"] .fp-state,
+.world-stop[data-state="current"] .world-stop-state { color: var(--gold); }
+
+.fire-panel[data-state="locked"] .fp-state,
+.world-stop[data-state="locked"] .world-stop-state { color: var(--muted); }
+
+.fp-state {
+    font-size: max(17px, 1.2cqw);
+}
+
+/* Le quattro sezioni */
+.fp-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 4px;
+    padding: 2px 10px 2px 6px;
+
+    font-family: var(--font);
+    font-size: max(18px, 1.25cqw);
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+
+    background: #1a0f12;
+    border: 2px solid #3a2420;
+    border-radius: 4px;
+}
+
+.fp-row img {
+    width: max(24px, 1.7cqw);
+    height: max(24px, 1.7cqw);
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.fp-row span {
+    flex: 1;
+}
+
+.fp-row:hover,
+.fp-row:focus-visible {
+    color: var(--gold);
+    border-color: var(--gold-dark);
+    outline: none;
+}
+
+/* Freccia dorata a pixel */
+.fp-chev {
+    flex: none;
+    width: 10px;
+    height: 16px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23ffb02e' d='M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Bottone dorato "Scopri i dettagli" */
+.fp-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    margin-top: 7px;
+    padding: 4px 12px;
+
+    font-family: var(--font);
+    font-size: max(20px, 1.45cqw);
+    color: #2a1608;
+    cursor: pointer;
+
+    background: linear-gradient(#ffd56a 0 15%, #f5b23e 15% 80%, #c9861c 80%);
+    border: 2px solid #5a3410;
+    border-radius: 5px;
+}
+
+.fp-cta .fp-chev {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 7' shape-rendering='crispEdges'%3E%3Cpath fill='%232a1608' d='M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z'/%3E%3C/svg%3E");
+}
+
+.fp-cta:hover,
+.fp-cta:focus-visible {
+    filter: brightness(1.1);
+    outline: none;
+}
+
+/* Pulsante "‹ Menu" con la stessa cornice */
+.back-menu {
+    top: 12px;
+    left: 12px;
+    padding: 2px 16px 4px;
+    font-size: 30px;
+    color: var(--cream);
+}
+
+.back-menu:hover,
+.back-menu:focus-visible {
+    border-color: transparent;
+    color: var(--gold);
+    filter: brightness(1.15) drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fire-panel { animation: none; }
+}
+
+/* Mentre il riquadro è aperto il nome del mondo si nasconde */
+.world-hud {
+    transition: opacity 0.15s steps(2);
+}
+
+.levels.has-panel .world-hud {
+    opacity: 0;
+}

@@ -216,21 +216,51 @@
                     <img class="world-art" src="immagini/mondo-1.webp" alt="Il primo mondo visto dall'alto: un sentiero con quattro falò tra i pini, un lago con le isole, le cascate e un castello" width="1774" height="887">
                     <i class="knight-walker" aria-hidden="true"></i>
                         <button type="button" class="world-stop" data-level-open="1" data-world-week="1" data-stand-x="8.40" data-stand-y="50.08" style="left: 11.22%; top: 43.74%">
-                            <span class="world-stop-lv">LV 01</span>
-                            <span class="world-stop-state"></span>
+                            <span class="state-icon" aria-hidden="true"></span>
+                            <span class="world-stop-text"><span class="world-stop-lv">LV 01</span><span class="world-stop-state"></span></span>
                         </button>
                         <button type="button" class="world-stop" data-level-open="2" data-world-week="2" data-stand-x="32.58" data-stand-y="53.49" style="left: 35.40%; top: 45.77%">
-                            <span class="world-stop-lv">LV 02</span>
-                            <span class="world-stop-state"></span>
+                            <span class="state-icon" aria-hidden="true"></span>
+                            <span class="world-stop-text"><span class="world-stop-lv">LV 02</span><span class="world-stop-state"></span></span>
                         </button>
                         <button type="button" class="world-stop" data-level-open="3" data-world-week="3" data-stand-x="54.23" data-stand-y="58.93" style="left: 57.05%; top: 50.51%">
-                            <span class="world-stop-lv">LV 03</span>
-                            <span class="world-stop-state"></span>
+                            <span class="state-icon" aria-hidden="true"></span>
+                            <span class="world-stop-text"><span class="world-stop-lv">LV 03</span><span class="world-stop-state"></span></span>
                         </button>
                         <button type="button" class="world-stop" data-level-open="4" data-world-week="4" data-stand-x="82.02" data-stand-y="56.59" style="left: 84.84%; top: 48.82%">
-                            <span class="world-stop-lv">LV 04</span>
-                            <span class="world-stop-state"></span>
+                            <span class="state-icon" aria-hidden="true"></span>
+                            <span class="world-stop-text"><span class="world-stop-lv">LV 04</span><span class="world-stop-state"></span></span>
                         </button>
+
+                    <!-- Riquadro del falò: si apre sopra il falò scelto con le quattro sezioni -->
+                    <dialog class="fire-panel" aria-labelledby="fp-title">
+                        <div class="fp-head">
+                            <span class="state-icon" aria-hidden="true"></span>
+                            <span class="fp-lv" id="fp-title">LV 01</span>
+                            <span class="fp-state"></span>
+                        </div>
+                        <button type="button" class="fp-row" data-section="0">
+                            <img src="immagini/ui-pergamena.webp" alt="" width="70" height="70">
+                            <span>Missioni</span>
+                            <i class="fp-chev" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="fp-row" data-section="1">
+                            <img src="immagini/ui-spade.webp" alt="" width="70" height="70">
+                            <span>Attività svolte</span>
+                            <i class="fp-chev" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="fp-row" data-section="2">
+                            <img src="immagini/ui-stella.webp" alt="" width="70" height="70">
+                            <span>Abilità sbloccate</span>
+                            <i class="fp-chev" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="fp-row" data-section="3">
+                            <img src="immagini/ui-libro.webp" alt="" width="70" height="70">
+                            <span>Diario del cavaliere</span>
+                            <i class="fp-chev" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="fp-cta">Scopri i dettagli <i class="fp-chev" aria-hidden="true"></i></button>
+                    </dialog>
                 </div>
             </div>
             <div class="world-page is-wip" data-world="2" data-name="Le cascate" data-month="Ottobre" hidden>
