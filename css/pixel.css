@@ -2375,27 +2375,33 @@ body[data-screen="livelli"] main {
 }
 
 
-/* Il cavaliere sulla mappa: sei disegni della camminata in
-   cavaliere-cammina.webp. Da fermo respira, camminando scorre
-   i disegni; verso sinistra si specchia */
+/* Il cavaliere sulla mappa: da fermo la posa in piedi che respira,
+   camminando i sei disegni di cavaliere-cammina.webp; verso
+   sinistra si specchia */
 .knight-walker {
     position: absolute;
     z-index: 1;
     display: block;
     height: 11.5%;
-    aspect-ratio: 160 / 196;
-    transform: translate(-57.5%, -100%);
-    background: url("../immagini/cavaliere-cammina.webp") 0 0 / 600% 100% no-repeat;
+    /* Da fermo: la posa in piedi (cavaliere-fermo.webp) */
+    aspect-ratio: 180 / 196;
+    transform: translate(-61.33%, -100%);
+    background: url("../immagini/cavaliere-fermo.webp") 0 0 / 100% 100% no-repeat;
     image-rendering: pixelated;
     pointer-events: none;
     animation: knight-breathe 1.8s steps(1) infinite;
 }
 
+/* Camminando: i sei disegni della camminata */
 .knight-walker.is-walking {
+    aspect-ratio: 160 / 196;
+    transform: translate(-57.5%, -100%);
+    background-image: url("../immagini/cavaliere-cammina.webp");
+    background-size: 600% 100%;
     animation: knight-walk 0.6s steps(6, jump-none) infinite;
 }
 
-.knight-walker.is-left {
+.knight-walker.is-walking.is-left {
     transform: translate(-57.5%, -100%) scaleX(-1);
 }
 
