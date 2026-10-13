@@ -190,7 +190,7 @@ html.show-start .start-screen {
     background: none;
     border: 0;
     filter: drop-shadow(0 calc(var(--sw) * 0.01) 0 rgba(0, 0, 0, 0.6));
-    animation: start-pulse 1.4s steps(2) infinite;
+    animation: start-pulse 2s steps(1) infinite;
     transition: transform 0.1s steps(2), filter 0.1s steps(2);
 }
 
@@ -216,8 +216,11 @@ html.show-start .start-screen {
     filter: brightness(1.25);
 }
 
+/* Un solo piccolo salto ogni 2 secondi */
 @keyframes start-pulse {
-    50% { transform: translateY(-4px); }
+    0%  { transform: translateY(0); }
+    85% { transform: translateY(-5px); }
+    95% { transform: translateY(0); }
 }
 
 .start-hint {
