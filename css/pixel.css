@@ -2382,10 +2382,11 @@ body[data-screen="livelli"] main {
     position: absolute;
     z-index: 1;
     display: block;
-    height: 11.5%;
+    height: 8.5%;
     /* Da fermo: la posa in piedi (cavaliere-fermo.webp) */
-    aspect-ratio: 180 / 196;
-    transform: translate(-61.33%, -100%);
+    aspect-ratio: 160 / 184;
+    transform: translate(-62.5%, -100%);
+    transform-origin: 62.5% 100%;
     background: url("../immagini/cavaliere-fermo.webp") 0 0 / 100% 100% no-repeat;
     image-rendering: pixelated;
     pointer-events: none;
@@ -2394,15 +2395,13 @@ body[data-screen="livelli"] main {
 
 /* Camminando: i sei disegni della camminata */
 .knight-walker.is-walking {
-    aspect-ratio: 160 / 196;
-    transform: translate(-57.5%, -100%);
     background-image: url("../immagini/cavaliere-cammina.webp");
     background-size: 600% 100%;
     animation: knight-walk 0.6s steps(6, jump-none) infinite;
 }
 
 .knight-walker.is-walking.is-left {
-    transform: translate(-57.5%, -100%) scaleX(-1);
+    transform: translate(-62.5%, -100%) scaleX(-1);
 }
 
 @keyframes knight-walk {

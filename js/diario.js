@@ -112,31 +112,65 @@
         const pageWorld = Number(page.dataset.world);
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        // Dove si ferma per ogni settimana: a sinistra del falò, in % della mappa
+        // Il sentiero disegnato sulla mappa, come una linea di punti (in %)
+        const path = (page.dataset.path || "").trim().split(/\s+/).map(function (pair) {
+            const xy = pair.split(",").map(Number);
+            return { x: xy[0], y: xy[1] };
+        });
+        // Lunghezza progressiva lungo il sentiero (la x conta il doppio: la mappa è 2:1)
+        const along = [0];
+        for (let i = 1; i < path.length; i++) {
+            along.push(along[i - 1] + Math.hypot(path[i].x - path[i - 1].x, (path[i].y - path[i - 1].y) / 2));
+        }
+
+        // Punto del sentiero a una certa distanza dall'inizio
+        function pointAt(s) {
+            if (s <= 0) return path[0];
+            for (let i = 1; i < path.length; i++) {
+                if (s <= along[i]) {
+                    const t = (s - along[i - 1]) / (along[i] - along[i - 1] || 1);
+                    return { x: path[i - 1].x + (path[i].x - path[i - 1].x) * t, y: path[i - 1].y + (path[i].y - path[i - 1].y) * t };
+                }
+            }
+            return path[path.length - 1];
+        }
+
+        // Distanza lungo il sentiero del punto più vicino a una certa x
+        function distanceAtX(x) {
+            for (let i = 1; i < path.length; i++) {
+                if (x <= path[i].x) {
+                    const t = (x - path[i - 1].x) / (path[i].x - path[i - 1].x || 1);
+                    return along[i - 1] + (along[i] - along[i - 1]) * Math.max(0, Math.min(1, t));
+                }
+            }
+            return along[along.length - 1];
+        }
+
+        // Dove si ferma per ogni settimana: sul sentiero, appena prima del falò
         const spots = {};
         page.querySelectorAll(".world-stop").forEach(function (stop) {
-            spots[Number(stop.dataset.worldWeek)] = {
-                x: Number(stop.dataset.standX),
-                y: Number(stop.dataset.standY)
-            };
+            spots[Number(stop.dataset.worldWeek)] = distanceAtX(Number(stop.dataset.standX));
         });
         const weeksHere = Object.keys(spots).map(Number).sort(function (a, b) { return a - b; });
-        const START = { x: -5, y: spots[weeksHere[0]].y };
+        const START = -3;      // appena fuori dal bordo sinistro
 
-        let pos = { x: START.x, y: START.y };
+        let s = START;
         let at = 0;            // settimana a cui è fermo (0 = nessuna)
         let walk = null;       // camminata in corso
         let timer = null;
 
         function draw() {
-            el.style.left = pos.x + "%";
-            el.style.top = pos.y + "%";
+            const p = s < 0 ? { x: path[0].x + s, y: path[0].y } : pointAt(s);
+            el.style.left = p.x + "%";
+            el.style.top = p.y + "%";
+            current = p;
         }
+        let current = path[0];
 
         // Riposa al falò della settimana in corso; se il mondo è finito, all'ultimo
         function restWeek() {
-            const current = weeksHere.find(function (w) { return stage.state(w) === "current"; });
-            if (current) return current;
+            const now = weeksHere.find(function (w) { return stage.state(w) === "current"; });
+            if (now) return now;
             const done = weeksHere.filter(function (w) { return stage.state(w) === "done"; });
             return done.length ? done[done.length - 1] : weeksHere[0];
         }
@@ -144,8 +178,7 @@
         // Tiene il cavaliere al centro quando la mappa è più larga dello schermo
         function follow() {
             if (page.scrollWidth <= page.clientWidth) return;
-            const stageEl = el.parentElement;
-            const x = stageEl.clientWidth * pos.x / 100;
+            const x = el.parentElement.clientWidth * current.x / 100;
             page.scrollLeft = x - page.clientWidth / 2;
         }
 
@@ -153,27 +186,27 @@
             if (!walk) return;
             const done = walk;
             walk = null;
-            pos = { x: done.to.x, y: done.to.y };
+            s = done.to;
             draw();
             follow();
             el.classList.remove("is-walking", "is-left");
             done.resolve();
         }
 
-        // speed: % della larghezza della mappa al secondo
+        // Cammina lungo il sentiero fino alla distanza "to"; speed in % al secondo
         function moveTo(to, speed, maxMs) {
             finish();
-            const from = { x: pos.x, y: pos.y };
-            const distance = Math.abs(to.x - from.x);
-            if (reduceMotion || distance < 0.5) {
-                pos = { x: to.x, y: to.y };
+            const from = s;
+            const distance = Math.abs(to - from);
+            if (reduceMotion || distance < 0.3) {
+                s = to;
                 draw();
                 follow();
                 return Promise.resolve();
             }
             const duration = Math.min(maxMs, Math.max(250, distance / speed * 1000));
             el.classList.add("is-walking");
-            el.classList.toggle("is-left", to.x < from.x);
+            el.classList.toggle("is-left", to < from);
 
             return new Promise(function (resolve) {
                 const start = performance.now();
@@ -181,7 +214,7 @@
                 function step(now) {
                     if (!walk || walk.to !== to) return;
                     const t = Math.min(1, (now - start) / duration);
-                    pos = { x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t };
+                    s = from + (to - from) * t;
                     draw();
                     follow();
                     if (t < 1) requestAnimationFrame(step);
@@ -196,7 +229,7 @@
             clearTimeout(timer);
             finish();
             const target = restWeek();
-            pos = { x: START.x, y: START.y };
+            s = START;
             at = 0;
             draw();
             page.scrollLeft = 0;
@@ -222,7 +255,7 @@
             const target = spots[week] ? week : restWeek();
             clearTimeout(timer);
             finish();
-            pos = { x: spots[target].x, y: spots[target].y };
+            s = spots[target];
             at = target;
             draw();
         }
