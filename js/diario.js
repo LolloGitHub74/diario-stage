@@ -364,6 +364,8 @@
         firePanel.dataset.state = state;
         firePanel.style.left = stop.style.left;
         firePanel.style.top = stop.style.top;
+        // Per i falò in alto a sinistra il riquadro si apre sotto, lontano dal Menu
+        firePanel.classList.toggle("is-below", stop.hasAttribute("data-below"));
         firePanel.style.setProperty("--shift", "0px");
         firePanel.style.setProperty("--drop", "0px");
         stop.classList.add("is-open");
@@ -379,9 +381,10 @@
         if (box.left < view.left + 8) shift = view.left + 8 - box.left;
         if (box.right > view.right - 8) shift = view.right - 8 - box.right;
         firePanel.style.setProperty("--shift", shift + "px");
-        // Non sale sotto il pulsante Menu: se serve scende un po'
+        // Non sale sotto il pulsante Menu e non esce in basso
         const minTop = view.top + 66;
         if (box.top < minTop) firePanel.style.setProperty("--drop", (minTop - box.top) + "px");
+        else if (box.bottom > view.bottom - 8) firePanel.style.setProperty("--drop", (view.bottom - 8 - box.bottom) + "px");
         const first = firePanel.querySelector(".fp-row");
         if (first) first.focus({ preventScroll: true });
     }

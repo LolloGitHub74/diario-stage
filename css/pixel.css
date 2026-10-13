@@ -2963,3 +2963,34 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     .world-prev { left: 6px; }
     .world-next { right: 6px; }
 }
+
+/* Cartellini sotto il falò (LV 01 e LV 02): la punta guarda in su */
+.world-stop[data-below] {
+    transform: translate(-50%, 12px);
+}
+
+.world-stop[data-below]::after {
+    top: auto;
+    bottom: calc(100% + 10px);
+    transform: rotate(180deg);
+}
+
+/* Riquadro aperto sotto il falò */
+.fire-panel.is-below {
+    transform: translate(calc(-50% + var(--shift, 0px)), calc(6px + var(--drop, 0px)));
+}
+
+.fire-panel.is-below {
+    animation-name: panel-pop-below;
+}
+
+@keyframes panel-pop-below {
+    from { transform: translate(calc(-50% + var(--shift, 0px)), calc(-10px + var(--drop, 0px))) scale(0.85); opacity: 0; }
+}
+
+.fp-lv,
+.fp-state,
+.fp-row span,
+.fp-cta {
+    white-space: nowrap;
+}
