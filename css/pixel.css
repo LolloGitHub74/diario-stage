@@ -1861,6 +1861,7 @@ body[data-screen="home"] .back-menu {
 .scene-fx {
     position: absolute;
     inset: 0;
+    z-index: 2;
     pointer-events: none;
 }
 
@@ -2480,4 +2481,195 @@ body[data-screen="livelli"] main {
 
 @media (prefers-reduced-motion: reduce) {
     .knight-walker { animation: none; }
+}
+
+
+/* =========================================================
+   GIORNO E NOTTE NELLA HOME
+   Due scene identiche una sopra l'altra: la notte copre il
+   giorno. theme.js aggiunge le classi del tramonto e dell'alba
+   (is-dusk, is-dawn, theme-anim) per animare il passaggio.
+   ========================================================= */
+
+.scene-art.scene-day,
+.scene-art.scene-night {
+    position: absolute;
+    inset: 0;
+}
+
+.scene-night {
+    opacity: 1;
+}
+
+html[data-theme="day"] .scene-night {
+    opacity: 0;
+}
+
+html[data-theme="day"] .world {
+    background: linear-gradient(#3a7ad6, #5b9ae6);
+}
+
+/* Effetti notturni: stelle, stella cadente, lucciole, fuoco e scintille */
+.fx-night {
+    position: absolute;
+    inset: 0;
+}
+
+html[data-theme="day"] .fx-night {
+    opacity: 0;
+    visibility: hidden;
+}
+
+html[data-theme="day"] .fx-night .star {
+    visibility: hidden;
+}
+
+/* Il fuoco cresce dai legni quando si accende e si ritira quando si spegne */
+html[data-theme="day"] .flame,
+html[data-theme="day"] .flame-glint,
+html[data-theme="day"] .fire-glow {
+    scale: 0.15;
+}
+
+.flame,
+.flame-glint {
+    transform-origin: 50.9% 75%;
+}
+
+.fire-glow {
+    transform-origin: 0 0;
+}
+
+/* Occhi chiusi del cavaliere di giorno: stessa toppa, presa dal disegno di giorno */
+html[data-theme="day"] .knight-eyes {
+    left: 18.38%;
+    top: 73.06%;
+    width: 1.92%;
+    height: 2.25%;
+    background-image: url("../immagini/occhi-chiusi-giorno.webp");
+}
+
+/* Luce del tramonto e dell'alba: un velo caldo più forte in alto */
+.sky-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(rgba(255, 110, 70, 0.55), rgba(255, 160, 90, 0.38) 45%, rgba(120, 50, 110, 0.25));
+}
+
+html.is-dusk .sky-tint,
+html.is-dawn .sky-tint {
+    opacity: 1;
+}
+
+html.is-dawn .sky-tint {
+    background: linear-gradient(rgba(255, 150, 170, 0.5), rgba(255, 200, 140, 0.35) 45%, rgba(140, 120, 200, 0.2));
+}
+
+/* Durante il passaggio tutto cambia a scatti, come nei vecchi giochi */
+html.theme-anim .scene-night {
+    transition: opacity 1s steps(8);
+}
+
+html.theme-anim .sky-tint {
+    transition: opacity 0.6s steps(5);
+}
+
+html.theme-anim .fx-night {
+    transition: opacity 0.5s steps(4), visibility 0s linear 0.5s;
+}
+
+html.theme-anim[data-theme="night"] .fx-night {
+    transition: opacity 0.6s steps(5) 0.8s, visibility 0s linear 0.8s;
+}
+
+html.theme-anim .flame,
+html.theme-anim .flame-glint,
+html.theme-anim .fire-glow {
+    transition: scale 0.4s steps(4);
+}
+
+html.theme-anim[data-theme="night"] .flame,
+html.theme-anim[data-theme="night"] .flame-glint,
+html.theme-anim[data-theme="night"] .fire-glow {
+    transition: scale 0.5s steps(5) 0.8s;
+}
+
+/* Le stelle si accendono una dopo l'altra */
+html.theme-anim[data-theme="night"] .star:nth-child(3n + 1) { transition: visibility 0s linear 1.1s; }
+html.theme-anim[data-theme="night"] .star:nth-child(3n + 2) { transition: visibility 0s linear 1.4s; }
+html.theme-anim[data-theme="night"] .star:nth-child(3n)     { transition: visibility 0s linear 1.7s; }
+
+/* Fumo che sale dal falò quando si spegne */
+.smoke {
+    left: 30.2%;
+    top: 66%;
+    width: 4cqw;
+    height: 6cqw;
+    margin-left: -2cqw;
+    opacity: 0;
+    background:
+        radial-gradient(circle at 50% 70%, rgba(200, 200, 210, 0.7) 0 18%, transparent 19%),
+        radial-gradient(circle at 35% 45%, rgba(190, 190, 200, 0.55) 0 14%, transparent 15%),
+        radial-gradient(circle at 60% 22%, rgba(180, 180, 190, 0.4) 0 11%, transparent 12%);
+    image-rendering: pixelated;
+}
+
+html.is-smoke .smoke {
+    animation: smoke-up 1.6s steps(8) forwards;
+}
+
+@keyframes smoke-up {
+    0%   { opacity: 0; translate: 0 0; }
+    15%  { opacity: 1; }
+    100% { opacity: 0; translate: 0.8cqw -5cqw; }
+}
+
+/* Pulsante giorno / notte in alto a destra nella home */
+.theme-toggle {
+    position: absolute;
+    top: calc(var(--u) * 24);
+    right: calc(var(--u) * 24);
+    z-index: 20;
+    width: calc(var(--u) * 58);
+    height: calc(var(--u) * 58);
+    min-width: 40px;
+    min-height: 40px;
+    padding: calc(var(--u) * 10);
+    cursor: pointer;
+
+    background: rgba(9, 11, 34, 0.8);
+    border: max(2px, calc(var(--u) * 3)) solid #cfd2ee;
+    border-radius: calc(var(--u) * 8);
+    box-shadow: calc(var(--u) * 4) calc(var(--u) * 4) 0 rgba(5, 6, 15, 0.6);
+}
+
+.theme-toggle svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Di notte mostra il sole (per passare al giorno), di giorno la luna */
+.theme-toggle .icon-moon,
+html[data-theme="day"] .theme-toggle .icon-sun {
+    display: none;
+}
+
+html[data-theme="day"] .theme-toggle .icon-moon {
+    display: block;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+    border-color: var(--gold);
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.theme-anim * {
+        transition: none !important;
+    }
 }
