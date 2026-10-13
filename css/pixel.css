@@ -86,10 +86,10 @@ html.show-start .start-screen {
     justify-content: center;
     padding: 24px 16px;
 
-    /* La scena del falò si intravede dietro, scurita */
-    background:
-        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px),
-        rgba(6, 8, 28, 0.84);
+    background: #070d1a;
+
+    /* Larghezza del titolo: tutto il resto è in proporzione */
+    --sw: min(720px, 88vw, 76vh);
 }
 
 .start-box {
@@ -100,68 +100,120 @@ html.show-start .start-screen {
 }
 
 .start-kicker {
-    font-size: 22px;
-    letter-spacing: 4px;
+    font-size: calc(var(--sw) * 0.04);
+    letter-spacing: 0.32em;
     color: var(--gold);
 }
 
+.start-divider {
+    display: block;
+    width: calc(var(--sw) * 0.848);
+    height: auto;
+    margin-top: calc(var(--sw) * 0.012);
+    image-rendering: pixelated;
+}
+
 .start-title {
-    margin: 10px 0 8px;
+    margin: calc(var(--sw) * 0.02) 0 calc(var(--sw) * 0.03);
+}
 
-    font-size: clamp(76px, 15vw, 168px);
-    font-weight: 400;
-    line-height: 0.82;
-    text-transform: uppercase;
-    color: var(--cream);
+/* Titolo disegnato, con una striscia di luce che lo attraversa
+   come su una targa di metallo */
+.start-title-art {
+    position: relative;
+    display: block;
+    width: var(--sw);
+}
 
-    /* Rilievo a gradini, come i loghi dei giochi 8-bit */
-    text-shadow:
-        4px 4px 0 var(--blue),
-        8px 8px 0 var(--ink);
+.start-title-art img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.start-title-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background: linear-gradient(105deg,
+        transparent 38%,
+        rgba(255, 255, 255, 0.15) 44%,
+        rgba(255, 255, 255, 0.9) 49%,
+        rgba(255, 250, 220, 0.9) 51%,
+        rgba(255, 255, 255, 0.15) 56%,
+        transparent 62%) no-repeat;
+    background-size: 300% 100%;
+    background-position: 100% 0;
+
+    /* La luce si vede solo dentro le lettere */
+    -webkit-mask: url("../immagini/start-titolo.webp") 0 0 / 100% 100% no-repeat;
+    mask: url("../immagini/start-titolo.webp") 0 0 / 100% 100% no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0.85;
+    animation: title-shine 3.6s linear 0.6s infinite;
+}
+
+@keyframes title-shine {
+    0%   { background-position: 100% 0; }
+    40%  { background-position: 0% 0; }
+    100% { background-position: 0% 0; }
+}
+
+.start-sub,
+.start-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.9em;
 }
 
 .start-sub {
-    font-size: 26px;
-    color: var(--muted);
+    font-size: calc(var(--sw) * 0.042);
+    color: #aeb6e6;
+}
+
+.start-sub::before,
+.start-sub::after {
+    content: "";
+    width: 2.6em;
+    height: 2px;
+    background: var(--gold-dark);
 }
 
 .start-button {
-    margin-top: 46px;
-    padding: 12px 54px 14px;
-
-    font-size: 52px;
-    line-height: 1;
-    letter-spacing: 6px;
-    color: var(--ink);
+    margin-top: calc(var(--sw) * 0.075);
+    padding: 0;
+    width: calc(var(--sw) * 0.763);
     cursor: pointer;
-
-    background: var(--gold);
-    border: 4px solid var(--ink);
-    box-shadow:
-        inset -6px -6px 0 var(--gold-dark),
-        inset 6px 6px 0 #ffe79a,
-        8px 8px 0 var(--ink);
-
+    background: none;
+    border: 0;
+    filter: drop-shadow(0 calc(var(--sw) * 0.01) 0 rgba(0, 0, 0, 0.6));
     animation: start-pulse 1.4s steps(2) infinite;
-    transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+    transition: transform 0.1s steps(2), filter 0.1s steps(2);
+}
+
+.start-button img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
 }
 
 .start-button:hover {
-    background: #ffe07a;
+    filter: brightness(1.12) drop-shadow(0 0 calc(var(--sw) * 0.02) rgba(255, 207, 74, 0.45));
 }
 
 .start-button:focus-visible {
-    outline: 4px solid var(--cream);
-    outline-offset: 6px;
+    outline: none;
+    filter: brightness(1.12) drop-shadow(0 0 calc(var(--sw) * 0.02) rgba(255, 207, 74, 0.45));
 }
 
 .start-button.is-pressed {
     animation: none;
-    transform: translate(8px, 8px);
-    box-shadow:
-        inset -6px -6px 0 var(--gold-dark),
-        inset 6px 6px 0 #ffe79a,
-        0 0 0 var(--ink);
+    transform: scale(0.95);
+    filter: brightness(1.25);
 }
 
 @keyframes start-pulse {
@@ -169,32 +221,45 @@ html.show-start .start-screen {
 }
 
 .start-hint {
-    margin-top: 22px;
-    font-size: 22px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    animation: blink 1s steps(1) infinite;
+    margin-top: calc(var(--sw) * 0.045);
+    font-size: calc(var(--sw) * 0.036);
+    letter-spacing: 0.12em;
+    color: #8f97c9;
+}
+
+.start-hint::before,
+.start-hint::after {
+    content: "";
+    width: 2.6em;
+    height: 2px;
+    background: #4b547f;
+}
+
+.start-hint {
+    animation: blink 1.2s steps(1) infinite;
 }
 
 @keyframes blink {
     50% { opacity: 0; }
 }
 
-/* Uscita: la schermata si dissolve a scatti e il titolo si allontana */
-.start-screen.is-leaving {
-    animation: start-out 0.65s steps(6) forwards;
+/* Cerchio nero: chiude la schermata START e si riapre sulla home */
+.iris {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 99;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 200vmax #000;
+    pointer-events: none;
 }
 
-.start-screen.is-leaving .start-box {
-    animation: start-zoom 0.65s steps(6) forwards;
-}
-
-@keyframes start-out {
-    to { opacity: 0; }
-}
-
-@keyframes start-zoom {
-    to { transform: scale(1.18); }
+.iris.is-on {
+    display: block;
 }
 
 

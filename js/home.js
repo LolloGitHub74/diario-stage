@@ -27,6 +27,34 @@
         if (first) first.focus({ preventScroll: true });
     }
 
+    const iris = document.getElementById("iris");
+    const IRIS = { duration: 620, easing: "steps(12, end)", fill: "forwards" };
+
+    // Uscita a cerchio: la schermata START si chiude in un cerchio
+    // fino al nero, poi un secondo cerchio si apre sulla home
+    function irisTransition() {
+        if (reduceMotion || !startScreen.animate || !iris) {
+            enterWorld();
+            return;
+        }
+        iris.classList.add("is-on");
+        startScreen.animate([
+            { clipPath: "circle(75vmax at 50% 50%)" },
+            { clipPath: "circle(0vmax at 50% 50%)" }
+        ], IRIS).finished.then(function () {
+            enterWorld();
+            return new Promise(function (resolve) { setTimeout(resolve, 160); });
+        }).then(function () {
+            return iris.animate([
+                { width: "0vmax", height: "0vmax" },
+                { width: "150vmax", height: "150vmax" }
+            ], IRIS).finished;
+        }).then(function () {
+            iris.classList.remove("is-on");
+            iris.getAnimations().forEach(function (animation) { animation.cancel(); });
+        });
+    }
+
     if (startScreen && startButton && root.classList.contains("show-start")) {
         startButton.focus();
 
@@ -35,7 +63,7 @@
 
             startButton.classList.add("is-pressed");
             startScreen.classList.add("is-leaving");
-            setTimeout(enterWorld, reduceMotion ? 0 : 650);
+            setTimeout(irisTransition, reduceMotion ? 0 : 160);
         });
 
         // Anche INVIO o la barra spaziatrice premono START
