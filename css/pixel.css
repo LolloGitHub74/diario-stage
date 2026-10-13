@@ -235,10 +235,6 @@ html.show-start .start-screen {
     background: #4b547f;
 }
 
-.start-hint {
-    animation: blink 1.2s steps(1) infinite;
-}
-
 @keyframes blink {
     50% { opacity: 0; }
 }
