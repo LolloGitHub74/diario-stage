@@ -2766,7 +2766,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     z-index: 3;
     inset: auto;
     margin: 0;
-    width: clamp(260px, 19cqw, 360px);
+    width: clamp(290px, 21cqw, 390px);
     padding: 2px 6px 6px;
     color: var(--cream);
     font-family: var(--font);
@@ -3013,4 +3013,9 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 @media (prefers-reduced-motion: reduce) {
     .knight-walker.is-resting:not(.is-walking) { animation: none; }
+}
+
+.fp-row span {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

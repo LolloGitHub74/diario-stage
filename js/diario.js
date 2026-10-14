@@ -378,12 +378,11 @@
         firePanel.querySelector(".fp-head .state-icon").dataset.state = state;
         firePanel.dataset.state = state;
         firePanel.style.left = stop.style.left;
-        firePanel.style.top = stop.style.top;
-        // Per i falò in alto a sinistra il riquadro si apre sotto, lontano dal Menu
-        firePanel.classList.toggle("is-below", stop.hasAttribute("data-below"));
+        // Il riquadro con i dettagli si apre sotto il falò, il cartellino resta sopra
+        firePanel.style.top = stop.dataset.panelTop;
+        firePanel.classList.add("is-below");
         firePanel.style.setProperty("--shift", "0px");
         firePanel.style.setProperty("--drop", "0px");
-        stop.classList.add("is-open");
         section.classList.add("has-panel");
         panelWeek = week;
         firePanel.show();
