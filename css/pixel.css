@@ -2995,11 +2995,3 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     white-space: nowrap;
 }
 
-/* Scendendo il cavaliere si vede di fronte */
-.knight-walker.is-walking.is-down {
-    transform: translate(-50%, -100%);
-}
-
-.knight-walker.is-walking.is-down {
-    background-image: url("../immagini/cavaliere-fronte.webp");
-}
