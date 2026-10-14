@@ -2994,3 +2994,17 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .fp-cta {
     white-space: nowrap;
 }
+
+/* Salendo il cavaliere si vede di schiena, scendendo di fronte */
+.knight-walker.is-walking.is-up,
+.knight-walker.is-walking.is-down {
+    transform: translate(-50%, -100%);
+}
+
+.knight-walker.is-walking.is-up {
+    background-image: url("../immagini/cavaliere-schiena.webp");
+}
+
+.knight-walker.is-walking.is-down {
+    background-image: url("../immagini/cavaliere-fronte.webp");
+}

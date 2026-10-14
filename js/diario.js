@@ -190,8 +190,31 @@
             s = done.to;
             draw();
             follow();
-            el.classList.remove("is-walking", "is-left");
+            el.classList.remove("is-walking", "is-left", "is-up", "is-down");
+            facing = "side";
             done.resolve();
+        }
+
+        // Dove guarda mentre cammina: di lato, di schiena (sale) o di fronte (scende).
+        // La mappa è 2:1, quindi la x pesa il doppio della y
+        let facing = "side";
+        let facingSince = 0;
+
+        function face(sign) {
+            const here = Math.max(0, s);
+            const a = pointAt(here - sign * 1);
+            const b = pointAt(here + sign * 2.5);
+            const dx = (b.x - a.x) * 2;
+            const dy = b.y - a.y;
+            let next = "side";
+            if (Math.abs(dy) > Math.abs(dx) * 0.45) next = dy < 0 ? "up" : "down";
+            // Di schiena o di fronte resta almeno un attimo, così non sfarfalla
+            const now = performance.now();
+            if (next === "side" && facing !== "side" && now - facingSince < 220) return;
+            if (next !== facing) { facing = next; facingSince = now; }
+            el.classList.toggle("is-up", facing === "up");
+            el.classList.toggle("is-down", facing === "down");
+            el.classList.toggle("is-left", facing === "side" && sign < 0);
         }
 
         // Cammina lungo il sentiero fino alla distanza "to"; speed in % al secondo
@@ -216,6 +239,7 @@
                     if (!walk || walk.to !== to) return;
                     const t = Math.min(1, (now - start) / duration);
                     s = from + (to - from) * t;
+                    face(to > from ? 1 : -1);
                     draw();
                     follow();
                     if (t < 1) requestAnimationFrame(step);
@@ -249,7 +273,7 @@
             }
             clearTimeout(timer);
             if (at === week && !walk) return Promise.resolve();
-            return moveTo(spots[week], 60, 1000).then(function () { at = week; });
+            return moveTo(spots[week], 50, 1300).then(function () { at = week; });
         }
 
         function placeAt(week) {
