@@ -243,7 +243,11 @@
             page.scrollLeft = 0;
             // Aspetta che la tenda si sia aperta, poi entra camminando
             timer = setTimeout(function () {
-                moveTo(spots[target], 34, 2600).then(function () { at = target; });
+                moveTo(spots[target], 34, 2600).then(function () {
+                    at = target;
+                    // Arrivato al falò si gira di fronte, come quando scegli un livello
+                    el.classList.add("is-resting");
+                });
             }, reduceMotion ? 0 : 380);
         }
 
@@ -273,6 +277,7 @@
             finish();
             s = spots[target];
             at = target;
+            el.classList.add("is-resting");
             draw();
         }
 
