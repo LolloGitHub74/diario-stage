@@ -2996,12 +2996,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 }
 
 
-/* Fermo al falò scelto: tre pose di fronte, una ogni 1,5 secondi */
+/* Fermo al falò scelto: tre pose di fronte, una ogni 0,7 secondi */
 .knight-walker.is-resting:not(.is-walking) {
     aspect-ratio: 160 / 184;
     transform: translate(-50%, -100%);
     background: url("../immagini/cavaliere-riposo.webp") 0 0 / 300% 100% no-repeat;
-    animation: knight-rest 4.5s steps(1) infinite;
+    animation: knight-rest 2.1s steps(1) infinite;
 }
 
 @keyframes knight-rest {
