@@ -190,12 +190,12 @@
             s = done.to;
             draw();
             follow();
-            el.classList.remove("is-walking", "is-left", "is-up", "is-down");
+            el.classList.remove("is-walking", "is-left", "is-down");
             facing = "side";
             done.resolve();
         }
 
-        // Dove guarda mentre cammina: di lato, di schiena (sale) o di fronte (scende).
+        // Dove guarda mentre cammina: di lato, oppure di fronte quando scende.
         // La mappa è 2:1, quindi la x pesa il doppio della y
         let facing = "side";
         let facingSince = 0;
@@ -207,12 +207,12 @@
             const dx = (b.x - a.x) * 2;
             const dy = b.y - a.y;
             let next = "side";
-            if (Math.abs(dy) > Math.abs(dx) * 0.45) next = dy < 0 ? "up" : "down";
+            // Solo scendendo si gira di fronte; salendo resta di lato
+            if (dy > 0 && Math.abs(dy) > Math.abs(dx) * 0.45) next = "down";
             // Di schiena o di fronte resta almeno un attimo, così non sfarfalla
             const now = performance.now();
             if (next === "side" && facing !== "side" && now - facingSince < 220) return;
             if (next !== facing) { facing = next; facingSince = now; }
-            el.classList.toggle("is-up", facing === "up");
             el.classList.toggle("is-down", facing === "down");
             el.classList.toggle("is-left", facing === "side" && sign < 0);
         }
