@@ -3074,3 +3074,167 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 @media (prefers-reduced-motion: reduce) {
     .map-fire { animation: none; }
 }
+
+
+/* =========================================================
+   MONDO 1 CHE VIVE: cascate, riflesso, finestre, lucciole,
+   pipistrelli. Tutto a scatti, come nei giochi pixel
+   ========================================================= */
+
+.world-fx {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.world-fx i {
+    position: absolute;
+    display: block;
+}
+
+/* Acqua che scende: righe chiare che scorrono verso il basso */
+.wf-fall {
+    background: repeating-linear-gradient(180deg,
+        rgba(220, 240, 255, 0) 0 6px,
+        rgba(220, 240, 255, 0.55) 6px 8px,
+        rgba(160, 210, 255, 0) 8px 15px,
+        rgba(200, 230, 255, 0.35) 15px 16px,
+        rgba(160, 210, 255, 0) 16px 22px);
+    background-size: 100% 22px;
+    mix-blend-mode: screen;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent);
+    mask: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent);
+    animation: fall-flow 0.5s steps(4) infinite;
+}
+
+@keyframes fall-flow {
+    from { background-position: 0 0; }
+    to   { background-position: 0 22px; }
+}
+
+/* Schiuma alla base delle cascate: pixel bianchi che brillano */
+.wf-foam {
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 1.5px, transparent 2px) 0 0 / 9px 7px,
+        radial-gradient(circle, rgba(220, 240, 255, 0.7) 0 1.5px, transparent 2px) 4px 3px / 11px 8px;
+    -webkit-mask: radial-gradient(ellipse, #000 40%, transparent 70%);
+    mask: radial-gradient(ellipse, #000 40%, transparent 70%);
+    animation: foam 0.6s steps(3) var(--l, 0s) infinite;
+}
+
+@keyframes foam {
+    0%   { background-position: 0 0, 4px 3px; opacity: 0.9; }
+    50%  { background-position: 3px -2px, 1px 1px; opacity: 0.6; }
+    100% { background-position: 0 0, 4px 3px; opacity: 0.9; }
+}
+
+/* Riflesso della luna: strisce che tremolano sull'acqua */
+.wf-moon {
+    background: repeating-linear-gradient(180deg,
+        rgba(255, 240, 190, 0.55) 0 2px, transparent 2px 7px);
+    -webkit-mask: radial-gradient(ellipse 50% 55% at 50% 40%, #000 30%, transparent 75%);
+    mask: radial-gradient(ellipse 50% 55% at 50% 40%, #000 30%, transparent 75%);
+    mix-blend-mode: screen;
+    animation: moon-ripple 1.6s steps(4) infinite;
+}
+
+@keyframes moon-ripple {
+    0%   { transform: translateX(0) scaleX(1);    opacity: 0.8; }
+    25%  { transform: translateX(-3%) scaleX(0.9); opacity: 0.55; }
+    50%  { transform: translateX(2%) scaleX(1.05); opacity: 0.9; }
+    75%  { transform: translateX(-1%) scaleX(0.95); opacity: 0.6; }
+}
+
+/* Finestre del castello: luce che tremola come una candela */
+.wf-window {
+    width: 0.5cqw;
+    height: 0.5cqw;
+    margin: -0.25cqw 0 0 -0.25cqw;
+    background: #ffd36a;
+    box-shadow: 0 0 0.6cqw 0.2cqw rgba(255, 190, 80, 0.55);
+    opacity: 0.35;
+    animation: window-flicker var(--d, 2.4s) steps(1) var(--l, 0s) infinite;
+}
+
+@keyframes window-flicker {
+    0%   { opacity: 0.35; }
+    20%  { opacity: 0.6; }
+    35%  { opacity: 0.25; }
+    55%  { opacity: 0.55; }
+    70%  { opacity: 0; }
+    78%  { opacity: 0.45; }
+}
+
+/* Lucciole che girano lente nel bosco */
+.wf-fly {
+    width: 0.32cqw;
+    height: 0.32cqw;
+    background: #f8ffb0;
+    box-shadow:
+        0 0 0.45cqw 0.15cqw rgba(214, 255, 90, 0.85),
+        0 0 1.6cqw 0.6cqw rgba(190, 255, 80, 0.28);
+    animation:
+        fly-wander var(--d, 12s) linear var(--l, 0s) infinite,
+        firefly-blink var(--b, 2.3s) steps(1) infinite;
+}
+
+@keyframes fly-wander {
+    0%   { translate: 0 0; }
+    20%  { translate: 1.4cqw -0.9cqw; }
+    40%  { translate: 2.6cqw 0.3cqw; }
+    60%  { translate: 1.2cqw 1.2cqw; }
+    80%  { translate: -0.8cqw 0.5cqw; }
+    100% { translate: 0 0; }
+}
+
+/* Pipistrelli: due battiti d'ala, volano sopra il lago illuminato dalla luna */
+.wf-bat {
+    width: 1.3cqw;
+    aspect-ratio: 11 / 5;
+    left: -3%;
+    top: 14%;
+    background-image: url("../immagini/pipistrello-1.svg"), url("../immagini/pipistrello-2.svg");
+    background-size: 100% 100%, 0 0;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    opacity: 0;
+    animation:
+        bat-fly 16s linear 2s infinite,
+        bat-flap 0.3s steps(1) infinite;
+}
+
+.wf-bat-2 {
+    width: 1cqw;
+    animation:
+        bat-fly-2 21s linear 7s infinite,
+        bat-flap 0.26s steps(1) infinite;
+}
+
+@keyframes bat-flap {
+    0%  { background-size: 100% 100%, 0 0; }
+    50% { background-size: 0 0, 100% 100%; }
+}
+
+@keyframes bat-fly {
+    0%   { opacity: 1; left: 22%; top: 30%; }
+    25%  { left: 36%; top: 14%; }
+    50%  { left: 50%; top: 22%; }
+    75%  { left: 64%; top: 11%; }
+    90%  { left: 80%; top: 6%; opacity: 1; }
+    91%, 100% { left: 104%; top: 2%; opacity: 0; }
+}
+
+@keyframes bat-fly-2 {
+    0%   { opacity: 1; left: 72%; top: 4%; }
+    30%  { left: 58%; top: 20%; }
+    60%  { left: 44%; top: 10%; }
+    85%  { left: 30%; top: 26%; opacity: 1; }
+    86%, 100% { left: -4%; top: 30%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .world-fx i { animation: none !important; }
+    .wf-bat { display: none; }
+}
