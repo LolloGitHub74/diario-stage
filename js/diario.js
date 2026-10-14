@@ -236,6 +236,7 @@
             clearTimeout(timer);
             finish();
             const target = restWeek();
+            el.classList.remove("is-resting");
             s = START;
             at = 0;
             draw();
@@ -254,8 +255,16 @@
                 return Promise.resolve();
             }
             clearTimeout(timer);
-            if (at === week && !walk) return Promise.resolve();
-            return moveTo(spots[week], 50, 1300).then(function () { at = week; });
+            if (at === week && !walk) {
+                el.classList.add("is-resting");
+                return Promise.resolve();
+            }
+            el.classList.remove("is-resting");
+            return moveTo(spots[week], 50, 1300).then(function () {
+                at = week;
+                // Arrivato al falò scelto, resta in piedi di fronte
+                el.classList.add("is-resting");
+            });
         }
 
         function placeAt(week) {

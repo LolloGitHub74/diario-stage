@@ -2995,3 +2995,22 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     white-space: nowrap;
 }
 
+
+/* Fermo al falò scelto: tre pose di fronte, una ogni 1,5 secondi */
+.knight-walker.is-resting:not(.is-walking) {
+    aspect-ratio: 160 / 184;
+    transform: translate(-50%, -100%);
+    background: url("../immagini/cavaliere-riposo.webp") 0 0 / 300% 100% no-repeat;
+    animation: knight-rest 4.5s steps(1) infinite;
+}
+
+@keyframes knight-rest {
+    0%      { background-position: 0% 0; }
+    33.33%  { background-position: 50% 0; }
+    66.67%  { background-position: 100% 0; }
+    100%    { background-position: 100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .knight-walker.is-resting:not(.is-walking) { animation: none; }
+}
