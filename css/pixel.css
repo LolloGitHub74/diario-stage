@@ -3019,3 +3019,31 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Cartellini dei livelli un po' più piccoli */
+.world-stop {
+    border-width: 11px;
+    border-image-width: 17px;
+    gap: 7px;
+    padding: 0 7px 0 4px;
+}
+
+.world-stop .state-icon {
+    width: max(20px, 1.5cqw);
+    height: max(20px, 1.5cqw);
+}
+
+.world-stop-lv {
+    font-size: max(17px, 1.2cqw);
+}
+
+.world-stop-state {
+    font-size: max(13px, 0.85cqw);
+}
+
+.world-stop::after {
+    width: 20px;
+    height: 12px;
+    margin-left: -10px;
+    top: calc(100% + 8px);
+}
