@@ -3047,3 +3047,26 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     margin-left: -10px;
     top: calc(100% + 8px);
 }
+
+/* Falò animati sulla mappa: quattro disegni in falo-mappa.webp */
+.map-fire {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    width: 6.6%;
+    aspect-ratio: 180 / 200;
+    transform: translate(-50%, -77%);
+    background: url("../immagini/falo-mappa.webp") 0 0 / 400% 100% no-repeat;
+    image-rendering: pixelated;
+    pointer-events: none;
+    animation: map-fire 0.6s steps(4) infinite;
+}
+
+@keyframes map-fire {
+    from { background-position: 0% 0; }
+    to   { background-position: 133.33% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .map-fire { animation: none; }
+}
