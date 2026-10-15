@@ -53,7 +53,8 @@
         return knights[n] || { enter: function () {}, walkTo: function () { return Promise.resolve(); }, placeAt: function () {} };
     }
 
-    function showWorld(n) {
+    // how: { from: "start" | "end" } fa entrare il cavaliere camminando
+    function showWorld(n, how) {
         world = n;
         pages.forEach(function (page) {
             page.hidden = Number(page.dataset.world) !== n;
@@ -66,14 +67,48 @@
         section.querySelector(".world-prev").disabled = n === 1;
         section.querySelector(".world-next").disabled = n === pages.length;
         page.scrollLeft = 0;
-        if (document.body.dataset.screen === "livelli") knightOf(n).enter();
+        if (how && document.body.dataset.screen === "livelli") knightOf(n).enter(how.from, how.delay);
     }
 
+    // Cambio di mondo: un cerchio nero si chiude subito, a schermo nero
+    // cambia la mappa e il cerchio si riapre sul nuovo mondo
+    const iris = document.getElementById("iris");
+    const IRIS = { duration: 520, easing: "steps(10, end)", fill: "forwards" };
+    let irisBusy = false;
+
+    function irisSwap(swap) {
+        if (irisBusy) return;
+        if (!iris || !iris.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            swap();
+            return;
+        }
+        irisBusy = true;
+        iris.classList.add("is-on");
+        iris.animate([
+            { width: "150vmax", height: "150vmax" },
+            { width: "0vmax", height: "0vmax" }
+        ], IRIS).finished.then(function () {
+            swap();
+            return new Promise(function (resolve) { setTimeout(resolve, 120); });
+        }).then(function () {
+            return iris.animate([
+                { width: "0vmax", height: "0vmax" },
+                { width: "150vmax", height: "150vmax" }
+            ], IRIS).finished;
+        }).then(function () {
+            iris.classList.remove("is-on");
+            iris.getAnimations().forEach(function (animation) { animation.cancel(); });
+            irisBusy = false;
+        });
+    }
+
+    // Avanti: il cavaliere parte dall'inizio della strada verso il primo falò.
+    // Indietro: arriva da destra verso l'ultimo falò del mondo
     function goWorld(n) {
-        if (n < 1 || n > pages.length || n === world) return;
-        const swap = function () { showWorld(n); };
-        if (window.curtainSwap) window.curtainSwap(swap, n > world ? "forward" : "back");
-        else swap();
+        if (n < 1 || n > pages.length || n === world || irisBusy) return;
+        const from = n > world ? "start" : "end";
+        // Il cavaliere si muove mentre il cerchio si sta riaprendo
+        irisSwap(function () { showWorld(n, { from: from, delay: 450 }); });
     }
 
     section.querySelectorAll("[data-world-step]").forEach(function (button) {
@@ -115,9 +150,13 @@
     });
     showWorld(startWorld);
 
-    // Entrando nel diario (o cambiando mondo) il cavaliere arriva camminando
+    // La prima volta che apri il diario il cavaliere arriva da sinistra
+    // fino al falò attuale; le volte dopo resta dove l'avevi lasciato
+    let entered = false;
     window.addEventListener("screen:show", function (event) {
-        if (event.detail === "livelli" && !(dialog && dialog.open)) knightOf(world).enter();
+        if (event.detail !== "livelli" || entered) return;
+        entered = true;
+        if (!(dialog && dialog.open)) knightOf(world).enter("current");
     });
 
     function makeKnight(el) {
@@ -246,17 +285,24 @@
             });
         }
 
-        function enter() {
+        // from: "current" = da sinistra fino al falò attuale,
+        // "start" = da sinistra fino al primo falò, "end" = da destra fino all'ultimo
+        function enter(from, delay) {
             if (world !== pageWorld || page.hidden) return;
             clearTimeout(timer);
             finish();
-            const target = restWeek();
+            const fromEnd = from === "end";
+            const target = from === "start" ? weeksHere[0]
+                : fromEnd ? weeksHere[weeksHere.length - 1]
+                : restWeek();
             el.classList.remove("is-resting");
-            s = START;
+            s = fromEnd ? along[along.length - 1] : START;
             at = 0;
             draw();
-            page.scrollLeft = 0;
-            if (fromGate) el.classList.add("is-faded");
+            page.scrollLeft = fromEnd ? page.scrollWidth : 0;
+            // Dove la strada parte da una porta (o dalla fine della mappa) appare dal buio
+            if (fromEnd || fromGate) el.classList.add("is-faded");
+            el.classList.toggle("is-left", fromEnd);
             // Aspetta che la tenda si sia aperta, poi entra camminando
             timer = setTimeout(function () {
                 el.classList.remove("is-faded");
@@ -265,7 +311,7 @@
                     // Arrivato al falò si gira di fronte, come quando scegli un livello
                     el.classList.add("is-resting");
                 });
-            }, reduceMotion ? 0 : 380);
+            }, reduceMotion ? 0 : (delay || 380));
         }
 
         function walkTo(week) {
