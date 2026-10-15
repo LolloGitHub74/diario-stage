@@ -3062,6 +3062,16 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: map-fire 0.6s steps(1) infinite;
 }
 
+/* Mondo che inizia da una porta: il cavaliere esce dal buio del passaggio */
+.knight-walker {
+    transition: opacity 0.45s ease-out;
+}
+
+.knight-walker.is-faded {
+    opacity: 0;
+    transition: none;
+}
+
 /* Settimana non ancora raggiunta: falò spento, fermo */
 .map-fire[data-state="locked"] {
     background-image: url("../immagini/falo-spento.webp");
@@ -3172,6 +3182,30 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     55%  { opacity: 0.55; }
     70%  { opacity: 0; }
     78%  { opacity: 0.45; }
+}
+
+/* Luci della città (mondo 2): tre gruppi di lampioni e finestre
+   che tremolano ognuno col suo ritmo, come fiammelle */
+.world-fx .wf-lights {
+    inset: 0;
+    background: center / 100% 100% no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0.3;
+    animation: city-flicker var(--d, 2.6s) steps(1) var(--l, 0s) infinite;
+}
+
+.wf-lights-1 { background-image: url("../immagini/mondo-2-luci-1.webp"); --d: 2.3s; }
+.wf-lights-2 { background-image: url("../immagini/mondo-2-luci-2.webp"); --d: 3.1s; --l: -1.1s; }
+.wf-lights-3 { background-image: url("../immagini/mondo-2-luci-3.webp"); --d: 2.7s; --l: -0.6s; }
+
+@keyframes city-flicker {
+    0%   { opacity: 0.3; }
+    15%  { opacity: 0.55; }
+    30%  { opacity: 0.2; }
+    45%  { opacity: 0.45; }
+    60%  { opacity: 0.6; }
+    72%  { opacity: 0.15; }
+    85%  { opacity: 0.4; }
 }
 
 /* Lucciole che girano lente nel bosco */

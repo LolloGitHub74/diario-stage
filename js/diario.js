@@ -47,7 +47,11 @@
     // ---------- Mondi ----------
 
     let world = 1;
-    let knight = null;
+    const knights = {};    // un cavaliere per ogni mondo disegnato
+
+    function knightOf(n) {
+        return knights[n] || { enter: function () {}, walkTo: function () { return Promise.resolve(); }, placeAt: function () {} };
+    }
 
     function showWorld(n) {
         world = n;
@@ -62,7 +66,7 @@
         section.querySelector(".world-prev").disabled = n === 1;
         section.querySelector(".world-next").disabled = n === pages.length;
         page.scrollLeft = 0;
-        if (knight && document.body.dataset.screen === "livelli") knight.enter();
+        if (document.body.dataset.screen === "livelli") knightOf(n).enter();
     }
 
     function goWorld(n) {
@@ -96,22 +100,27 @@
         }, { passive: false });
     });
 
-    showWorld(1);
-
-
     // ---------- Il cavaliere ----------
 
-    knight = makeKnight();
-
-    // Entrando nel diario (o tornando al mondo 1) il cavaliere arriva da sinistra
-    window.addEventListener("screen:show", function (event) {
-        if (event.detail === "livelli" && !(dialog && dialog.open)) knight.enter();
+    section.querySelectorAll(".knight-walker").forEach(function (el) {
+        knights[Number(el.closest(".world-page").dataset.world)] = makeKnight(el);
     });
 
-    function makeKnight() {
-        const el = section.querySelector(".knight-walker");
-        const noop = { enter: function () {}, walkTo: function () { return Promise.resolve(); }, placeAt: function () {} };
-        if (!el) return noop;
+    // Il diario si apre sul mondo della settimana in corso
+    // (o dell'ultima completata), se quel mondo è già disegnato
+    let startWorld = 1;
+    weeks.forEach(function (item) {
+        const n = Math.ceil(Number(item.dataset.week) / 4);
+        if (item.dataset.state !== "locked" && knights[n]) startWorld = n;
+    });
+    showWorld(startWorld);
+
+    // Entrando nel diario (o cambiando mondo) il cavaliere arriva camminando
+    window.addEventListener("screen:show", function (event) {
+        if (event.detail === "livelli" && !(dialog && dialog.open)) knightOf(world).enter();
+    });
+
+    function makeKnight(el) {
 
         const page = el.closest(".world-page");
         const pageWorld = Number(page.dataset.world);
@@ -157,7 +166,9 @@
             spots[Number(stop.dataset.worldWeek)] = distanceAtX(Number(stop.dataset.standX));
         });
         const weeksHere = Object.keys(spots).map(Number).sort(function (a, b) { return a - b; });
-        const START = -3;      // appena fuori dal bordo sinistro
+        // Entra da fuori il bordo sinistro, oppure esce da una porta della mappa
+        const fromGate = page.dataset.enter === "gate";
+        const START = fromGate ? 0 : -3;
 
         let s = START;
         let at = 0;            // settimana a cui è fermo (0 = nessuna)
@@ -245,8 +256,10 @@
             at = 0;
             draw();
             page.scrollLeft = 0;
+            if (fromGate) el.classList.add("is-faded");
             // Aspetta che la tenda si sia aperta, poi entra camminando
             timer = setTimeout(function () {
+                el.classList.remove("is-faded");
                 moveTo(spots[target], 34, 2600).then(function () {
                     at = target;
                     // Arrivato al falò si gira di fronte, come quando scegli un livello
@@ -279,6 +292,7 @@
             const target = spots[week] ? week : restWeek();
             clearTimeout(timer);
             finish();
+            el.classList.remove("is-faded");
             s = spots[target];
             at = target;
             el.classList.add("is-resting");
@@ -339,7 +353,10 @@
         if (!fill(week)) return;
         // Il mondo dietro la scheda è quello della settimana
         const target = Math.ceil(week / 4);
-        if (target !== world) showWorld(target);
+        if (target !== world) {
+            knightOf(target).placeAt(week);
+            showWorld(target);
+        }
         document.querySelectorAll("dialog[open]").forEach(function (other) {
             if (other !== dialog) other.close();
         });
@@ -386,6 +403,8 @@
         firePanel.querySelector(".fp-state").textContent = STOP_LABEL[state];
         firePanel.querySelector(".fp-head .state-icon").dataset.state = state;
         firePanel.dataset.state = state;
+        // Un solo riquadro per tutti i mondi: si sposta sulla mappa del falò scelto
+        if (firePanel.parentElement !== stop.parentElement) stop.parentElement.appendChild(firePanel);
         firePanel.style.left = stop.style.left;
         // Il riquadro con i dettagli si apre sotto il falò, il cartellino resta sopra
         firePanel.style.top = stop.dataset.panelTop;
@@ -417,7 +436,7 @@
             event.stopPropagation();
             const week = Number(button.dataset.levelOpen);
             closePanel();
-            knight.walkTo(week).then(function () { openPanel(week, button); });
+            knightOf(Math.ceil(week / 4)).walkTo(week).then(function () { openPanel(week, button); });
         });
     });
 
@@ -503,7 +522,7 @@
     // Un link come diario-stage/#livello-03 apre subito quel livello
     const initial = weekFromHash();
     if (initial) {
-        knight.placeAt(initial);
+        knightOf(Math.ceil(initial / 4)).placeAt(initial);
         open(initial, true);
     }
 })();
