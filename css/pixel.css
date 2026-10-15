@@ -3062,6 +3062,13 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: map-fire 0.6s steps(1) infinite;
 }
 
+/* Settimana non ancora raggiunta: falò spento, fermo */
+.map-fire[data-state="locked"] {
+    background-image: url("../immagini/falo-spento.webp");
+    background-size: 100% 100%;
+    animation: none;
+}
+
 /* Quattro posizioni esatte, una per disegno: nessuno spostamento tra un frame e l'altro */
 @keyframes map-fire {
     0%   { background-position: 0% 0; }

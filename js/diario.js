@@ -37,6 +37,10 @@
         stop.querySelector(".state-icon").dataset.state = state;
         stop.setAttribute("aria-label", "Livello " + week + ": " + title + " — " + STOP_LABEL[state]);
         stop.title = title;
+
+        // Falò acceso solo per le settimane raggiunte, spento per quelle bloccate
+        const fire = stop.closest(".world-stage").querySelectorAll(".map-fire")[(week - 1) % 4];
+        if (fire) fire.dataset.state = state;
     });
 
 
