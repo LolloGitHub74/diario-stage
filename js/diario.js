@@ -50,7 +50,7 @@
     const knights = {};    // un cavaliere per ogni mondo disegnato
 
     function knightOf(n) {
-        return knights[n] || { enter: function () {}, walkTo: function () { return Promise.resolve(); }, placeAt: function () {} };
+        return knights[n] || { enter: function () {}, walkTo: function () { return Promise.resolve(); }, placeAt: function () {}, leave: function () {}, week: function () { return 0; } };
     }
 
     // how: { from: "start" | "end" } fa entrare il cavaliere camminando
@@ -76,18 +76,24 @@
     const IRIS = { duration: 520, easing: "steps(10, end)", fill: "forwards" };
     let irisBusy = false;
 
-    function irisSwap(swap) {
+    // origin: punto dello schermo su cui si chiude il cerchio (il cavaliere)
+    function irisSwap(swap, origin) {
         if (irisBusy) return;
         if (!iris || !iris.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             swap();
             return;
         }
         irisBusy = true;
+        iris.style.left = origin ? origin.x + "px" : "";
+        iris.style.top = origin ? origin.y + "px" : "";
         iris.classList.add("is-on");
         iris.animate([
-            { width: "150vmax", height: "150vmax" },
+            { width: "300vmax", height: "300vmax" },
             { width: "0vmax", height: "0vmax" }
         ], IRIS).finished.then(function () {
+            // Si riapre dal centro dello schermo sul nuovo mondo
+            iris.style.left = "";
+            iris.style.top = "";
             swap();
             return new Promise(function (resolve) { setTimeout(resolve, 120); });
         }).then(function () {
@@ -107,8 +113,16 @@
     function goWorld(n) {
         if (n < 1 || n > pages.length || n === world || irisBusy) return;
         const from = n > world ? "start" : "end";
-        // Il cavaliere si muove mentre il cerchio si sta riaprendo
-        irisSwap(function () { showWorld(n, { from: from, delay: 450 }); });
+        // Il cavaliere si avvia verso l'uscita mentre il cerchio si chiude,
+        // poi nel nuovo mondo si muove mentre il cerchio si riapre
+        knightOf(world).leave(n > world ? 1 : -1);
+        const walker = pages[world - 1].querySelector(".knight-walker");
+        let origin = null;
+        if (walker) {
+            const box = walker.getBoundingClientRect();
+            origin = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+        }
+        irisSwap(function () { showWorld(n, { from: from, delay: 450 }); }, origin);
     }
 
     section.querySelectorAll("[data-world-step]").forEach(function (button) {
@@ -117,11 +131,22 @@
         });
     });
 
-    // Frecce della tastiera: cambiano mondo quando sei nel diario
+    // Frecce della tastiera: il cavaliere va al falò accanto; dal primo
+    // o dall'ultimo falò del mondo passa al mondo vicino
     document.addEventListener("keydown", function (event) {
         if (document.body.dataset.screen !== "livelli" || (dialog && dialog.open)) return;
-        if (event.key === "ArrowRight") goWorld(world + 1);
-        if (event.key === "ArrowLeft") goWorld(world - 1);
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        if (irisBusy) return;
+        const step = event.key === "ArrowRight" ? 1 : -1;
+        const knight = knights[world];
+        const here = knight ? knight.week() : 0;
+        if (!here || Math.ceil((here + step) / 4) !== world) {
+            goWorld(world + step);
+            return;
+        }
+        event.preventDefault();
+        section.click();   // chiude il riquadro del falò, se aperto
+        knight.walkTo(here + step);
     });
 
     // Sugli schermi stretti la mappa è più larga dello schermo:
@@ -399,7 +424,27 @@
         }
 
         placeAt(restWeek());
-        return { enter: enter, walkTo: walkTo, placeAt: placeAt };
+        // Esce dal mondo: torna sulla strada e cammina verso l'uscita
+        // (dir 1 = verso la fine, -1 = verso l'inizio); la transizione lo copre
+        function leave(dir) {
+            clearTimeout(timer);
+            const mine = ++token;
+            at = 0;
+            going = 0;
+            el.classList.remove("is-resting", "is-faded");
+            straight(pointAt(s), 14, mine).then(function (ok) {
+                return ok && alongPath(dir > 0 ? END : START, 34, 2600, mine);
+            }).then(function (ok) {
+                if (ok) stopWalking();
+            });
+        }
+
+        // Il falò dove si trova (o verso cui sta andando)
+        function week() {
+            return going || at;
+        }
+
+        return { enter: enter, walkTo: walkTo, placeAt: placeAt, leave: leave, week: week };
     }
 
 
