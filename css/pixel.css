@@ -2468,6 +2468,11 @@ body[data-screen="livelli"] main {
 .knight-walker.is-walking.is-left {
     transform: translate(-62.5%, -100%) scaleX(-1);
 }
+/* Quando scende verso chi guarda: i frame visti di fronte */
+.knight-walker.is-walking.is-down {
+    background-image: url("../immagini/cavaliere-fronte.webp");
+    transform: translate(-62.5%, -100%);
+}
 
 @keyframes knight-walk {
     from { background-position: 0% 0; }

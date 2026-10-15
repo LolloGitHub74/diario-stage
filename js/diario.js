@@ -160,7 +160,6 @@
     });
 
     function makeKnight(el) {
-
         const page = el.closest(".world-page");
         const pageWorld = Number(page.dataset.world);
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -175,10 +174,11 @@
         for (let i = 1; i < path.length; i++) {
             along.push(along[i - 1] + Math.hypot(path[i].x - path[i - 1].x, (path[i].y - path[i - 1].y) / 2));
         }
+        const END = along[along.length - 1];
 
         // Punto del sentiero a una certa distanza dall'inizio
         function pointAt(s) {
-            if (s <= 0) return path[0];
+            if (s <= 0) return { x: path[0].x + s, y: path[0].y };
             for (let i = 1; i < path.length; i++) {
                 if (s <= along[i]) {
                     const t = (s - along[i - 1]) / (along[i] - along[i - 1] || 1);
@@ -196,31 +196,40 @@
                     return along[i - 1] + (along[i] - along[i - 1]) * Math.max(0, Math.min(1, t));
                 }
             }
-            return along[along.length - 1];
+            return END;
         }
 
-        // Dove si ferma per ogni settimana: sul sentiero, appena prima del falò
+        // Dove si ferma per ogni settimana: lascia il sentiero all'altezza
+        // di data-stand-x e, se serve, scende di qualche passo fino a
+        // data-stand-y, di fianco al falò e sotto il cartellino
         const spots = {};
         page.querySelectorAll(".world-stop").forEach(function (stop) {
-            spots[Number(stop.dataset.worldWeek)] = distanceAtX(Number(stop.dataset.standX));
+            const s = distanceAtX(Number(stop.dataset.standX));
+            const onPath = pointAt(s);
+            const y = Number(stop.dataset.standY);
+            spots[Number(stop.dataset.worldWeek)] = {
+                s: s,
+                x: onPath.x,
+                y: y - onPath.y > 0.8 ? y : onPath.y
+            };
         });
         const weeksHere = Object.keys(spots).map(Number).sort(function (a, b) { return a - b; });
         // Entra da fuori il bordo sinistro, oppure esce da una porta della mappa
         const fromGate = page.dataset.enter === "gate";
         const START = fromGate ? 0 : -3;
 
-        let s = START;
+        let s = START;         // distanza lungo il sentiero
+        let pos = pointAt(s);  // dove si trova adesso (può essere fuori dal sentiero, al falò)
         let at = 0;            // settimana a cui è fermo (0 = nessuna)
-        let walk = null;       // camminata in corso
+        let token = 0;         // ogni nuova camminata annulla quella in corso
+        let going = 0;         // settimana verso cui sta andando
         let timer = null;
 
-        function draw() {
-            const p = s < 0 ? { x: path[0].x + s, y: path[0].y } : pointAt(s);
+        function draw(p) {
+            pos = p;
             el.style.left = p.x + "%";
             el.style.top = p.y + "%";
-            current = p;
         }
-        let current = path[0];
 
         // Riposa al falò della settimana in corso; se il mondo è finito, all'ultimo
         function restWeek() {
@@ -233,55 +242,104 @@
         // Tiene il cavaliere al centro quando la mappa è più larga dello schermo
         function follow() {
             if (page.scrollWidth <= page.clientWidth) return;
-            const x = el.parentElement.clientWidth * current.x / 100;
+            const x = el.parentElement.clientWidth * pos.x / 100;
             page.scrollLeft = x - page.clientWidth / 2;
         }
 
-        function finish() {
-            if (!walk) return;
-            const done = walk;
-            walk = null;
-            s = done.to;
-            draw();
-            follow();
-            el.classList.remove("is-walking", "is-left");
-            done.resolve();
+        // Dove guarda mentre cammina: di lato, oppure di fronte quando scende.
+        // La mappa è 2:1, quindi in pixel la x vale il doppio della y
+        let facing = "side";
+        let facingSince = 0;
+
+        function face(dx, dy) {
+            let next = "side";
+            if (dy > 0 && dy > Math.abs(dx) * 2 * 0.6) next = "down";
+            // Di fronte resta almeno un attimo, così non sfarfalla
+            const now = performance.now();
+            if (next !== facing && now - facingSince < 220) next = facing;
+            if (next !== facing) { facing = next; facingSince = now; }
+            el.classList.toggle("is-down", facing === "down");
+            if (dx) el.classList.toggle("is-left", dx < 0);
         }
 
-        // Mentre cammina guarda sempre di lato, verso dove va
-        function face(sign) {
-            el.classList.toggle("is-left", sign < 0);
+        function stopWalking() {
+            el.classList.remove("is-walking", "is-left", "is-down");
+            facing = "side";
         }
 
-        // Cammina lungo il sentiero fino alla distanza "to"; speed in % al secondo
-        function moveTo(to, speed, maxMs) {
-            finish();
-            const from = s;
-            const distance = Math.abs(to - from);
-            if (reduceMotion || distance < 0.3) {
-                s = to;
-                draw();
-                follow();
-                return Promise.resolve();
-            }
-            const duration = Math.min(maxMs, Math.max(250, distance / speed * 1000));
-            el.classList.add("is-walking");
-            el.classList.toggle("is-left", to < from);
-
+        // Un pezzo di camminata: "at" dà il punto per t da 0 a 1.
+        // Risolve true all'arrivo, false se nel frattempo è partita un'altra camminata
+        function stride(duration, pointFor, mine) {
             return new Promise(function (resolve) {
+                if (mine !== token) { resolve(false); return; }
+                if (reduceMotion || duration <= 0) { draw(pointFor(1)); resolve(true); return; }
+                el.classList.add("is-walking");
                 const start = performance.now();
-                walk = { to: to, resolve: resolve };
                 function step(now) {
-                    if (!walk || walk.to !== to) return;
+                    if (mine !== token) { resolve(false); return; }
                     const t = Math.min(1, (now - start) / duration);
-                    s = from + (to - from) * t;
-                    face(to > from ? 1 : -1);
-                    draw();
+                    const before = pos;
+                    const p = pointFor(t);
+                    face(p.x - before.x, p.y - before.y);
+                    draw(p);
                     follow();
                     if (t < 1) requestAnimationFrame(step);
-                    else finish();
+                    else resolve(true);
                 }
                 requestAnimationFrame(step);
+            });
+        }
+
+        // Lungo il sentiero fino alla distanza "to"; speed in % al secondo
+        function alongPath(to, speed, maxMs, mine) {
+            const from = s;
+            const distance = Math.abs(to - from);
+            if (distance < 0.3) { s = to; return Promise.resolve(mine === token); }
+            const duration = Math.min(maxMs, Math.max(250, distance / speed * 1000));
+            return stride(duration, function (t) {
+                s = from + (to - from) * t;
+                return pointAt(s);
+            }, mine);
+        }
+
+        // In linea retta tra due punti (per uscire dal sentiero fino al falò e tornare)
+        function straight(target, speed, mine) {
+            const from = pos;
+            const distance = Math.hypot(target.x - from.x, (target.y - from.y) / 2);
+            if (distance < 0.2) return Promise.resolve(mine === token);
+            return stride(Math.max(200, distance / speed * 1000), function (t) {
+                return { x: from.x + (target.x - from.x) * t, y: from.y + (target.y - from.y) * t };
+            }, mine);
+        }
+
+        function arrive(week) {
+            const spot = spots[week];
+            stopWalking();
+            s = spot.s;
+            at = week;
+            going = 0;
+            draw({ x: spot.x, y: spot.y });
+            follow();
+            // Arrivato al falò si gira di fronte e resta in piedi
+            el.classList.add("is-resting");
+        }
+
+        // Cammina fino al falò di "week": torna sul sentiero, lo segue,
+        // poi fa gli ultimi passi fino a fianco del falò
+        function go(week, speed, maxMs) {
+            const mine = ++token;
+            const spot = spots[week];
+            going = week;
+            el.classList.remove("is-resting");
+            return new Promise(function (resolve) {
+                straight(pointAt(s), 14, mine)
+                    .then(function (ok) { return ok && alongPath(spot.s, speed, maxMs, mine); })
+                    .then(function (ok) { return ok && straight({ x: spot.x, y: spot.y }, 14, mine); })
+                    .then(function (ok) {
+                        if (!ok) return;
+                        arrive(week);
+                        resolve();
+                    });
             });
         }
 
@@ -290,59 +348,51 @@
         function enter(from, delay) {
             if (world !== pageWorld || page.hidden) return;
             clearTimeout(timer);
-            finish();
+            token++;
+            stopWalking();
             const fromEnd = from === "end";
             const target = from === "start" ? weeksHere[0]
                 : fromEnd ? weeksHere[weeksHere.length - 1]
                 : restWeek();
             el.classList.remove("is-resting");
-            s = fromEnd ? along[along.length - 1] : START;
+            s = fromEnd ? END : START;
             at = 0;
-            draw();
+            draw(pointAt(s));
             page.scrollLeft = fromEnd ? page.scrollWidth : 0;
             // Dove la strada parte da una porta (o dalla fine della mappa) appare dal buio
             if (fromEnd || fromGate) el.classList.add("is-faded");
             el.classList.toggle("is-left", fromEnd);
-            // Aspetta che la tenda si sia aperta, poi entra camminando
+            // Aspetta che la transizione si sia aperta, poi entra camminando
             timer = setTimeout(function () {
                 el.classList.remove("is-faded");
-                moveTo(spots[target], 34, 2600).then(function () {
-                    at = target;
-                    // Arrivato al falò si gira di fronte, come quando scegli un livello
-                    el.classList.add("is-resting");
-                });
+                go(target, 34, 2600);
             }, reduceMotion ? 0 : (delay || 380));
         }
 
         function walkTo(week) {
             if (!spots[week]) return Promise.resolve();
-            // Se stava già camminando verso questo falò, un secondo clic apre subito
-            if (walk && walk.to === spots[week]) {
-                finish();
-                return Promise.resolve();
-            }
             clearTimeout(timer);
-            if (at === week && !walk) {
+            el.classList.remove("is-faded");
+            // Se stava già andando verso questo falò, un secondo clic apre subito
+            if (going === week) {
+                token++;
+                arrive(week);
+                return Promise.resolve();
+            }
+            if (at === week && !going) {
                 el.classList.add("is-resting");
                 return Promise.resolve();
             }
-            el.classList.remove("is-resting");
-            return moveTo(spots[week], 50, 1300).then(function () {
-                at = week;
-                // Arrivato al falò scelto, resta in piedi di fronte
-                el.classList.add("is-resting");
-            });
+            at = 0;
+            return go(week, 50, 1300);
         }
 
         function placeAt(week) {
             const target = spots[week] ? week : restWeek();
             clearTimeout(timer);
-            finish();
+            token++;
             el.classList.remove("is-faded");
-            s = spots[target];
-            at = target;
-            el.classList.add("is-resting");
-            draw();
+            arrive(target);
         }
 
         placeAt(restWeek());
