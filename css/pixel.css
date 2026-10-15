@@ -3210,13 +3210,49 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .wf-lights-3 { background-image: url("../immagini/mondo-2-luci-3.webp"); --d: 2.7s; --l: -0.6s; }
 
 @keyframes city-flicker {
-    0%   { opacity: 0.3; }
-    15%  { opacity: 0.55; }
-    30%  { opacity: 0.2; }
-    45%  { opacity: 0.45; }
-    60%  { opacity: 0.6; }
-    72%  { opacity: 0.15; }
-    85%  { opacity: 0.4; }
+    0%   { opacity: 0.35; }
+    12%  { opacity: 0.9; }
+    24%  { opacity: 0.15; }
+    38%  { opacity: 0.7; }
+    50%  { opacity: 1; }
+    62%  { opacity: 0.05; }
+    74%  { opacity: 0.8; }
+    88%  { opacity: 0.3; }
+}
+
+/* Acqua del porto: piccole onde a pixel che scorrono, solo sull'acqua */
+.world-fx .wf-water {
+    inset: 0;
+    background:
+        url("../immagini/onde-1.webp") 0 0 / 2.7cqw auto repeat,
+        url("../immagini/onde-2.webp") 0 0 / 2.25cqw auto repeat;
+    image-rendering: pixelated;
+    -webkit-mask: url("../immagini/mondo-2-acqua.webp") 0 0 / 100% 100% no-repeat;
+    mask: url("../immagini/mondo-2-acqua.webp") 0 0 / 100% 100% no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0.8;
+    animation: water-waves 3.2s steps(16) infinite;
+}
+
+@keyframes water-waves {
+    from { background-position: 0 0, 0 0.4cqw; }
+    to   { background-position: 2.7cqw 0, -2.25cqw 0.4cqw; }
+}
+
+/* Riflessi dei lampioni sull'acqua: tremolano e ondeggiano */
+.world-fx .wf-reflections {
+    inset: 0;
+    background: url("../immagini/mondo-2-riflessi.webp") 0 0 / 100% 100% no-repeat;
+    image-rendering: pixelated;
+    mix-blend-mode: screen;
+    animation: reflection-wobble 1.4s steps(1) infinite;
+}
+
+@keyframes reflection-wobble {
+    0%   { transform: translateX(0);         opacity: 0.9; }
+    25%  { transform: translateX(0.12cqw);   opacity: 0.55; }
+    50%  { transform: translateX(0);         opacity: 1; }
+    75%  { transform: translateX(-0.12cqw);  opacity: 0.6; }
 }
 
 /* Lucciole che girano lente nel bosco */
