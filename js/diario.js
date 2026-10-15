@@ -251,25 +251,28 @@
         let facing = "side";
         let facingSince = 0;
 
-        function face(dx, dy) {
+        // steps: negli ultimi passi verso il falò (e indietro) si vede anche di schiena
+        function face(dx, dy, steps) {
             let next = "side";
             if (dy > 0 && dy > Math.abs(dx) * 2 * 0.6) next = "down";
+            if (steps && dy < 0 && -dy > Math.abs(dx) * 2 * 0.6) next = "up";
             // Di fronte resta almeno un attimo, così non sfarfalla
             const now = performance.now();
             if (next !== facing && now - facingSince < 220) next = facing;
             if (next !== facing) { facing = next; facingSince = now; }
             el.classList.toggle("is-down", facing === "down");
+            el.classList.toggle("is-up", facing === "up");
             if (dx) el.classList.toggle("is-left", dx < 0);
         }
 
         function stopWalking() {
-            el.classList.remove("is-walking", "is-left", "is-down");
+            el.classList.remove("is-walking", "is-left", "is-down", "is-up");
             facing = "side";
         }
 
         // Un pezzo di camminata: "at" dà il punto per t da 0 a 1.
         // Risolve true all'arrivo, false se nel frattempo è partita un'altra camminata
-        function stride(duration, pointFor, mine) {
+        function stride(duration, pointFor, mine, steps) {
             return new Promise(function (resolve) {
                 if (mine !== token) { resolve(false); return; }
                 if (reduceMotion || duration <= 0) { draw(pointFor(1)); resolve(true); return; }
@@ -280,7 +283,7 @@
                     const t = Math.min(1, (now - start) / duration);
                     const before = pos;
                     const p = pointFor(t);
-                    face(p.x - before.x, p.y - before.y);
+                    face(p.x - before.x, p.y - before.y, steps);
                     draw(p);
                     follow();
                     if (t < 1) requestAnimationFrame(step);
@@ -309,7 +312,7 @@
             if (distance < 0.2) return Promise.resolve(mine === token);
             return stride(Math.max(200, distance / speed * 1000), function (t) {
                 return { x: from.x + (target.x - from.x) * t, y: from.y + (target.y - from.y) * t };
-            }, mine);
+            }, mine, true);
         }
 
         function arrive(week) {

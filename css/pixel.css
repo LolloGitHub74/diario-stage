@@ -2468,6 +2468,12 @@ body[data-screen="livelli"] main {
 .knight-walker.is-walking.is-left {
     transform: translate(-62.5%, -100%) scaleX(-1);
 }
+/* Quando torna indietro dal falò alla strada: i frame di schiena */
+.knight-walker.is-walking.is-up {
+    background-image: url("../immagini/cavaliere-schiena.webp");
+    transform: translate(-62.5%, -100%);
+}
+
 /* Quando scende verso chi guarda: i frame visti di fronte */
 .knight-walker.is-walking.is-down {
     background-image: url("../immagini/cavaliere-fronte.webp");
