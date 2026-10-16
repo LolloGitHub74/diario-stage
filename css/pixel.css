@@ -3384,11 +3384,11 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .level-screen {
     position: fixed;
     container-type: inline-size;
-    width: min(1100px, 94vw, calc(92vh * 1432 / 896));
-    width: min(1100px, 94vw, calc(92svh * 1432 / 896));
+    width: min(1100px, 94vw, calc(92vh * 1420 / 882));
+    width: min(1100px, 94vw, calc(92svh * 1420 / 882));
     max-width: none;
     max-height: none;
-    aspect-ratio: 1432 / 896;
+    aspect-ratio: 1420 / 882;
     padding: 0;
     overflow: visible;
     font-family: var(--font);
