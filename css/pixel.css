@@ -3326,3 +3326,34 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     .world-fx i { animation: none !important; }
     .wf-bat { display: none; }
 }
+
+/* Riquadro del falò più piccolo: copre meno la mappa */
+.fire-panel {
+    width: max-content;
+    border-width: 11px;
+    border-image-width: 17px;
+    padding: 0 4px 4px;
+}
+.fp-head { gap: 7px; padding: 0 0 2px; }
+.fp-head::before,
+.fp-head::after { max-width: 22px; }
+.fp-lv { font-size: max(17px, 1.15cqw); }
+.fp-state { font-size: max(12px, 0.82cqw); }
+.fp-row {
+    gap: 7px;
+    margin-top: 3px;
+    padding: 1px 7px 1px 4px;
+    font-size: max(13px, 0.88cqw);
+    border-width: 1px;
+}
+.fp-row img {
+    width: max(17px, 1.15cqw);
+    height: max(17px, 1.15cqw);
+}
+.fp-chev { width: 7px; height: 11px; }
+.fp-cta {
+    gap: 9px;
+    margin-top: 5px;
+    padding: 2px 8px;
+    font-size: max(14px, 0.98cqw);
+}
