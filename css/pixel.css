@@ -3736,3 +3736,45 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     .level-screen .level-body h3 { gap: 10px; font-size: 24px; }
     .level-screen .level-body p { margin-top: 10px; font-size: 19px; line-height: 1.6; }
 }
+
+/* Pulsanti dorati della parete: sezione precedente, successiva, chiudi */
+.level-screen .wall-tools {
+    top: 10.8%;
+    right: 10.5%;
+    gap: 0.8cqw;
+}
+
+.wall-button {
+    width: 5.6cqw;
+    min-width: 40px;
+    aspect-ratio: 160 / 144;
+    padding: 0;
+    cursor: pointer;
+    background: center / 100% 100% no-repeat;
+    border: 0;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.5));
+}
+
+.wall-prev  { background-image: url("../immagini/pulsante-indietro.webp"); }
+.wall-next  { background-image: url("../immagini/pulsante-avanti.webp"); }
+.wall-close { background-image: url("../immagini/pulsante-chiudi.webp"); }
+
+.wall-button:hover {
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.5)) brightness(1.15);
+}
+
+.wall-button:active {
+    transform: translateY(2px);
+    filter: none;
+}
+
+.wall-button:focus-visible {
+    outline: 2px solid #ffc24a;
+    outline-offset: 2px;
+}
+
+@media (max-width: 700px), (max-height: 420px) {
+    .level-screen .wall-tools { top: 12px; right: 10px; gap: 4px; }
+    .wall-button { width: 42px; min-width: 0; }
+}

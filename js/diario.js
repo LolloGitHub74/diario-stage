@@ -462,7 +462,7 @@
     const title = dialog.querySelector("#level-title");
     const date = dialog.querySelector(".level-date");
     const body = dialog.querySelector(".level-body");
-    const stepButtons = dialog.querySelectorAll("[data-level-step]");
+    const stepButtons = dialog.querySelectorAll("[data-tab-step]");
     let current = 0;
     let pushed = false;
 
@@ -519,10 +519,6 @@
         body.appendChild(template.content.cloneNode(true));
         showTab(tab);
 
-        stepButtons.forEach(function (button) {
-            const target = week + Number(button.dataset.levelStep);
-            button.disabled = target < 1 || target > weeks.length;
-        });
         return true;
     }
 
@@ -671,10 +667,10 @@
         });
     });
 
+    // Frecce dorate: sezione precedente o successiva della settimana
     stepButtons.forEach(function (button) {
         button.addEventListener("click", function () {
-            const week = current + Number(button.dataset.levelStep);
-            if (fill(week)) history.replaceState({ level: week }, "", "#livello-" + pad(week));
+            showTab(tab + Number(button.dataset.tabStep));
         });
     });
 
