@@ -3374,3 +3374,286 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     60%  { translate: -3px 0; }
     80%  { translate: 2px 0; }
 }
+
+
+/* =========================================================
+   SCHEDA DEL LIVELLO: LA PARETE DEL CASTELLO
+   In alto la settimana, sotto quattro pagine da sfogliare
+   ========================================================= */
+
+.level-screen {
+    position: fixed;
+    container-type: inline-size;
+    width: min(1100px, 94vw, calc(92vh * 1432 / 896));
+    width: min(1100px, 94vw, calc(92svh * 1432 / 896));
+    max-width: none;
+    max-height: none;
+    aspect-ratio: 1432 / 896;
+    padding: 0;
+    overflow: visible;
+    font-family: var(--font);
+    background: url("../immagini/parete.webp") 0 0 / 100% 100% no-repeat;
+    border: 0;
+    box-shadow: none;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 10px 0 rgba(0, 0, 0, 0.5));
+}
+
+/* Nel riquadro scuro in alto: livello, titolo, date */
+.level-screen .wall-head {
+    position: absolute;
+    left: 17.5%;
+    top: 10%;
+    right: 22%;
+    height: 14%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35cqw;
+}
+
+.level-screen .level-kicker {
+    font-size: 1.45cqw;
+    letter-spacing: 0.2cqw;
+    color: var(--gold);
+}
+
+.level-screen .level-kicker[data-state="done"] { color: var(--green); }
+.level-screen .level-kicker[data-state="locked"] { color: var(--dim); }
+
+.level-screen h2 {
+    font-size: 3.4cqw;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--cream);
+}
+
+.level-screen .level-date {
+    margin: 0;
+    font-size: 1.5cqw;
+    color: #9fb0e0;
+}
+
+/* A destra nel riquadro: livello precedente, successivo, chiudi */
+.level-screen .wall-tools {
+    position: absolute;
+    right: 11.5%;
+    top: 12.5%;
+    display: flex;
+    gap: 0.7cqw;
+}
+
+.level-screen .level-step,
+.level-screen .panel-close {
+    width: 3.4cqw;
+    height: 3.4cqw;
+    min-width: 30px;
+    min-height: 30px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    font-family: var(--font);
+    font-size: max(16px, 1.6cqw);
+    line-height: 1;
+    color: var(--gold);
+    cursor: pointer;
+    background: #141a3a;
+    border: 2px solid #8a5a1c;
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+.level-screen .panel-close {
+    font-size: max(22px, 2.3cqw);
+}
+
+.level-screen .level-step:hover:not(:disabled),
+.level-screen .panel-close:hover {
+    color: #2a1608;
+    background: var(--gold);
+    border-color: #5a3410;
+}
+
+.level-screen .level-step:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+/* Schede in stile browser, appoggiate sulla pagina */
+.level-screen .wall-tabs {
+    position: absolute;
+    left: 19.5%;
+    right: 11.5%;
+    top: 27.5%;
+    display: flex;
+    gap: 0.5cqw;
+    padding: 0 0.8cqw;
+}
+
+.wall-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7cqw;
+    height: 4.6cqw;
+    padding: 0 0.8cqw;
+    margin-bottom: -2px;
+    font-family: var(--font);
+    font-size: max(13px, 1.35cqw);
+    color: #8d93b8;
+    cursor: pointer;
+    background: #10142c;
+    border: 2px solid #4a3418;
+    border-bottom: 0;
+    clip-path: polygon(7% 0, 93% 0, 100% 100%, 0 100%);
+    position: relative;
+    z-index: 0;
+}
+
+.wall-tab img {
+    width: 2.4cqw;
+    height: 2.4cqw;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: grayscale(0.7) brightness(0.7);
+}
+
+.wall-tab:hover {
+    color: var(--cream);
+}
+
+.wall-tab:hover img {
+    filter: none;
+}
+
+.wall-tab.is-active {
+    z-index: 2;
+    color: var(--gold);
+    background: #1b2148;
+    border-color: #d8952c;
+    box-shadow: inset 0 3px 0 rgba(255, 200, 90, 0.35);
+}
+
+.wall-tab.is-active img {
+    filter: drop-shadow(0 0 4px rgba(255, 190, 80, 0.6));
+}
+
+.wall-tab:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: -4px;
+}
+
+/* La pagina: sfondo scuro sopra i mattoni, testo leggibile */
+.level-screen .wall-page {
+    position: absolute;
+    left: 19.5%;
+    right: 11.5%;
+    top: calc(27.5% + 4.6cqw);
+    bottom: 10.5%;
+    max-height: none;
+    padding: 1.6cqw 2.2cqw;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(18, 22, 50, 0.93);
+    border: 2px solid #d8952c;
+    box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.35);
+    scrollbar-color: #8a5a1c transparent;
+    position: absolute;
+    z-index: 1;
+}
+
+.level-screen .level-body section {
+    padding: 0;
+    border: 0;
+}
+
+.level-screen .level-body section[hidden] {
+    display: none;
+}
+
+.level-screen .level-body h3 {
+    font-size: max(20px, 2.1cqw);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--gold);
+}
+
+.level-screen .level-body h3::before {
+    content: "◆ ";
+    font-size: 0.7em;
+    vertical-align: 0.15em;
+    color: var(--ember);
+}
+
+.level-screen .level-body p {
+    max-width: none;
+    margin-top: 1cqw;
+    font-size: max(15px, 1.6cqw);
+    line-height: 1.4;
+    color: var(--cream);
+}
+
+.level-screen .level-locked {
+    margin: 0 0 1.2cqw;
+    padding: 0.6cqw 1cqw;
+    font-size: max(14px, 1.4cqw);
+}
+
+/* Telefono: la parete non ci sta, resta la cornice dorata a tutto schermo */
+@media (max-width: 700px), (max-height: 420px) {
+    .level-screen {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: auto;
+        container-type: normal;
+        background: #10142c;
+        border: 14px solid transparent;
+        border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
+        filter: none;
+    }
+
+    .level-screen .wall-head {
+        left: 16px;
+        right: 130px;
+        top: 14px;
+        height: auto;
+        gap: 4px;
+    }
+
+    .level-screen .level-kicker { font-size: 14px; }
+    .level-screen h2 { font-size: 28px; }
+    .level-screen .level-date { font-size: 15px; }
+
+    .level-screen .wall-tools {
+        right: 12px;
+        top: 14px;
+        gap: 6px;
+    }
+
+    .level-screen .wall-tabs {
+        left: 8px;
+        right: 8px;
+        top: 112px;
+        gap: 4px;
+        padding: 0;
+    }
+
+    .wall-tab {
+        height: 46px;
+        font-size: 0;
+    }
+
+    .wall-tab img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .level-screen .wall-page {
+        left: 8px;
+        right: 8px;
+        top: 158px;
+        bottom: 8px;
+        padding: 16px;
+    }
+}

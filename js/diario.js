@@ -466,6 +466,32 @@
     let current = 0;
     let pushed = false;
 
+    // Le quattro pagine della parete: si vede una sezione alla volta
+    const tabs = Array.from(dialog.querySelectorAll(".wall-tab"));
+    let tab = 0;
+
+    function showTab(index) {
+        tab = (index + tabs.length) % tabs.length;
+        body.querySelectorAll("section").forEach(function (part, i) {
+            part.hidden = i !== tab;
+        });
+        tabs.forEach(function (button, i) {
+            button.classList.toggle("is-active", i === tab);
+            button.setAttribute("aria-selected", i === tab ? "true" : "false");
+        });
+        dialog.querySelector(".wall-page").scrollTop = 0;
+    }
+
+    tabs.forEach(function (button, i) {
+        button.addEventListener("click", function () { showTab(i); });
+    });
+
+    // Con le frecce, dentro la parete, si sfogliano le pagine
+    dialog.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowRight") { event.preventDefault(); showTab(tab + 1); tabs[tab].focus(); }
+        if (event.key === "ArrowLeft") { event.preventDefault(); showTab(tab - 1); tabs[tab].focus(); }
+    });
+
     function pad(n) {
         return String(n).padStart(2, "0");
     }
@@ -490,12 +516,12 @@
             body.appendChild(note);
         }
         body.appendChild(template.content.cloneNode(true));
+        showTab(tab);
 
         stepButtons.forEach(function (button) {
             const target = week + Number(button.dataset.levelStep);
             button.disabled = target < 1 || target > weeks.length;
         });
-        dialog.querySelector(".panel-inner").scrollTop = 0;
         return true;
     }
 
@@ -608,17 +634,15 @@
         firePanel.querySelectorAll(".fp-row").forEach(function (row) {
             row.addEventListener("click", function () {
                 const week = panelWeek;
-                const index = Number(row.dataset.section);
+                tab = Number(row.dataset.section);
                 closePanel();
                 open(week, false);
-                const target = body.querySelectorAll("section")[index];
-                const inner = dialog.querySelector(".panel-inner");
-                if (target && inner) inner.scrollTop = target.offsetTop - inner.offsetTop - 12;
             });
         });
 
         firePanel.querySelector(".fp-cta").addEventListener("click", function () {
             const week = panelWeek;
+            tab = 0;
             closePanel();
             open(week, false);
         });

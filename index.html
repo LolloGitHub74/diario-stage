@@ -732,24 +732,28 @@
         <!-- Schermata del livello: si riempie con il contenuto del falò scelto -->
 
         <dialog class="panel level-screen" id="level-screen" aria-labelledby="level-title">
-            <div class="panel-inner">
+            <!-- La parete del castello: in alto la settimana, sotto le quattro pagine -->
+            <div class="wall-head">
+                <p class="level-kicker"></p>
+                <h2 id="level-title"></h2>
+                <p class="level-date"></p>
+            </div>
 
-                <div class="panel-head">
-                    <div>
-                        <p class="level-kicker"></p>
-                        <h2 id="level-title"></h2>
-                        <p class="level-date"></p>
-                    </div>
-                    <button type="button" class="panel-close" data-level-close aria-label="Chiudi">×</button>
-                </div>
+            <div class="wall-tools">
+                <button type="button" class="level-step" data-level-step="-1" aria-label="Livello precedente">◀</button>
+                <button type="button" class="level-step" data-level-step="1" aria-label="Livello successivo">▶</button>
+                <button type="button" class="panel-close" data-level-close aria-label="Chiudi">×</button>
+            </div>
 
+            <div class="wall-tabs" role="tablist" aria-label="Sezioni della settimana">
+                <button type="button" class="wall-tab" role="tab" data-tab="0"><img src="immagini/ui-pergamena.webp" alt="" width="70" height="70"><span>Missioni</span></button>
+                <button type="button" class="wall-tab" role="tab" data-tab="1"><img src="immagini/ui-spade.webp" alt="" width="70" height="70"><span>Attività</span></button>
+                <button type="button" class="wall-tab" role="tab" data-tab="2"><img src="immagini/ui-stella.webp" alt="" width="70" height="70"><span>Abilità</span></button>
+                <button type="button" class="wall-tab" role="tab" data-tab="3"><img src="immagini/ui-libro.webp" alt="" width="70" height="70"><span>Diario</span></button>
+            </div>
+
+            <div class="wall-page panel-inner" role="tabpanel">
                 <div class="level-body"></div>
-
-                <div class="level-nav">
-                    <button type="button" class="level-step" data-level-step="-1">◀ Livello precedente</button>
-                    <button type="button" class="level-step" data-level-step="1">Livello successivo ▶</button>
-                </div>
-
             </div>
         </dialog>
 
