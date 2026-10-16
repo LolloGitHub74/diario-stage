@@ -479,7 +479,7 @@
             button.classList.toggle("is-active", i === tab);
             button.setAttribute("aria-selected", i === tab ? "true" : "false");
         });
-        dialog.querySelector(".wall-page").scrollTop = 0;
+        body.scrollTop = 0;
     }
 
     tabs.forEach(function (button, i) {
