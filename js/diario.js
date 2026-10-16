@@ -475,6 +475,7 @@
         body.querySelectorAll("section").forEach(function (part, i) {
             part.hidden = i !== tab;
         });
+        dialog.querySelector(".wall-tabs").dataset.active = tab;
         tabs.forEach(function (button, i) {
             button.classList.toggle("is-active", i === tab);
             button.setAttribute("aria-selected", i === tab ? "true" : "false");
