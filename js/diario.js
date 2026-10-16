@@ -140,6 +140,8 @@
         const step = event.key === "ArrowRight" ? 1 : -1;
         const knight = knights[world];
         const here = knight ? knight.week() : 0;
+        // Verso un falò bloccato non si va
+        if (here && stage.state(here + step) === "locked") return;
         if (!here || Math.ceil((here + step) / 4) !== world) {
             goWorld(world + step);
             return;
@@ -379,8 +381,10 @@
             token++;
             stopWalking();
             const fromEnd = from === "end";
-            const target = from === "start" ? weeksHere[0]
-                : fromEnd ? weeksHere[weeksHere.length - 1]
+            // Solo verso falò già raggiunti: quelli bloccati sono inesplorabili
+            const open = weeksHere.filter(function (w) { return stage.state(w) !== "locked"; });
+            const target = from === "start" ? open[0]
+                : fromEnd ? open[open.length - 1]
                 : restWeek();
             el.classList.remove("is-resting");
             s = fromEnd ? END : START;
@@ -392,13 +396,15 @@
             el.classList.toggle("is-left", fromEnd);
             // Aspetta che la transizione si sia aperta, poi entra camminando
             timer = setTimeout(function () {
+                // Mondo ancora tutto bloccato: il cavaliere non entra
+                if (!target) return;
                 el.classList.remove("is-faded");
                 go(target, 34, 2600);
             }, reduceMotion ? 0 : (delay || 380));
         }
 
         function walkTo(week) {
-            if (!spots[week]) return Promise.resolve();
+            if (!spots[week] || stage.state(week) === "locked") return Promise.resolve();
             clearTimeout(timer);
             el.classList.remove("is-faded");
             // Se stava già andando verso questo falò, un secondo clic apre subito
@@ -585,6 +591,13 @@
         button.addEventListener("click", function (event) {
             event.stopPropagation();
             const week = Number(button.dataset.levelOpen);
+            // Livello bloccato: inesplorabile, il cartellino trema e basta
+            if (button.dataset.state === "locked") {
+                button.classList.remove("is-denied");
+                void button.offsetWidth;
+                button.classList.add("is-denied");
+                return;
+            }
             closePanel();
             knightOf(Math.ceil(week / 4)).walkTo(week).then(function () { openPanel(week, button); });
         });

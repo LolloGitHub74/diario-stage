@@ -3357,3 +3357,20 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     padding: 2px 8px;
     font-size: max(14px, 0.98cqw);
 }
+
+/* Livello bloccato: inesplorabile, al clic il cartellino trema */
+.world-stop[data-state="locked"] {
+    cursor: not-allowed;
+}
+
+.world-stop.is-denied {
+    animation: stop-denied 0.36s steps(6);
+}
+
+@keyframes stop-denied {
+    0%, 100% { translate: 0 0; }
+    20%  { translate: -4px 0; }
+    40%  { translate: 4px 0; }
+    60%  { translate: -3px 0; }
+    80%  { translate: 2px 0; }
+}
