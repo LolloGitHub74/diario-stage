@@ -3200,8 +3200,9 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .world-fx .wf-lights {
     inset: 0;
     background: center / 100% 100% no-repeat;
-    mix-blend-mode: screen;
     opacity: 0.3;
+    /* Solo l'opacità cambia: il browser la gestisce senza ridisegnare la mappa */
+    will-change: opacity;
     animation: city-flicker var(--d, 2.6s) steps(1) var(--l, 0s) infinite;
 }
 
@@ -3222,14 +3223,17 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 /* Acqua del porto: piccole onde a pixel che scorrono, solo sull'acqua */
 .world-fx .wf-water {
-    inset: 0;
+    /* Solo il riquadro del porto, non tutta la mappa */
+    left: 22.66%;
+    top: 78.35%;
+    width: 55.52%;
+    height: 21.65%;
     background:
         url("../immagini/onde-1.webp") 0 0 / 2.7cqw auto repeat,
         url("../immagini/onde-2.webp") 0 0 / 2.25cqw auto repeat;
     image-rendering: pixelated;
     -webkit-mask: url("../immagini/mondo-2-acqua.webp") 0 0 / 100% 100% no-repeat;
     mask: url("../immagini/mondo-2-acqua.webp") 0 0 / 100% 100% no-repeat;
-    mix-blend-mode: screen;
     opacity: 0.8;
     animation: water-waves 3.2s steps(16) infinite;
 }
@@ -3241,10 +3245,13 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 /* Riflessi dei lampioni sull'acqua: tremolano e ondeggiano */
 .world-fx .wf-reflections {
-    inset: 0;
+    left: 36.70%;
+    top: 83.99%;
+    width: 27.56%;
+    height: 14.77%;
     background: url("../immagini/mondo-2-riflessi.webp") 0 0 / 100% 100% no-repeat;
     image-rendering: pixelated;
-    mix-blend-mode: screen;
+    will-change: transform, opacity;
     animation: reflection-wobble 1.4s steps(1) infinite;
 }
 
