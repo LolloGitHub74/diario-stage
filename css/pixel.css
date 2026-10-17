@@ -3803,3 +3803,8 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     .level-screen .wall-tabs { top: 96px; }
     .level-screen .wall-page { top: calc(96px + 187 * var(--px) - 1px); }
 }
+
+/* La finestra prende il fuoco all'apertura: nessun bordo intorno */
+.level-screen:focus {
+    outline: none;
+}

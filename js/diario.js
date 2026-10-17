@@ -497,6 +497,9 @@
         });
         if (!dialog.open) {
             dialog.showModal();
+            // Il fuoco va sulla finestra, non sulla prima freccia
+            // (altrimenti Safari la mostra già selezionata con il bordo dorato)
+            dialog.focus();
             root.classList.add("panel-open");
         }
         if (!fromHistory) {
