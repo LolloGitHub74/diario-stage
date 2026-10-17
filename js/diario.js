@@ -70,59 +70,21 @@
         if (how && document.body.dataset.screen === "livelli") knightOf(n).enter(how.from, how.delay);
     }
 
-    // Cambio di mondo: un cerchio nero si chiude subito, a schermo nero
-    // cambia la mappa e il cerchio si riapre sul nuovo mondo
-    const iris = document.getElementById("iris");
-    const IRIS = { duration: 520, easing: "steps(10, end)", fill: "forwards" };
-    let irisBusy = false;
+    // Cambio di mondo con la tenda nera della home, in orizzontale.
+    // La tenda scorre al contrario del cavaliere: lui va a destra, lei a sinistra
+    let worldBusy = false;
 
-    // origin: punto dello schermo su cui si chiude il cerchio (il cavaliere)
-    function irisSwap(swap, origin) {
-        if (irisBusy) return;
-        if (!iris || !iris.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            swap();
-            return;
-        }
-        irisBusy = true;
-        iris.style.left = origin ? origin.x + "px" : "";
-        iris.style.top = origin ? origin.y + "px" : "";
-        iris.classList.add("is-on");
-        iris.animate([
-            { width: "300vmax", height: "300vmax" },
-            { width: "0vmax", height: "0vmax" }
-        ], IRIS).finished.then(function () {
-            // Si riapre dal centro dello schermo sul nuovo mondo
-            iris.style.left = "";
-            iris.style.top = "";
-            swap();
-            return new Promise(function (resolve) { setTimeout(resolve, 120); });
-        }).then(function () {
-            return iris.animate([
-                { width: "0vmax", height: "0vmax" },
-                { width: "150vmax", height: "150vmax" }
-            ], IRIS).finished;
-        }).then(function () {
-            iris.classList.remove("is-on");
-            iris.getAnimations().forEach(function (animation) { animation.cancel(); });
-            irisBusy = false;
-        });
-    }
-
-    // Avanti: il cavaliere parte dall'inizio della strada verso il primo falò.
-    // Indietro: arriva da destra verso l'ultimo falò del mondo
     function goWorld(n) {
-        if (n < 1 || n > pages.length || n === world || irisBusy) return;
-        const from = n > world ? "start" : "end";
-        // Il cavaliere si avvia verso l'uscita mentre il cerchio si chiude,
-        // poi nel nuovo mondo si muove mentre il cerchio si riapre
-        knightOf(world).leave(n > world ? 1 : -1);
-        const walker = pages[world - 1].querySelector(".knight-walker");
-        let origin = null;
-        if (walker) {
-            const box = walker.getBoundingClientRect();
-            origin = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
-        }
-        irisSwap(function () { showWorld(n, { from: from, delay: 450 }); }, origin);
+        if (n < 1 || n > pages.length || n === world || worldBusy) return;
+        const ahead = n > world;
+        // Il cavaliere si avvia subito verso l'uscita, la tenda lo copre
+        knightOf(world).leave(ahead ? 1 : -1);
+        const swap = function () { showWorld(n, { from: ahead ? "start" : "end", delay: 200 }); };
+        if (!window.curtainSwap) { swap(); return; }
+        worldBusy = true;
+        window.curtainSwap(swap, ahead ? "back" : "forward").then(function () {
+            worldBusy = false;
+        });
     }
 
     section.querySelectorAll("[data-world-step]").forEach(function (button) {
@@ -136,7 +98,7 @@
     document.addEventListener("keydown", function (event) {
         if (document.body.dataset.screen !== "livelli" || (dialog && dialog.open)) return;
         if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-        if (irisBusy) return;
+        if (worldBusy) return;
         const step = event.key === "ArrowRight" ? 1 : -1;
         const knight = knights[world];
         const here = knight ? knight.week() : 0;
