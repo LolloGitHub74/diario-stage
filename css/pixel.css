@@ -3027,8 +3027,8 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 }
 
 .fp-row span {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 1 0 auto;
+    overflow: visible;
 }
 
 /* Cartellini dei livelli un po' più piccoli */
@@ -3310,7 +3310,9 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 /* Riquadro del falò più piccolo: copre meno la mappa */
 .fire-panel {
-    width: max-content;
+    /* Larghezza fissa: con "max-content" alcuni browser (Safari)
+       schiacciavano le scritte e restavano solo le icone */
+    width: clamp(250px, 16.5cqw, 330px);
     border-width: 11px;
     border-image-width: 17px;
     padding: 0 4px 4px;
@@ -3777,4 +3779,23 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 @media (max-width: 700px), (max-height: 420px) {
     .level-screen .wall-tools { top: 12px; right: 10px; gap: 4px; }
     .wall-button { width: 42px; min-width: 0; }
+}
+
+/* Telefono in orizzontale (schermo basso): schede e pagina meno alte,
+   così resta spazio per leggere il testo */
+@media (max-height: 420px) and (min-width: 701px) {
+    .level-screen {
+        --px: min(calc((100vw - 44px) / 1848), 0.34px);
+    }
+
+    .level-screen .wall-tabs,
+    .level-screen .wall-page {
+        left: 50%;
+        right: auto;
+        width: calc(1848 * var(--px));
+        transform: translateX(-50%);
+    }
+
+    .level-screen .wall-tabs { top: 96px; }
+    .level-screen .wall-page { top: calc(96px + 187 * var(--px) - 1px); }
 }
