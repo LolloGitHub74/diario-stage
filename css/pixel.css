@@ -3312,6 +3312,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .fire-panel {
     /* Larghezza fissa: con "max-content" alcuni browser (Safari)
        schiacciavano le scritte e restavano solo le icone */
+    width: 280px;
     width: clamp(250px, 16.5cqw, 330px);
     border-width: 11px;
     border-image-width: 17px;
@@ -3366,9 +3367,11 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 .level-screen {
     position: fixed;
-    container-type: inline-size;
-    width: min(1100px, 94vw, calc(92vh * 1420 / 882));
-    width: min(1100px, 94vw, calc(92svh * 1420 / 882));
+    /* Larghezza della parete: tutte le misure interne partono da qui,
+       così funziona anche dove le unità "cqw" non vanno (Safari su iPad) */
+    --w: min(1100px, 94vw, calc(92vh * 1420 / 882));
+    width: var(--w);
+    height: calc(var(--w) * 882 / 1420);
     max-width: none;
     max-height: none;
     aspect-ratio: 1420 / 882;
@@ -3392,12 +3395,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.35cqw;
+    gap: calc(var(--w) * 0.35 / 100);
 }
 
 .level-screen .level-kicker {
-    font-size: 1.45cqw;
-    letter-spacing: 0.2cqw;
+    font-size: calc(var(--w) * 1.45 / 100);
+    letter-spacing: calc(var(--w) * 0.2 / 100);
     color: var(--gold);
 }
 
@@ -3405,7 +3408,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .level-screen .level-kicker[data-state="locked"] { color: var(--dim); }
 
 .level-screen h2 {
-    font-size: 3.4cqw;
+    font-size: calc(var(--w) * 3.4 / 100);
     font-weight: 400;
     line-height: 1;
     color: var(--cream);
@@ -3413,7 +3416,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 .level-screen .level-date {
     margin: 0;
-    font-size: 1.5cqw;
+    font-size: calc(var(--w) * 1.5 / 100);
     color: #9fb0e0;
 }
 
@@ -3423,20 +3426,20 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     right: 11.5%;
     top: 12.5%;
     display: flex;
-    gap: 0.7cqw;
+    gap: calc(var(--w) * 0.7 / 100);
 }
 
 .level-screen .level-step,
 .level-screen .panel-close {
-    width: 3.4cqw;
-    height: 3.4cqw;
+    width: calc(var(--w) * 3.4 / 100);
+    height: calc(var(--w) * 3.4 / 100);
     min-width: 30px;
     min-height: 30px;
     display: grid;
     place-items: center;
     padding: 0;
     font-family: var(--font);
-    font-size: max(16px, 1.6cqw);
+    font-size: max(16px, calc(var(--w) * 1.6 / 100));
     line-height: 1;
     color: var(--gold);
     cursor: pointer;
@@ -3447,7 +3450,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 }
 
 .level-screen .panel-close {
-    font-size: max(22px, 2.3cqw);
+    font-size: max(22px, calc(var(--w) * 2.3 / 100));
 }
 
 .level-screen .level-step:hover:not(:disabled),
@@ -3472,21 +3475,21 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     --page-right: 10.5%;
     --tabs-top: 26.5%;
     /* la pagina è larga il 72% della parete */
-    --px: calc(72cqw / 1848);
+    --px: calc(calc(var(--w) * 72 / 100) / 1848);
 }
 
 /* Pulsanti in alto a destra: quadrati dorati */
 .level-screen .wall-tools {
     top: 11.5%;
     right: 10.5%;
-    gap: 0.9cqw;
+    gap: calc(var(--w) * 0.9 / 100);
 }
 
 .level-screen .level-step,
 .level-screen .panel-close {
-    width: 4.3cqw;
-    height: 4.3cqw;
-    font-size: max(16px, 2cqw);
+    width: calc(var(--w) * 4.3 / 100);
+    height: calc(var(--w) * 4.3 / 100);
+    font-size: max(16px, calc(var(--w) * 2 / 100));
     color: #ffc24a;
     background: #0e1330;
     border: 3px solid #a8701e;
@@ -3645,8 +3648,8 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .level-screen .level-body h3 {
     display: flex;
     align-items: center;
-    gap: 1.4cqw;
-    font-size: max(22px, 2.6cqw);
+    gap: calc(var(--w) * 1.4 / 100);
+    font-size: max(22px, calc(var(--w) * 2.6 / 100));
     font-weight: 400;
     line-height: 1;
     color: #ffc24a;
@@ -3655,7 +3658,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .level-screen .level-body h3::before {
     content: "◆";
     font-size: 0.75em;
-    margin-right: -0.4cqw;
+    margin-right: -calc(var(--w) * 0.4 / 100);
     color: #ffb02e;
     vertical-align: 0;
 }
@@ -3673,22 +3676,22 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 
 .level-screen .level-body p {
     max-width: none;
-    margin-top: 1.2cqw;
-    font-size: max(18px, 2cqw);
+    margin-top: calc(var(--w) * 1.2 / 100);
+    font-size: max(18px, calc(var(--w) * 2 / 100));
     line-height: 1.75;
     letter-spacing: 0.02em;
     color: #ece4cf;
 }
 
 .level-screen .level-locked {
-    margin: 0 0 1.2cqw;
-    padding: 0.6cqw 1cqw;
-    font-size: max(16px, 1.7cqw);
+    margin: 0 0 calc(var(--w) * 1.2 / 100);
+    padding: calc(var(--w) * 0.6 / 100) calc(var(--w) * 1 / 100);
+    font-size: max(16px, calc(var(--w) * 1.7 / 100));
 }
 
 /* Telefono: la parete non ci sta, resta la cornice dorata a tutto schermo
    con le stesse schede e la stessa pagina */
-@media (max-width: 700px), (max-height: 420px) {
+@media (max-width: 700px), (max-height: 420px), (orientation: portrait) and (max-width: 1100px) {
     .level-screen {
         width: 100%;
         height: 100%;
@@ -3698,6 +3701,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         border: 14px solid transparent;
         border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
         filter: none;
+        --w: 100vw;
         --px: calc((100vw - 44px) / 1848);
     }
 
@@ -3743,11 +3747,11 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 .level-screen .wall-tools {
     top: 10.8%;
     right: 10.5%;
-    gap: 0.8cqw;
+    gap: calc(var(--w) * 0.8 / 100);
 }
 
 .wall-button {
-    width: 5.6cqw;
+    width: calc(var(--w) * 5.6 / 100);
     min-width: 40px;
     aspect-ratio: 160 / 144;
     padding: 0;
@@ -3776,7 +3780,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     outline-offset: 2px;
 }
 
-@media (max-width: 700px), (max-height: 420px) {
+@media (max-width: 700px), (max-height: 420px), (orientation: portrait) and (max-width: 1100px) {
     .level-screen .wall-tools { top: 12px; right: 10px; gap: 4px; }
     .wall-button { width: 42px; min-width: 0; }
 }
