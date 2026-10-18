@@ -3703,6 +3703,14 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         filter: none;
         --w: 100vw;
         --px: calc((100vw - 44px) / 1848);
+        /* iPhone: 100% conta anche lo spazio sotto la barra di Safari;
+           dvh è solo la parte che si vede davvero */
+        position: fixed;
+        inset: 0;
+        margin: 0;
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
     }
 
     .level-screen .wall-head {
@@ -3807,4 +3815,16 @@ html[data-theme="day"] .theme-toggle .icon-moon {
 /* La finestra prende il fuoco all'apertura: nessun bordo intorno */
 .level-screen:focus {
     outline: none;
+}
+
+/* Il testo della settimana scorre col dito anche su iPhone */
+.level-screen .level-body {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+
+/* La pagina segue top/bottom: non prende l'altezza 100% dei pannelli generici */
+.level-screen .wall-page {
+    height: auto;
+    max-height: none;
 }
