@@ -3880,26 +3880,18 @@ body[data-screen="viaggio"] main {
     background: linear-gradient(rgba(4, 5, 13, 0.6), rgba(4, 5, 13, 0));
 }
 
-/* Le zone cliccabili: invisibili finché non ci passi sopra,
-   poi un alone dorato ne segna i contorni */
+/* Le zone cliccabili: invisibili, le indica il cartellino dorato */
 .forge-spot {
     position: absolute;
     z-index: 3;
     padding: 0;
     cursor: pointer;
     background: none;
-    border: 3px solid transparent;
-    border-radius: 6px;
-    transition: border-color 0.12s, box-shadow 0.12s;
+    border: 0;
 }
 
-.forge-spot:hover,
 .forge-spot:focus-visible {
     outline: none;
-    border-color: #ffd36a;
-    box-shadow:
-        0 0 10px 2px rgba(255, 200, 90, 0.75),
-        inset 0 0 10px 2px rgba(255, 200, 90, 0.45);
 }
 
 /* Il cartellino sopra ogni oggetto, come sopra i falò */
@@ -3940,20 +3932,6 @@ body[data-screen="viaggio"] main {
 .forge-spot:hover .forge-label,
 .forge-spot:focus-visible .forge-label {
     color: var(--gold);
-}
-
-/* Il cartellino compare solo con il cursore sopra;
-   sui touch (niente cursore) resta sempre visibile */
-@media (hover: hover) {
-    .forge-label {
-        opacity: 0;
-        transition: opacity 0.12s;
-    }
-
-    .forge-spot:hover .forge-label,
-    .forge-spot:focus-visible .forge-label {
-        opacity: 1;
-    }
 }
 
 /* Telefono: il titolo va sotto il pulsante Menu, la forgia si scorre di lato */
