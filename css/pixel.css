@@ -3880,46 +3880,26 @@ body[data-screen="viaggio"] main {
     background: linear-gradient(rgba(4, 5, 13, 0.6), rgba(4, 5, 13, 0));
 }
 
-/* Le zone cliccabili: invisibili, con un alone che respira
-   (l'alone è nel ::before, così il cartellino resta sempre acceso) */
+/* Le zone cliccabili: invisibili finché non ci passi sopra,
+   poi un alone dorato ne segna i contorni */
 .forge-spot {
     position: absolute;
     z-index: 3;
     padding: 0;
     cursor: pointer;
     background: none;
-    border: 0;
+    border: 3px solid transparent;
+    border-radius: 6px;
+    transition: border-color 0.12s, box-shadow 0.12s;
 }
 
-.forge-spot::before {
-    content: "";
-    position: absolute;
-    inset: -8%;
-    border-radius: 45%;
-    background: radial-gradient(ellipse at 50% 55%, rgba(255, 205, 110, 0.55), rgba(255, 190, 80, 0.12) 50%, rgba(255, 190, 80, 0) 70%);
-    opacity: 0.3;
-    animation: spot-breathe 2.8s ease-in-out infinite;
-    pointer-events: none;
-}
-
-.forge-spot:nth-of-type(2)::before { animation-delay: -0.7s; }
-.forge-spot:nth-of-type(3)::before { animation-delay: -1.4s; }
-.forge-spot:nth-of-type(4)::before { animation-delay: -2.1s; }
-
-@keyframes spot-breathe {
-    0%, 100% { opacity: 0.2; }
-    50%      { opacity: 0.6; }
-}
-
-.forge-spot:hover::before,
-.forge-spot:focus-visible::before,
-.forge-spot.is-intro::before {
-    opacity: 1;
-    animation: none;
-}
-
+.forge-spot:hover,
 .forge-spot:focus-visible {
     outline: none;
+    border-color: #ffd36a;
+    box-shadow:
+        0 0 10px 2px rgba(255, 200, 90, 0.75),
+        inset 0 0 10px 2px rgba(255, 200, 90, 0.45);
 }
 
 /* Il cartellino sopra ogni oggetto, come sopra i falò */
@@ -3943,8 +3923,6 @@ body[data-screen="viaggio"] main {
     image-rendering: pixelated;
     filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.55));
     transform: translateX(-50%);
-    transition: transform 0.12s steps(2);
-    opacity: 1;
 }
 
 .forge-label img {
@@ -3960,64 +3938,22 @@ body[data-screen="viaggio"] main {
 }
 
 .forge-spot:hover .forge-label,
-.forge-spot:focus-visible .forge-label,
-.forge-spot.is-intro .forge-label {
+.forge-spot:focus-visible .forge-label {
     color: var(--gold);
-    transform: translateX(-50%) translateY(-4px);
 }
 
-/* Effetti: scintille dall'incudine, luccichii su libri e attrezzi */
-.forge-fx {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    overflow: hidden;
-}
+/* Il cartellino compare solo con il cursore sopra;
+   sui touch (niente cursore) resta sempre visibile */
+@media (hover: hover) {
+    .forge-label {
+        opacity: 0;
+        transition: opacity 0.12s;
+    }
 
-.forge-fx i {
-    position: absolute;
-    display: block;
-}
-
-.ff-spark {
-    width: 0.28cqw;
-    height: 0.28cqw;
-    background: #ffd36a;
-    box-shadow: 0 0 0.4cqw 0.1cqw rgba(255, 150, 40, 0.9);
-    opacity: 0;
-    animation: ff-spark var(--d, 1.5s) steps(10) var(--l, 0s) infinite;
-}
-
-@keyframes ff-spark {
-    0%   { opacity: 0; translate: 0 0; }
-    10%  { opacity: 1; }
-    60%  { opacity: 1; translate: calc(var(--x) * 0.7) -3.2cqw; }
-    100% { opacity: 0; translate: var(--x) -1.6cqw; }
-}
-
-.ff-twinkle {
-    width: 0.9cqw;
-    height: 0.9cqw;
-    margin: -0.45cqw 0 0 -0.45cqw;
-    background:
-        linear-gradient(#fff6d0, #fff6d0) center / 100% 18% no-repeat,
-        linear-gradient(#fff6d0, #fff6d0) center / 18% 100% no-repeat;
-    filter: drop-shadow(0 0 0.3cqw rgba(255, 220, 140, 0.9));
-    opacity: 0;
-    animation: ff-twinkle 3s steps(1) var(--l, 0s) infinite;
-}
-
-@keyframes ff-twinkle {
-    0%, 70%, 100% { opacity: 0; transform: scale(0.5); }
-    76%  { opacity: 0.8; transform: scale(0.8); }
-    82%  { opacity: 1; transform: scale(1); }
-    88%  { opacity: 0.6; transform: scale(0.7); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .forge-fx i,
-    .forge-spot::before { animation: none; }
+    .forge-spot:hover .forge-label,
+    .forge-spot:focus-visible .forge-label {
+        opacity: 1;
+    }
 }
 
 /* Telefono: il titolo va sotto il pulsante Menu, la forgia si scorre di lato */
