@@ -3828,3 +3828,205 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     height: auto;
     max-height: none;
 }
+
+
+/* =========================================================
+   LA FORGIA (IL PROGETTO): la scena a tutto schermo è il menu
+   ========================================================= */
+
+.journey.forge {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    padding: 0;
+    overflow: hidden;
+    background: #0a0710;
+}
+
+body[data-screen="viaggio"] main {
+    min-height: 0;
+}
+
+/* Titolo in alto al centro, come il nome dei mondi */
+.forge-hud {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    z-index: 6;
+    transform: translateX(-50%);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.forge-title {
+    font-size: clamp(22px, 2.6vw, 38px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-shadow: 0 3px 0 #000;
+}
+
+.forge-title span {
+    color: var(--cream);
+}
+
+.forge.journey::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 22%;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(rgba(4, 5, 13, 0.6), rgba(4, 5, 13, 0));
+}
+
+/* Le zone cliccabili: invisibili, con un alone che respira
+   (l'alone è nel ::before, così il cartellino resta sempre acceso) */
+.forge-spot {
+    position: absolute;
+    z-index: 3;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: 0;
+}
+
+.forge-spot::before {
+    content: "";
+    position: absolute;
+    inset: -8%;
+    border-radius: 45%;
+    background: radial-gradient(ellipse at 50% 55%, rgba(255, 205, 110, 0.55), rgba(255, 190, 80, 0.12) 50%, rgba(255, 190, 80, 0) 70%);
+    opacity: 0.3;
+    animation: spot-breathe 2.8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.forge-spot:nth-of-type(2)::before { animation-delay: -0.7s; }
+.forge-spot:nth-of-type(3)::before { animation-delay: -1.4s; }
+.forge-spot:nth-of-type(4)::before { animation-delay: -2.1s; }
+
+@keyframes spot-breathe {
+    0%, 100% { opacity: 0.2; }
+    50%      { opacity: 0.6; }
+}
+
+.forge-spot:hover::before,
+.forge-spot:focus-visible::before,
+.forge-spot.is-intro::before {
+    opacity: 1;
+    animation: none;
+}
+
+.forge-spot:focus-visible {
+    outline: none;
+}
+
+/* Il cartellino sopra ogni oggetto, come sopra i falò */
+.forge-label {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.4cqw);
+    display: flex;
+    align-items: center;
+    gap: 0.5cqw;
+    width: max-content;
+    box-sizing: content-box;
+    padding: 0 max(12px, 0.9cqw) 0 max(4px, 0.3cqw);
+    font-family: var(--font);
+    font-size: max(16px, 1.25cqw);
+    line-height: 1.6;
+    white-space: nowrap;
+    color: var(--cream);
+    border: 11px solid transparent;
+    border-image: url("../immagini/ui-cornice.webp") 64 fill / 17px stretch;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.55));
+    transform: translateX(-50%);
+    transition: transform 0.12s steps(2);
+    opacity: 1;
+}
+
+.forge-label img {
+    width: max(20px, 1.5cqw);
+    height: max(20px, 1.5cqw);
+    image-rendering: pixelated;
+}
+
+/* Le zone in alto hanno il cartellino dentro, non fuori dallo schermo */
+.forge-board .forge-label {
+    bottom: auto;
+    top: -2.2cqw;
+}
+
+.forge-spot:hover .forge-label,
+.forge-spot:focus-visible .forge-label,
+.forge-spot.is-intro .forge-label {
+    color: var(--gold);
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Effetti: scintille dall'incudine, luccichii su libri e attrezzi */
+.forge-fx {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.forge-fx i {
+    position: absolute;
+    display: block;
+}
+
+.ff-spark {
+    width: 0.28cqw;
+    height: 0.28cqw;
+    background: #ffd36a;
+    box-shadow: 0 0 0.4cqw 0.1cqw rgba(255, 150, 40, 0.9);
+    opacity: 0;
+    animation: ff-spark var(--d, 1.5s) steps(10) var(--l, 0s) infinite;
+}
+
+@keyframes ff-spark {
+    0%   { opacity: 0; translate: 0 0; }
+    10%  { opacity: 1; }
+    60%  { opacity: 1; translate: calc(var(--x) * 0.7) -3.2cqw; }
+    100% { opacity: 0; translate: var(--x) -1.6cqw; }
+}
+
+.ff-twinkle {
+    width: 0.9cqw;
+    height: 0.9cqw;
+    margin: -0.45cqw 0 0 -0.45cqw;
+    background:
+        linear-gradient(#fff6d0, #fff6d0) center / 100% 18% no-repeat,
+        linear-gradient(#fff6d0, #fff6d0) center / 18% 100% no-repeat;
+    filter: drop-shadow(0 0 0.3cqw rgba(255, 220, 140, 0.9));
+    opacity: 0;
+    animation: ff-twinkle 3s steps(1) var(--l, 0s) infinite;
+}
+
+@keyframes ff-twinkle {
+    0%, 70%, 100% { opacity: 0; transform: scale(0.5); }
+    76%  { opacity: 0.8; transform: scale(0.8); }
+    82%  { opacity: 1; transform: scale(1); }
+    88%  { opacity: 0.6; transform: scale(0.7); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .forge-fx i,
+    .forge-spot::before { animation: none; }
+}
+
+/* Telefono: il titolo va sotto il pulsante Menu, la forgia si scorre di lato */
+@media (max-width: 700px) {
+    .forge-hud {
+        top: 76px;
+    }
+
+    .forge-title {
+        font-size: 20px;
+    }
+}

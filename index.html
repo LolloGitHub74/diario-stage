@@ -759,65 +759,48 @@
              IL VIAGGIO FINORA: il progetto
              ===================================================== -->
 
-        <section class="journey" id="viaggio">
+        <section class="journey forge" id="viaggio">
 
-            <div class="section-header">
-                <p class="eyebrow">IL VIAGGIO FINORA</p>
-                <h2>Le mie esperienze</h2>
-                <p>
-                    Le attività, i laboratori e gli strumenti che hanno segnato il mio
-                    stage. Apri un riquadro per leggere i dettagli.
-                </p>
+            <!-- LA FORGIA: la scena è il menu. Ogni oggetto apre una parte del progetto -->
+            <div class="world-page forge-page">
+                <div class="world-stage">
+                    <img class="world-art" src="immagini/forgia.webp" alt="L'interno di una forgia di notte: incudine, bacheca delle missioni, libreria e rastrelliera degli attrezzi" width="1774" height="887">
+
+                    <div class="forge-fx" aria-hidden="true">
+                        <i class="ff-spark" style="left: 12.6%; top: 58.6%; --x: -1.2cqw; --d: 1.4s; --l: 0s"></i>
+                        <i class="ff-spark" style="left: 13.4%; top: 58.4%; --x: 0.8cqw; --d: 1.7s; --l: -0.6s"></i>
+                        <i class="ff-spark" style="left: 11.8%; top: 58.8%; --x: -0.4cqw; --d: 1.2s; --l: -0.3s"></i>
+                        <i class="ff-spark" style="left: 14.2%; top: 58.2%; --x: 1.5cqw; --d: 1.9s; --l: -1.1s"></i>
+                        <i class="ff-spark" style="left: 12.9%; top: 58.5%; --x: 0.2cqw; --d: 1.5s; --l: -0.9s"></i>
+                        <i class="ff-twinkle" style="left: 63.5%; top: 31.5%; --l: 0s"></i>
+                        <i class="ff-twinkle" style="left: 68.6%; top: 40.6%; --l: -0.8s"></i>
+                        <i class="ff-twinkle" style="left: 65.2%; top: 49.5%; --l: -1.6s"></i>
+                        <i class="ff-twinkle" style="left: 71.0%; top: 54.6%; --l: -2.3s"></i>
+                        <i class="ff-twinkle" style="left: 85.4%; top: 47.0%; --l: -0.4s"></i>
+                        <i class="ff-twinkle" style="left: 90.9%; top: 51.5%; --l: -1.3s"></i>
+                        <i class="ff-twinkle" style="left: 95.6%; top: 74.5%; --l: -2.0s"></i>
+                    </div>
+
+                    <button type="button" class="forge-spot" data-panel="simulatore" style="left: 5.4%; top: 56.5%; width: 14.6%; height: 16.5%">
+                        <span class="forge-label"><img src="immagini/ui-stella.webp" alt="" width="70" height="70"><span>Missione principale</span></span>
+                    </button>
+                    <button type="button" class="forge-spot forge-board" data-panel="attivita" style="left: 30.1%; top: 27.5%; width: 22.2%; height: 29.5%">
+                        <span class="forge-label"><img src="immagini/ui-pergamena.webp" alt="" width="70" height="70"><span>Missioni</span></span>
+                    </button>
+                    <button type="button" class="forge-spot" data-panel="skillalab" style="left: 60.0%; top: 22.0%; width: 13.9%; height: 53.0%">
+                        <span class="forge-label"><img src="immagini/ui-libro.webp" alt="" width="70" height="70"><span>Addestramento</span></span>
+                    </button>
+                    <button type="button" class="forge-spot" data-panel="strumenti" style="left: 79.4%; top: 37.0%; width: 18.6%; height: 46.0%">
+                        <span class="forge-label"><img src="immagini/ui-spade.webp" alt="" width="70" height="70"><span>Inventario</span></span>
+                    </button>
+                </div>
             </div>
 
-        <section class="project-tiles">
+            <div class="forge-hud">
+                <p class="forge-title">La forgia <span>· Il progetto</span></p>
+            </div>
 
-            <button type="button" class="project-tile" data-panel="attivita">
-                <span class="tile-meta">5 ATTIVITÀ</span>
-                <h3>Attività di lavoro</h3>
-                <p>
-                    I lavori affidati per supportare il team: feedback degli utenti,
-                    test di Aria, contratti, traduzioni e simulatori.
-                </p>
-                <span class="tile-more">Scopri di più →</span>
-            </button>
-
-            <button type="button" class="project-tile" data-panel="skillalab">
-                <span class="tile-meta">3 LABORATORI</span>
-                <h3>SkillaLab</h3>
-                <p>
-                    I laboratori dedicati a noi stagisti, per crescere anche oltre
-                    il lavoro tecnico.
-                </p>
-                <span class="tile-more">Scopri di più →</span>
-            </button>
-
-            <button type="button" class="project-tile project-tile-simulator" data-panel="simulatore">
-                <span class="simulator-status">
-                    <span class="status-dot"></span>
-                    IN LAVORAZIONE
-                </span>
-                <h3>Il mio simulatore</h3>
-                <p>
-                    Il progetto principale del mio stage: un simulatore AI tutto mio
-                    da pubblicare su SkillaCloud.
-                </p>
-                <span class="tile-more">Scopri di più →</span>
-            </button>
-
-            <button type="button" class="project-tile" data-panel="strumenti">
-                <span class="tile-meta">6 STRUMENTI</span>
-                <h3>Strumenti e tools</h3>
-                <p>
-                    Le piattaforme e i software con cui ho lavorato, molti dei quali
-                    non avevo mai usato prima.
-                </p>
-                <span class="tile-more">Scopri di più →</span>
-            </button>
-
-        </section>
-
-        <dialog class="panel" id="panel-attivita" aria-labelledby="titolo-attivita">
+            <dialog class="panel" id="panel-attivita" aria-labelledby="titolo-attivita">
             <div class="panel-inner">
 
                 <div class="panel-head">
@@ -1161,6 +1144,7 @@
     <script src="js/home.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/diario.js"></script>
+    <script src="js/forgia.js"></script>
     <script src="js/screens.js"></script>
 
 </body>
