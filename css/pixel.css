@@ -3894,7 +3894,7 @@ body[data-screen="viaggio"] main {
     outline: none;
 }
 
-/* Alone bianco che segue la sagoma dell'oggetto: compare sotto il cursore */
+/* Contorno dorato che segue la sagoma dell'oggetto: compare solo sulla zona sotto il cursore */
 .forge-spot::before {
     content: "";
     position: absolute;
@@ -3919,7 +3919,8 @@ body[data-screen="viaggio"] main {
 .forge-label {
     position: absolute;
     left: 50%;
-    bottom: calc(100% + 0.4cqw);
+    /* l'immagine dell'alone ha 30 px di margine: il cartellino scende di tanto */
+    bottom: calc(100% - 1.4cqw);
     display: flex;
     align-items: center;
     gap: 0.5cqw;
@@ -3942,12 +3943,6 @@ body[data-screen="viaggio"] main {
     width: max(20px, 1.5cqw);
     height: max(20px, 1.5cqw);
     image-rendering: pixelated;
-}
-
-/* Le zone in alto hanno il cartellino dentro, non fuori dallo schermo */
-.forge-board .forge-label {
-    bottom: auto;
-    top: -2.2cqw;
 }
 
 .forge-spot:hover .forge-label,
