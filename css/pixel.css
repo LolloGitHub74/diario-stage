@@ -3894,6 +3894,27 @@ body[data-screen="viaggio"] main {
     outline: none;
 }
 
+/* Alone bianco che segue la sagoma dell'oggetto: compare sotto il cursore */
+.forge-spot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: 0 0 / 100% 100% no-repeat;
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+}
+
+.forge-spot[data-panel="simulatore"]::before { background-image: url("../immagini/alone-simulatore.webp"); }
+.forge-spot[data-panel="attivita"]::before   { background-image: url("../immagini/alone-attivita.webp"); }
+.forge-spot[data-panel="skillalab"]::before  { background-image: url("../immagini/alone-skillalab.webp"); }
+.forge-spot[data-panel="strumenti"]::before  { background-image: url("../immagini/alone-strumenti.webp"); }
+
+.forge-spot:hover::before,
+.forge-spot:focus-visible::before {
+    opacity: 1;
+}
+
 /* Il cartellino sopra ogni oggetto, come sopra i falò */
 .forge-label {
     position: absolute;
