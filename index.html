@@ -922,48 +922,91 @@
             </div>
         </dialog>
 
-        <dialog class="panel panel-simulator" id="panel-simulatore" aria-labelledby="titolo-simulatore">
-            <div class="panel-inner">
+        <dialog class="panel sim-window" id="panel-simulatore" aria-labelledby="titolo-simulatore">
+            <div class="sim-targa"><h2 id="titolo-simulatore">Missione principale</h2></div>
+            <button type="button" class="wall-button wall-close sim-close" data-close aria-label="Chiudi"></button>
 
-                <div class="panel-head">
-                    <h2 id="titolo-simulatore">Il mio simulatore</h2>
-                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+            <div class="sim-content panel-inner">
+
+                <div class="sim-top">
+                    <div class="sim-art" role="img" aria-label="La spada sull'incudine, davanti alla fornace"></div>
+                    <div class="sim-info">
+                        <div class="sim-title-row">
+                            <h3>Il mio simulatore</h3>
+                            <span class="sim-chip">IN CORSO</span>
+                        </div>
+                        <p class="sim-desc">Il progetto principale del mio stage: un simulatore AI tutto mio da pubblicare su SkillaCloud.</p>
+                        <ul class="sim-goals">
+                            <li><b>Obiettivo:</b> creare un simulatore AI completo</li>
+                            <li><b>Ricompensa:</b> pubblicazione su SkillaCloud</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <span class="simulator-status">
-                    <span class="status-dot"></span>
-                    IN LAVORAZIONE
-                </span>
+                <p class="sim-divider">Le tappe della forgia</p>
 
-                <p class="panel-intro">
-                    Il progetto principale del mio stage: un simulatore AI tutto mio da
-                    pubblicare su SkillaCloud. Descrizione del simulatore in
-                    aggiornamento.
-                </p>
+                <div class="sim-stages" role="tablist" aria-label="Le tappe del simulatore">
+                    <button type="button" class="sim-stage" role="tab" data-stage="0" data-state="done">
+                        <img class="sim-sword" src="immagini/sim-spada-1.webp" alt="">
+                        <img class="sim-badge" src="immagini/sim-spunta.webp" alt="completata">
+                        <span class="sim-name">Esplora</span>
+                    </button>
+                    <button type="button" class="sim-stage" role="tab" data-stage="1" data-state="done">
+                        <img class="sim-sword" src="immagini/sim-spada-2.webp" alt="">
+                        <img class="sim-badge" src="immagini/sim-spunta.webp" alt="completata">
+                        <span class="sim-name">Progetta</span>
+                    </button>
+                    <button type="button" class="sim-stage is-selected" role="tab" data-stage="2" data-state="current">
+                        <img class="sim-sword" src="immagini/sim-spada-3.webp" alt="">
+                        <span class="sim-name">Personaggio</span>
+                    </button>
+                    <button type="button" class="sim-stage" role="tab" data-stage="3" data-state="locked">
+                        <img class="sim-sword" src="immagini/sim-spada-4.webp" alt="">
+                        <img class="sim-badge" src="immagini/sim-lucchetto.webp" alt="da forgiare">
+                        <span class="sim-name">Sviluppo</span>
+                    </button>
+                    <button type="button" class="sim-stage" role="tab" data-stage="4" data-state="locked">
+                        <img class="sim-sword" src="immagini/sim-spada-5.webp" alt="">
+                        <img class="sim-badge" src="immagini/sim-lucchetto.webp" alt="da forgiare">
+                        <span class="sim-name">Pubblica</span>
+                    </button>
+                </div>
 
-                <ol class="simulator-steps">
-
-                    <li class="step-done">
-                        <strong>Esplorazione</strong>
-                        <span>Studio dei simulatori esistenti su SkillaCloud</span>
-                    </li>
-
-                    <li class="step-done">
-                        <strong>Scheda di progettazione</strong>
-                        <span>Prima versione completata nella settimana 03</span>
-                    </li>
-
-                    <li class="step-current">
-                        <strong>Personaggio</strong>
-                        <span>Video e voce creati con l'AI</span>
-                    </li>
-
-                    <li>
-                        <strong>Sviluppo e test</strong>
-                        <span>In aggiornamento</span>
-                    </li>
-
-                </ol>
+                <div class="sim-scroll" role="tabpanel">
+                    <div class="sim-detail" data-stage="0" hidden>
+                        <div class="sim-detail-text">
+                            <h4>Esplorazione <em>· completata</em></h4>
+                            <p>Studio dei simulatori esistenti su SkillaCloud, provati in prima persona per capire come sono costruiti.</p>
+                        </div>
+                        <div class="sim-lvs"><a href="#livello-01" class="sim-lv">LV 01</a><a href="#livello-03" class="sim-lv">LV 03</a></div>
+                    </div>
+                    <div class="sim-detail" data-stage="1" hidden>
+                        <div class="sim-detail-text">
+                            <h4>Scheda di progettazione <em>· completata</em></h4>
+                            <p>Prima versione della scheda di progettazione del simulatore, completata nella settimana 03.</p>
+                        </div>
+                        <div class="sim-lvs"><a href="#livello-03" class="sim-lv">LV 03</a></div>
+                    </div>
+                    <div class="sim-detail" data-stage="2">
+                        <div class="sim-detail-text">
+                            <h4>Personaggio <em>· in corso</em></h4>
+                            <p>Video e voce creati con l'AI, e uno scenario da condividere con le ragazze.</p>
+                        </div>
+                        <div class="sim-lvs"><a href="#livello-05" class="sim-lv">LV 05</a><a href="#livello-06" class="sim-lv">LV 06</a></div>
+                    </div>
+                    <div class="sim-detail" data-stage="3" hidden>
+                        <div class="sim-detail-text">
+                            <h4>Sviluppo e test <em>· da forgiare</em></h4>
+                            <p>Questa tappa non è ancora iniziata: in aggiornamento.</p>
+                        </div>
+                    </div>
+                    <div class="sim-detail" data-stage="4" hidden>
+                        <div class="sim-detail-text">
+                            <h4>Pubblicazione <em>· da forgiare</em></h4>
+                            <p>L'ultima tappa: il simulatore su SkillaCloud. In aggiornamento.</p>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </dialog>
@@ -1129,6 +1172,7 @@
     <script src="js/home.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/diario.js"></script>
+    <script src="js/simulatore.js"></script>
     <script src="js/screens.js"></script>
 
 </body>
