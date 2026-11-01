@@ -1095,63 +1095,70 @@
              SCHEDA DEL PERSONAGGIO: le informazioni sullo stage
              ===================================================== -->
 
-        <section class="character" id="personaggio">
+        <section class="character char-scene" id="personaggio" aria-label="Scheda del personaggio">
 
-            <div class="section-header">
-                <p class="eyebrow">SCHEDA DEL PERSONAGGIO</p>
-                <h2>Il protagonista</h2>
-            </div>
+            <div class="char-stage">
+                <div class="char-board">
 
-            <div class="sheet">
+                    <h2 class="char-title">Scheda Personaggio</h2>
+                    <span class="char-el char-rule" style="--x: 13.457%; --y: 9.139%; --w: 36.244%; --h: 1.063%" aria-hidden="true"></span>
 
-                <div class="sheet-portrait" role="img" aria-label="Il cavaliere seduto accanto al falò"></div>
+                    <div class="char-el char-frame" style="--x: 1.723%; --y: 7.349%; --w: 95.836%; --h: 89.979%" aria-hidden="true"></div>
 
-                <dl class="sheet-list">
-                    <div>
-                        <dt>Protagonista</dt>
-                        <dd>Lorenzo Carducci</dd>
-                    </div>
-                    <div>
-                        <dt>Classe</dt>
-                        <dd>Stagista · Informatica</dd>
-                    </div>
-                    <div>
-                        <dt>Gilda</dt>
-                        <dd>Skilla</dd>
-                    </div>
-                    <div>
-                        <dt>Alleati</dt>
-                        <dd>
-                            Guglielmo Lulli <small>tutor universitario</small><br>
-                            Silvia Innocenzi <small>tutor aziendale</small>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>Missione</dt>
-                        <dd>dal 07/09/2026 al 23/12/2026</dd>
-                    </div>
-                </dl>
+                    <figure class="char-el char-portrait" style="--x: 16.986%; --y: 19.129%; --w: 19.856%; --h: 54.516%" role="img" aria-label="Il cavaliere con il mantello rosso, la spada e l'orecchino, davanti a un tramonto"></figure>
 
-                <div class="sheet-stats">
-                    <div class="stat">
-                        <span class="stat-label">LIVELLO</span>
-                        <strong class="stat-value" data-level>05</strong>
+                    <div class="char-el char-name" style="--x: 42.347%; --y: 16.795%; --w: 39.708%; --h: 10.937%"><h3>Lorenzo Carducci</h3></div>
+
+                    <dl class="char-el char-data" style="--x: 37.983%; --y: 27.224%; --w: 52.503%; --h: 27.380%">
+                        <div class="char-row" style="--ry: 4.59%; --rh: 17.85%">
+                            <img class="char-ico" src="immagini/scheda-icona-persona.webp" alt="" width="83" height="86">
+                            <dt>Classe</dt>
+                            <dd>Stagista · Informatica</dd>
+                        </div>
+                        <div class="char-row" style="--ry: 22.44%; --rh: 17.85%">
+                            <img class="char-ico" src="immagini/scheda-icona-bandiera.webp" alt="" width="94" height="98">
+                            <dt>Gilda</dt>
+                            <dd>Skilla</dd>
+                        </div>
+                        <div class="char-row" style="--ry: 40.30%; --rh: 31.44%">
+                            <img class="char-ico" src="immagini/scheda-icona-gruppo.webp" alt="" width="104" height="81">
+                            <dt>Alleati</dt>
+                            <dd>Guglielmo Lulli <small>tutor universitario</small><br>Silvia Innocenzi <small>tutor aziendale</small></dd>
+                        </div>
+                        <div class="char-row" style="--ry: 71.74%; --rh: 23.68%">
+                            <img class="char-ico" src="immagini/scheda-icona-calendario.webp" alt="" width="92" height="94">
+                            <dt>Missione</dt>
+                            <dd>dal 07/09/2026 al 23/12/2026</dd>
+                        </div>
+                    </dl>
+
+                    <div class="char-el char-stat" style="--x: 37.981%; --y: 55.974%; --w: 13.033%; --h: 18.657%">
+                        <img class="char-stat-ico" src="immagini/scheda-icona-pergamena.webp" alt="" width="92" height="107">
+                        <span class="char-stat-label">Livelli<br>completati</span>
+                        <strong class="char-stat-value"><span data-xp>0</span></strong>
                     </div>
-                    <div class="stat">
-                        <span class="stat-label">FALÒ ACCESI</span>
-                        <strong class="stat-value"><span data-fires>4</span>/16</strong>
+                    <div class="char-el char-stat" style="--x: 51.139%; --y: 55.974%; --w: 13.033%; --h: 18.657%">
+                        <img class="char-stat-ico" src="immagini/scheda-icona-libro.webp" alt="" width="120" height="92">
+                        <span class="char-stat-label">Falò<br>accesi</span>
+                        <strong class="char-stat-value"><span data-fires>0</span>/16</strong>
                     </div>
-                    <div class="stat">
-                        <span class="stat-label">GIORNI DI VIAGGIO</span>
-                        <strong class="stat-value"><span data-days-done>30</span>/<span data-days-total>108</span></strong>
+                    <div class="char-el char-stat" style="--x: 64.297%; --y: 55.974%; --w: 13.033%; --h: 18.657%">
+                        <img class="char-stat-ico" src="immagini/scheda-icona-calendario2.webp" alt="" width="100" height="98">
+                        <span class="char-stat-label">Giorni di<br>viaggio</span>
+                        <strong class="char-stat-value"><span data-days-done>0</span>/<span data-days-total>108</span></strong>
                     </div>
-                    <div class="stat">
-                        <span class="stat-label">GIORNI ALLA META</span>
-                        <strong class="stat-value" data-days-left>78</strong>
+                    <div class="char-el char-stat" style="--x: 77.455%; --y: 55.974%; --w: 13.033%; --h: 18.657%">
+                        <img class="char-stat-ico" src="immagini/scheda-icona-meta.webp" alt="" width="96" height="103">
+                        <span class="char-stat-label">Giorni<br>alla meta</span>
+                        <strong class="char-stat-value"><span data-days-left>0</span></strong>
                     </div>
-                    <div class="hud-bar sheet-bar" role="progressbar" aria-label="Settimane completate" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4"></div>
+
+                    <div class="char-el char-progress" style="--x: 16.576%; --y: 78.414%; --w: 74.025%; --h: 9.803%">
+                        <p class="char-progress-label">Progresso del viaggio</p>
+                        <div class="hud-bar sheet-bar char-bar" role="progressbar" aria-label="Settimane completate" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0"></div>
+                    </div>
+
                 </div>
-
             </div>
 
         </section>
