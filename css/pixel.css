@@ -734,8 +734,7 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
 /* Ogni sezione continua la notte della scena, sempre più scura scendendo */
 .levels,
 .journey,
-.character,
-.credits {
+.character {
     padding: 90px 5% 100px;
 }
 
@@ -783,8 +782,7 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
 @media (max-width: 768px) {
     .levels,
     .journey,
-    .character,
-    .credits {
+    .character {
         padding: 70px 16px;
     }
 }
@@ -1539,89 +1537,6 @@ html.panel-open {
 
 
 /* =========================================================
-   TITOLI DI CODA
-   ========================================================= */
-
-.credits {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    text-align: center;
-    background: linear-gradient(var(--night), #020309);
-}
-
-/* I nomi salgono lenti come alla fine di un gioco */
-.credits-window {
-    position: relative;
-    width: min(600px, 100%);
-    height: 420px;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
-    mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
-}
-
-.credits-roll {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 420px 0;
-    animation: roll 32s linear infinite;
-}
-
-@keyframes roll {
-    to { transform: translateY(-100%); }
-}
-
-.credits-title {
-    margin-bottom: 30px;
-    font-size: 64px;
-    text-transform: uppercase;
-    line-height: 0.9;
-    text-shadow: 4px 4px 0 var(--blue), 8px 8px 0 var(--ink);
-}
-
-.credits-role {
-    margin-top: 26px;
-    font-size: 20px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--dim);
-}
-
-.credits-name {
-    font-size: 32px;
-    line-height: 1.05;
-}
-
-.credits-end {
-    margin-top: 60px;
-    font-size: 44px;
-    text-transform: uppercase;
-    color: var(--gold);
-}
-
-.credits-back {
-    padding: 8px 18px;
-    font-size: 26px;
-    text-decoration: none;
-    color: var(--ink);
-    background: var(--gold);
-    border: 3px solid var(--ink);
-    box-shadow: 5px 5px 0 var(--ink);
-}
-
-.credits-back:hover {
-    background: #ffe07a;
-}
-
-.credits-copy {
-    font-size: 20px;
-    color: var(--dim);
-}
-
-
-/* =========================================================
    RESPONSIVE DELLE NUOVE SEZIONI
    ========================================================= */
 
@@ -1741,8 +1656,7 @@ body.nav-floating .header {
 /* Le sezioni non finiscono sotto il menu fisso quando ci salti */
 .levels,
 .journey,
-.character,
-.credits {
+.character {
     scroll-margin-top: 50px;
 }
 

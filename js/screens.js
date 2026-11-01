@@ -17,7 +17,7 @@
         home: ["home"],
         viaggio: ["viaggio"],
         livelli: ["livelli"],
-        personaggio: ["personaggio", "titoli"]
+        personaggio: ["personaggio"]
     };
 
     // Indirizzi che portano a una schermata (anche i pannelli e i livelli)
