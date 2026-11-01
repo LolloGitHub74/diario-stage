@@ -4506,3 +4506,52 @@ body[data-screen="viaggio"] main {
 @media (prefers-reduced-motion: reduce) {
     .wf-snow { animation: none; }
 }
+
+
+/* Acqua del mondo 3: le cascate scorrono verso il basso, il fiume verso
+   chi guarda. Ogni pezzo è ritagliato da una maschera, solo sull'acqua */
+.wf-w3 {
+    overflow: hidden;
+    -webkit-mask: 0 0 / 100% 100% no-repeat;
+    mask: 0 0 / 100% 100% no-repeat;
+}
+
+.wf-w3::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(-1 * var(--t));
+    width: 100%;
+    height: calc(100% + var(--t));
+    background: var(--tile) 0 0 / var(--t) var(--t) repeat;
+    image-rendering: pixelated;
+    will-change: transform;
+    animation: w3-flow var(--s) steps(var(--n, 8)) infinite;
+}
+
+.wf-w3-fall  { --t: 5cqw; --s: 0.7s; --n: 7; --tile: url("../immagini/acqua-cascata.webp"); }
+.wf-w3-river { --t: 9cqw; --s: 6s;   --n: 24; --tile: url("../immagini/acqua-fiume.webp"); }
+
+.wf-w3-a {
+    -webkit-mask-image: url("../immagini/maschera-cascata-a.webp");
+    mask-image: url("../immagini/maschera-cascata-a.webp");
+}
+
+.wf-w3-b {
+    -webkit-mask-image: url("../immagini/maschera-cascata-b.webp");
+    mask-image: url("../immagini/maschera-cascata-b.webp");
+}
+
+.wf-w3-river {
+    -webkit-mask-image: url("../immagini/maschera-fiume.webp");
+    mask-image: url("../immagini/maschera-fiume.webp");
+}
+
+@keyframes w3-flow {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, var(--t), 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wf-w3::before { animation: none; }
+}
