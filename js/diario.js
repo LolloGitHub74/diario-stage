@@ -203,6 +203,11 @@
             };
         });
         const weeksHere = Object.keys(spots).map(Number).sort(function (a, b) { return a - b; });
+        // Mondo ancora tutto bloccato: il cavaliere aspetta sul sentiero,
+        // un po' prima del primo falò (settimana "0")
+        const waitAt = Math.max(0, spots[weeksHere[0]].s - 10);
+        const waitPoint = pointAt(waitAt);
+        spots[0] = { s: waitAt, x: waitPoint.x, y: waitPoint.y };
         // Entra da fuori il bordo sinistro, oppure esce da una porta della mappa
         const fromGate = page.dataset.enter === "gate";
         const START = fromGate ? 0 : -3;
@@ -225,7 +230,7 @@
             const now = weeksHere.find(function (w) { return stage.state(w) === "current"; });
             if (now) return now;
             const done = weeksHere.filter(function (w) { return stage.state(w) === "done"; });
-            return done.length ? done[done.length - 1] : weeksHere[0];
+            return done.length ? done[done.length - 1] : 0;
         }
 
         // Tiene il cavaliere al centro quando la mappa è più larga dello schermo
@@ -345,7 +350,8 @@
             const fromEnd = from === "end";
             // Solo verso falò già raggiunti: quelli bloccati sono inesplorabili
             const open = weeksHere.filter(function (w) { return stage.state(w) !== "locked"; });
-            const target = from === "start" ? open[0]
+            const target = !open.length ? 0
+                : from === "start" ? open[0]
                 : fromEnd ? open[open.length - 1]
                 : restWeek();
             el.classList.remove("is-resting");
@@ -358,8 +364,6 @@
             el.classList.toggle("is-left", fromEnd);
             // Aspetta che la transizione si sia aperta, poi entra camminando
             timer = setTimeout(function () {
-                // Mondo ancora tutto bloccato: il cavaliere non entra
-                if (!target) return;
                 el.classList.remove("is-faded");
                 go(target, 34, 2600);
             }, reduceMotion ? 0 : (delay || 380));

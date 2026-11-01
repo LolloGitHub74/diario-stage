@@ -4472,3 +4472,37 @@ body[data-screen="viaggio"] main {
     .sim-window .sim-detail p { font-size: 19px; }
     .sim-lv { font-size: 19px; border-width: 3px; padding: 1px 10px; }
 }
+
+
+/* =========================================================
+   MONDO 3: nevica. Tre strati di pixel bianchi, uno più lontano
+   dell'altro. Si muove solo con transform (il browser lo fa
+   senza ridisegnare la mappa) e il disegno si ripete senza stacchi
+   ========================================================= */
+
+.wf-snow {
+    --t: 24cqw;
+    left: calc(-1 * var(--t));
+    top: calc(-1 * var(--t));
+    width: calc(100% + var(--t));
+    height: calc(100% + var(--t));
+    background-size: var(--t) var(--t);
+    image-rendering: pixelated;
+    will-change: transform;
+    animation: snow-fall var(--s, 9s) linear infinite;
+}
+
+.wf-snow-far  { --t: 20cqw; --s: 30s; background-image: url("../immagini/neve-lontana.webp"); opacity: 0.8; }
+.wf-snow-mid  { --t: 26cqw; --s: 20s; background-image: url("../immagini/neve-media.webp"); }
+.wf-snow-near { --t: 34cqw; --s: 13s; background-image: url("../immagini/neve-vicina.webp"); }
+
+/* Cade in diagonale, spinta dal vento verso destra. Si sposta di una
+   tessera intera in orizzontale e due in verticale: così il ciclo è perfetto */
+@keyframes snow-fall {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(var(--t), calc(var(--t) * 2), 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wf-snow { animation: none; }
+}
