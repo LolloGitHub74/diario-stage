@@ -4558,9 +4558,9 @@ body[data-screen="viaggio"] main {
 
 
 /* =========================================================
-   SCHEDA PERSONAGGIO: una scena a tutto schermo, come la forgia.
-   Tutte le misure sono quelle del mockup (1672x941 px) scalate:
-   --k = 1 px del mockup, sempre in proporzione alla scena
+   SCHEDA PERSONAGGIO: un'immagine statica a tutto schermo.
+   Sopra ci sono scritti solo i numeri gialli che si aggiornano
+   e la barra del progresso. --k = 1 px dell'immagine (1671 px)
    ========================================================= */
 
 .character.char-scene {
@@ -4576,13 +4576,18 @@ body[data-screen="personaggio"] main {
     min-height: 0;
 }
 
+/* Il Menu è già disegnato nell'immagine: il pulsante vero gli sta sopra, invisibile */
+body[data-screen="personaggio"] .back-menu {
+    display: none;
+}
+
 .char-stage {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: min(100vw, calc(100vh * 1672 / 941));
-    width: min(100vw, calc(100svh * 1672 / 941));
-    aspect-ratio: 1672 / 941;
+    width: min(100vw, calc(100vh * 1671 / 941));
+    width: min(100vw, calc(100svh * 1671 / 941));
+    aspect-ratio: 1671 / 941;
     transform: translate(-50%, -50%);
     container-type: inline-size;
 }
@@ -4590,9 +4595,14 @@ body[data-screen="personaggio"] main {
 .char-board {
     position: absolute;
     inset: 0;
-    --k: calc(100cqw / 1672);
+    --k: calc(100cqw / 1671);
     font-family: var(--font);
-    color: var(--cream);
+}
+
+.char-art {
+    display: block;
+    width: 100%;
+    height: 100%;
     image-rendering: pixelated;
 }
 
@@ -4605,223 +4615,31 @@ body[data-screen="personaggio"] main {
     margin: 0;
 }
 
-.char-board img {
-    image-rendering: pixelated;
+.char-menu {
+    border-radius: calc(10 * var(--k));
 }
 
-/* Titolo in alto, con la riga e il rombo */
-.char-title {
-    position: absolute;
-    left: calc(225 / 1672 * 100%);
-    top: 0;
-    margin: 0;
-    font-size: calc(78 * var(--k));
-    font-weight: 400;
-    line-height: calc(86 * var(--k));
-    color: #fff3d6;
-    text-shadow: 0 calc(4 * var(--k)) 0 #05040f;
-    white-space: nowrap;
+.char-menu:hover,
+.char-menu:focus-visible {
+    outline: none;
+    box-shadow: 0 0 calc(14 * var(--k)) calc(3 * var(--k)) rgba(255, 200, 90, 0.7);
 }
 
-.char-rule {
-    background:
-        url("../immagini/scheda-rombo.webp") center / calc(34 * var(--k)) auto no-repeat,
-        linear-gradient(#e3a336, #e3a336) center / 100% calc(3 * var(--k)) no-repeat;
-}
-
-.char-rule::before {
-    content: "";
-    position: absolute;
-    left: calc(50% - 20 * var(--k));
-    top: calc(-1 * var(--k));
-    width: calc(40 * var(--k));
-    height: calc(12 * var(--k));
-    background: #1b0a21;
-}
-
-.char-frame {
-    background: url("../immagini/scheda-cornice.webp") 0 0 / 100% 100% no-repeat;
-    pointer-events: none;
-}
-
-/* Il ritratto: il cavaliere sotto, la cornice dorata sopra */
-.char-portrait {
-    background: url("../immagini/scheda-cavaliere.webp") center top / cover no-repeat;
-}
-
-.char-portrait::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-width: calc(44 * var(--k));
-    border-image: url("../immagini/scheda-ritratto-cornice.webp") 45 / calc(44 * var(--k)) stretch;
-    pointer-events: none;
-}
-
-/* La targa rossa col nome */
-.char-name {
-    display: grid;
-    place-items: center;
-    background: url("../immagini/scheda-banner.webp") 0 0 / 100% 100% no-repeat;
-}
-
-.char-name h3 {
-    margin: 0 0 calc(4 * var(--k));
-    font-size: calc(66 * var(--k));
-    font-weight: 400;
-    line-height: 1;
-    color: #fff3d6;
-    text-shadow: 0 calc(4 * var(--k)) 0 #3a0710;
-    white-space: nowrap;
-}
-
-/* Il pannello dei dati */
-.char-data::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-width: calc(50 * var(--k));
-    border-image: url("../immagini/scheda-pannello.webp") 40 fill / calc(50 * var(--k)) stretch;
-}
-
-.char-row {
-    position: absolute;
-    left: calc(38 * var(--k));
-    right: calc(38 * var(--k));
-    top: var(--ry);
-    height: var(--rh);
-    border-bottom: calc(2 * var(--k)) dotted rgba(227, 163, 54, 0.5);
-}
-
-.char-row:last-child {
-    border-bottom: 0;
-}
-
-.char-ico {
-    position: absolute;
-    left: calc(5 * var(--k));
-    top: 50%;
-    width: calc(46 * var(--k));
-    height: auto;
-    transform: translateY(-50%);
-}
-
-.char-row:nth-child(2) .char-ico { width: calc(52 * var(--k)); }
-.char-row:nth-child(3) .char-ico { width: calc(58 * var(--k)); }
-
-.char-row dt,
-.char-row dd {
-    position: absolute;
-    top: 50%;
-    margin: 0;
-    transform: translateY(-50%);
-    font-size: calc(36 * var(--k));
-    line-height: 1.12;
-}
-
-.char-row dt {
-    left: calc(68 * var(--k));
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #ffc24a;
-}
-
-.char-row dd {
-    left: calc(268 * var(--k));
-    right: 0;
-    color: #f6ecd6;
-    white-space: nowrap;
-}
-
-.char-row dd small {
-    margin-left: calc(14 * var(--k));
-    font-size: 0.74em;
-    color: #8fb4ff;
-}
-
-/* Le quattro statistiche */
-.char-stat {
-    background: url("../immagini/scheda-riquadro.webp") 0 0 / 100% 100% no-repeat;
-}
-
-.char-stat-ico {
-    position: absolute;
-    left: calc(22 * var(--k));
-    top: calc(30 * var(--k));
-    width: calc(54 * var(--k));
-    height: auto;
-}
-
-.char-stat-label {
-    position: absolute;
-    left: calc(90 * var(--k));
-    top: calc(28 * var(--k));
-    font-size: calc(23 * var(--k));
-    line-height: 1.05;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: #f6ecd6;
-}
-
-.char-stat-value {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: calc(18 * var(--k));
-    padding-left: calc(10 * var(--k));
-    text-align: center;
-    font-size: calc(64 * var(--k));
-    font-weight: 400;
-    line-height: 1;
-    color: #ffc24a;
-    text-shadow: 0 calc(4 * var(--k)) 0 #2a1208;
-}
-
-/* La barra del progresso del viaggio */
-.char-progress::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-width: calc(34 * var(--k));
-    border-image: url("../immagini/scheda-barra.webp") 30 fill / calc(34 * var(--k)) stretch;
-}
-
-.char-progress-label {
-    position: absolute;
-    left: calc(34 * var(--k));
-    top: 50%;
+/* I quattro numeri gialli */
+.char-num {
     display: flex;
     align-items: center;
-    gap: calc(20 * var(--k));
-    margin: 0;
-    transform: translateY(-50%);
-    font-size: calc(29 * var(--k));
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    justify-content: center;
+    font-size: calc(78 * var(--k));
+    font-weight: 400;
+    line-height: 1;
+    color: #ffc928;
+    text-shadow: 0 calc(5 * var(--k)) 0 #2a1208;
     white-space: nowrap;
-    color: #f6ecd6;
 }
 
-.char-progress-label::before,
-.char-progress-label::after {
-    content: "";
-    width: calc(26 * var(--k));
-    height: calc(26 * var(--k));
-    background: url("../immagini/scheda-rombo.webp") center / contain no-repeat;
-}
-
+/* La barra: una tacca per settimana, gialla se completata */
 .hud-bar.char-bar {
-    position: absolute;
-    left: calc(392 * var(--k));
-    top: calc(29 * var(--k));
-    width: calc(815 * var(--k));
-    height: calc(34 * var(--k));
     display: flex;
     gap: calc(8 * var(--k));
     padding: 0;
@@ -4832,205 +4650,36 @@ body[data-screen="personaggio"] main {
 .hud-bar.char-bar i {
     flex: 1;
     height: auto;
-    border-style: solid;
-    border-color: transparent;
-    border-width: calc(12 * var(--k)) calc(14 * var(--k));
-    border-image: url("../immagini/scheda-tacca-vuota.webp") 20 24 fill / calc(12 * var(--k)) calc(14 * var(--k)) stretch;
-    background: none;
-    box-shadow: none;
+    border-radius: calc(8 * var(--k));
+    background: linear-gradient(#34468f, #212f69 55%, #1b2757);
+    box-shadow: inset 0 calc(2 * var(--k)) 0 rgba(255, 255, 255, 0.08);
 }
 
 .hud-bar.char-bar i.is-done {
-    border-image-source: url("../immagini/scheda-tacca-piena.webp");
+    background: linear-gradient(#ffe46a, #ffd23d 45%, #f0a817);
+    box-shadow: inset 0 calc(3 * var(--k)) 0 rgba(255, 255, 255, 0.35);
 }
 
 .hud-bar.char-bar i.is-now {
-    border-image-source: url("../immagini/scheda-tacca-piena.webp");
-    filter: brightness(0.62) saturate(0.7);
+    background: linear-gradient(#e8c250, #c99a22 60%, #a87a12);
+    opacity: 0.75;
 }
 
-/* Telefono e schermi bassi: niente scena fissa, una colonna da scorrere */
-@media (max-width: 700px), (max-height: 560px), (orientation: portrait) and (max-width: 1100px) {
+/* Telefono e schermi bassi: l'immagine resta grande e si scorre di lato,
+   come le mappe dei mondi */
+@media (max-width: 700px), (max-height: 520px) {
     .character.char-scene {
-        height: auto;
-        min-height: 100vh;
-        min-height: 100svh;
-        padding: 74px 16px 48px;
-        overflow: visible;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .char-stage {
         position: relative;
         left: auto;
         top: auto;
-        width: 100%;
-        max-width: 520px;
-        margin: 0 auto;
+        height: max(100svh, 560px);
+        width: calc(max(100svh, 560px) * 1671 / 941);
         aspect-ratio: auto;
         transform: none;
-        container-type: normal;
     }
-
-    .char-board {
-        position: relative;
-        inset: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        --k: 1px;
-    }
-
-    .char-el {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 100%;
-        height: auto;
-    }
-
-    .char-title {
-        position: static;
-        font-size: 40px;
-        line-height: 1.1;
-        text-align: center;
-        white-space: normal;
-    }
-
-    .char-rule { height: 10px; order: -1; display: none; }
-    .char-frame { display: none; }
-
-    .char-portrait {
-        width: min(64vw, 270px);
-        aspect-ratio: 348 / 538;
-        align-self: center;
-    }
-
-    .char-portrait::after {
-        border-width: 24px;
-        border-image-width: 24px;
-    }
-
-    .char-name {
-        width: min(100%, 380px);
-        height: 58px;
-        align-self: center;
-    }
-
-    .char-name h3 { font-size: 32px; }
-
-    .char-data {
-        padding: 8px 6px;
-        height: auto;
-    }
-
-    .char-data::before {
-        border-width: 22px;
-        border-image-width: 22px;
-    }
-
-    .char-row {
-        position: relative;
-        left: auto;
-        right: auto;
-        top: auto;
-        height: auto;
-        display: grid;
-        grid-template-columns: 44px 1fr;
-        grid-template-areas: "ico dt" "ico dd";
-        column-gap: 12px;
-        align-items: center;
-        padding: 12px 10px;
-        margin: 0 8px;
-    }
-
-    .char-ico {
-        grid-area: ico;
-        position: static;
-        width: 36px;
-        transform: none;
-    }
-
-    .char-row:nth-child(2) .char-ico,
-    .char-row:nth-child(3) .char-ico { width: 36px; }
-
-    .char-row dt,
-    .char-row dd {
-        position: static;
-        transform: none;
-        font-size: 22px;
-    }
-
-    .char-row dt { grid-area: dt; font-size: 19px; }
-    .char-row dd { grid-area: dd; white-space: normal; }
-    .char-row dd small { display: block; margin: 0 0 4px; font-size: 17px; }
-
-    .char-stat {
-        width: calc(50% - 8px);
-        height: auto;
-        aspect-ratio: 215 / 167;
-        display: block;
-    }
-
-    .char-stat-ico { left: 10px; top: 14px; width: 30px; }
-    .char-stat-label { left: 48px; top: 12px; font-size: 14px; }
-    .char-stat-value { font-size: 40px; bottom: 6px; padding-left: 8px; }
-
-    .char-progress {
-        height: auto;
-        padding: 52px 14px 22px;
-    }
-
-    .char-progress::before {
-        border-width: 20px;
-        border-image-width: 20px;
-    }
-
-    .char-progress-label {
-        top: 14px;
-        left: 14px;
-        transform: none;
-        font-size: 19px;
-        gap: 10px;
-    }
-
-    .char-progress-label::before,
-    .char-progress-label::after { width: 16px; height: 16px; }
-
-    .hud-bar.char-bar {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 100%;
-        height: 26px;
-        gap: 3px;
-        z-index: 1;
-    }
-
-    .hud-bar.char-bar i {
-        border-width: 9px 8px;
-        border-image-width: 9px 8px;
-    }
-}
-
-/* Le statistiche stanno in due colonne: il contenitore le affianca */
-@media (max-width: 700px), (max-height: 560px), (orientation: portrait) and (max-width: 1100px) {
-    .char-board {
-        flex-flow: row wrap;
-        align-items: flex-start;
-        justify-content: space-between;
-    }
-
-    .char-title,
-    .char-data,
-    .char-progress {
-        flex: 0 0 100%;
-    }
-
-    .char-portrait,
-    .char-name {
-        flex: 0 0 auto;
-        margin: 0 auto;
-    }
-
-    .char-stat { flex: 0 0 calc(50% - 8px); }
 }
