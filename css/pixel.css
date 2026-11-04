@@ -4519,6 +4519,14 @@ body[data-screen="personaggio"] main {
     image-rendering: pixelated;
 }
 
+/* Lo sfondo riempie sempre tutto lo spazio 2:1 della scena, senza deformarsi */
+.char-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
 .char-el {
     position: absolute;
     left: var(--x);

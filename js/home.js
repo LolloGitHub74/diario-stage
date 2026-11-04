@@ -200,22 +200,3 @@
 
     wrap(title);
 })();
-
-
-// ---------------------------------------------------
-// Scheda del personaggio sul telefono: l'immagine è più larga dello
-// schermo, quindi all'apertura si parte dal lato dei dati
-// ---------------------------------------------------
-
-(function () {
-    "use strict";
-
-    window.addEventListener("screen:show", function (event) {
-        if (event.detail !== "personaggio") return;
-        const scene = document.querySelector(".char-scene");
-        if (scene && scene.scrollWidth > scene.clientWidth) {
-            // parte dal bordo sinistro dei dati (circa a 810 px su 1774), non dal fondo
-            scene.scrollLeft = scene.scrollWidth * 810 / 1774;
-        }
-    });
-})();
