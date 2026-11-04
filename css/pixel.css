@@ -4472,9 +4472,9 @@ body[data-screen="viaggio"] main {
 
 
 /* =========================================================
-   SCHEDA PERSONAGGIO: un'immagine a tutto schermo con il cavaliere
-   a sinistra e, a destra, i riquadri vuoti dove scrivo i dati.
-   --k = 1 px dell'immagine (1774 px di larghezza)
+   SCHEDA PERSONAGGIO: una scena a tutto schermo, come la forgia.
+   Tutte le misure sono quelle del mockup (1672x941 px) scalate:
+   --k = 1 px del mockup, sempre in proporzione alla scena
    ========================================================= */
 
 .character.char-scene {
@@ -4486,23 +4486,17 @@ body[data-screen="viaggio"] main {
     background: #14092b;
 }
 
-/* Se lo schermo non è esattamente 2:1, ai lati resta la stessa immagine
-   ingrandita, sfocata e scurita, invece di una striscia piatta */
+/* Se lo schermo non è 2:1, ai lati resta lo stesso sfondo sfocato e scurito */
 .character.char-scene::before {
     content: "";
     position: absolute;
     inset: -24px;
-    background: url("../immagini/scheda-pagina.webp") center / cover no-repeat;
+    background: url("../immagini/scheda-sfondo.webp") center / cover no-repeat;
     filter: blur(16px) brightness(0.5) saturate(1.1);
 }
 
 body[data-screen="personaggio"] main {
     min-height: 0;
-}
-
-/* Il pulsante ‹ è già disegnato nell'immagine: il collegamento vero gli sta sopra */
-body[data-screen="personaggio"] .back-menu {
-    display: none;
 }
 
 .char-stage {
@@ -4521,12 +4515,7 @@ body[data-screen="personaggio"] .back-menu {
     inset: 0;
     --k: calc(100cqw / 1774);
     font-family: var(--font);
-}
-
-.char-art {
-    display: block;
-    width: 100%;
-    height: 100%;
+    color: var(--cream);
     image-rendering: pixelated;
 }
 
@@ -4539,22 +4528,56 @@ body[data-screen="personaggio"] .back-menu {
     margin: 0;
 }
 
-.char-menu {
-    border-radius: calc(12 * var(--k));
+.char-board img {
+    image-rendering: pixelated;
 }
 
-.char-menu:hover,
-.char-menu:focus-visible {
-    outline: none;
-    box-shadow: 0 0 calc(14 * var(--k)) calc(3 * var(--k)) rgba(255, 200, 90, 0.7);
+/* Il rettangolo blu scuro che raccoglie i pezzi */
+.char-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(14 * var(--k));
+    margin: 0;
+    text-align: center;
+    font-size: calc(64 * var(--k));
+    font-weight: 400;
+    line-height: 1;
+    color: #fff3d6;
+    text-shadow: 0 calc(5 * var(--k)) 0 #1a0820, 0 0 calc(18 * var(--k)) rgba(20, 8, 40, 0.8);
 }
 
-/* Nome sulla targa rossa */
+.char-title::after {
+    content: "";
+    display: block;
+    width: calc(560 * var(--k));
+    height: calc(14 * var(--k));
+    margin: calc(10 * var(--k)) auto 0;
+    background:
+        url("../immagini/scheda-rombo.webp") center / calc(22 * var(--k)) auto no-repeat,
+        linear-gradient(#e3a336, #e3a336) center / 100% calc(3 * var(--k)) no-repeat;
+}
+
+.char-card {
+    background: linear-gradient(rgba(14, 26, 66, 0.9), rgba(9, 18, 49, 0.92));
+    border: calc(5 * var(--k)) solid #d89a2c;
+    border-radius: calc(14 * var(--k));
+    box-shadow:
+        0 0 0 calc(3 * var(--k)) #1a0d05,
+        inset 0 0 0 calc(3 * var(--k)) rgba(255, 200, 100, 0.16),
+        0 calc(14 * var(--k)) calc(30 * var(--k)) rgba(0, 0, 0, 0.55);
+}
+
+/* La targa rossa col nome */
 .char-name {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(50 * var(--k));
+    display: grid;
+    place-items: center;
+    background: url("../immagini/scheda-banner.webp") 0 0 / 100% 100% no-repeat;
+}
+
+.char-name h3 {
+    margin: 0 0 calc(4 * var(--k));
+    font-size: calc(66 * var(--k));
     font-weight: 400;
     line-height: 1;
     color: #fff3d6;
@@ -4562,80 +4585,150 @@ body[data-screen="personaggio"] .back-menu {
     white-space: nowrap;
 }
 
-/* Le righe del pannello dei dati: etichetta dorata e valore */
-.char-data {
-    margin: 0;
+/* Il pannello dei dati */
+.char-data::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: calc(50 * var(--k));
+    border-image: url("../immagini/scheda-pannello.webp") 40 fill / calc(50 * var(--k)) stretch;
 }
 
 .char-row {
-    display: grid;
-    grid-template-columns: calc(175 * var(--k)) 1fr;
-    align-items: center;
-    font-size: calc(32 * var(--k));
-    line-height: 1.1;
+    position: absolute;
+    left: calc(38 * var(--k));
+    right: calc(38 * var(--k));
+    top: var(--ry);
+    height: var(--rh);
+    border-bottom: calc(2 * var(--k)) dotted rgba(227, 163, 54, 0.5);
 }
+
+.char-row:last-child {
+    border-bottom: 0;
+}
+
+.char-ico {
+    position: absolute;
+    left: calc(5 * var(--k));
+    top: 50%;
+    width: calc(46 * var(--k));
+    height: auto;
+    transform: translateY(-50%);
+}
+
+.char-row:nth-child(2) .char-ico { width: calc(52 * var(--k)); }
+.char-row:nth-child(3) .char-ico { width: calc(58 * var(--k)); }
 
 .char-row dt,
 .char-row dd {
+    position: absolute;
+    top: 50%;
     margin: 0;
+    transform: translateY(-50%);
+    font-size: calc(36 * var(--k));
+    line-height: 1.12;
 }
 
 .char-row dt {
-    letter-spacing: 0.05em;
+    left: calc(68 * var(--k));
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #ffc24a;
 }
 
 .char-row dd {
+    left: calc(268 * var(--k));
+    right: 0;
     color: #f6ecd6;
     white-space: nowrap;
 }
 
-/* I due tutor: nomi allineati uno sotto l'altro e ruoli nella colonna accanto */
-.char-allies {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    column-gap: calc(28 * var(--k));
-    row-gap: 0;
-    align-items: center;
-    font-size: calc(22 * var(--k));
-    line-height: 1.05;
-}
-
-.char-allies small {
-    font-size: 0.82em;
+.char-row dd small {
+    margin-left: calc(14 * var(--k));
+    font-size: 0.74em;
     color: #8fb4ff;
 }
 
-/* Le quattro statistiche: etichetta e numero sotto l'icona */
+/* Le quattro statistiche */
 .char-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
+    background: url("../immagini/scheda-riquadro.webp") 0 0 / 100% 100% no-repeat;
+}
+
+.char-stat-ico {
+    position: absolute;
+    left: calc(22 * var(--k));
+    top: calc(30 * var(--k));
+    width: calc(54 * var(--k));
+    height: auto;
 }
 
 .char-stat-label {
-    font-size: calc(20 * var(--k));
-    line-height: 1;
-    letter-spacing: 0.04em;
+    position: absolute;
+    left: calc(90 * var(--k));
+    top: calc(28 * var(--k));
+    font-size: calc(23 * var(--k));
+    line-height: 1.05;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     color: #f6ecd6;
-    white-space: nowrap;
 }
 
 .char-stat-value {
-    font-size: calc(54 * var(--k));
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(18 * var(--k));
+    padding-left: calc(10 * var(--k));
+    text-align: center;
+    font-size: calc(64 * var(--k));
     font-weight: 400;
     line-height: 1;
     color: #ffc24a;
     text-shadow: 0 calc(4 * var(--k)) 0 #2a1208;
-    white-space: nowrap;
 }
 
-/* La barra: una tacca per settimana, gialla se completata */
+/* La barra del progresso del viaggio */
+.char-progress::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: calc(34 * var(--k));
+    border-image: url("../immagini/scheda-barra.webp") 30 fill / calc(34 * var(--k)) stretch;
+}
+
+.char-progress-label {
+    position: absolute;
+    left: calc(34 * var(--k));
+    top: 50%;
+    display: flex;
+    align-items: center;
+    gap: calc(14 * var(--k));
+    margin: 0;
+    transform: translateY(-50%);
+    font-size: calc(24 * var(--k));
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #f6ecd6;
+}
+
+.char-progress-label::before {
+    content: "";
+    width: calc(24 * var(--k));
+    height: calc(24 * var(--k));
+    background: url("../immagini/scheda-rombo.webp") center / contain no-repeat;
+}
+
 .hud-bar.char-bar {
+    position: absolute;
+    left: calc(306 * var(--k));
+    top: calc(28 * var(--k));
+    width: calc(544 * var(--k));
+    height: calc(34 * var(--k));
     display: flex;
     gap: calc(8 * var(--k));
     padding: 0;
@@ -4662,27 +4755,193 @@ body[data-screen="personaggio"] .back-menu {
     background: linear-gradient(#b99a3e, #977a22 60%, #7a6010);
 }
 
-/* Telefono e schermi bassi: l'immagine resta grande e si scorre di lato,
-   come le mappe dei mondi (si parte dal lato dei dati) */
-@media (max-width: 700px), (max-height: 520px) {
+/* Telefono e schermi bassi: niente scena fissa, una colonna da scorrere */
+@media (max-width: 700px), (max-height: 560px), (orientation: portrait) and (max-width: 1100px) {
     .character.char-scene {
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
+        height: auto;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding: 74px 16px 48px;
+        overflow: hidden;
     }
-
-    .character.char-scene::-webkit-scrollbar { display: none; }
 
     .char-stage {
         position: relative;
         left: auto;
         top: auto;
-        height: 100vh;
-        height: 100svh;
-        width: calc(100vh * 2);
-        width: calc(100svh * 2);
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
         aspect-ratio: auto;
         transform: none;
+        container-type: normal;
     }
+
+    .char-board {
+        position: relative;
+        inset: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        --k: 1px;
+        padding: 18px 12px 22px;
+        background: linear-gradient(#0e1a42, #091231);
+        border: 5px solid #1c2c66;
+        border-radius: 12px;
+        box-shadow: 0 0 0 3px #04061a;
+    }
+
+    .char-el {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        height: auto;
+    }
+
+
+    .char-card { display: none; }
+
+    /* Sul telefono lo sfondo diventa una testata col cavaliere */
+    .char-art {
+        height: 300px;
+        object-fit: cover;
+        object-position: 10% center;
+        border: 3px solid #d89a2c;
+        border-radius: 12px;
+        box-shadow: 0 0 0 3px #1a0d05;
+    }
+
+    .char-title {
+        position: static;
+        font-size: 34px;
+        text-shadow: 0 3px 0 #1a0820;
+    }
+
+    .char-title::after {
+        width: 70%;
+        margin-top: 6px;
+    }
+
+    .char-name {
+        width: min(100%, 380px);
+        height: 58px;
+        align-self: center;
+    }
+
+    .char-name h3 { font-size: 32px; }
+
+    .char-data {
+        padding: 8px 6px;
+        height: auto;
+    }
+
+    .char-data::before {
+        border-width: 22px;
+        border-image-width: 22px;
+    }
+
+    .char-row {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        height: auto;
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        grid-template-areas: "ico dt" "ico dd";
+        column-gap: 12px;
+        align-items: center;
+        padding: 12px 10px;
+        margin: 0 8px;
+    }
+
+    .char-ico {
+        grid-area: ico;
+        position: static;
+        width: 36px;
+        transform: none;
+    }
+
+    .char-row:nth-child(2) .char-ico,
+    .char-row:nth-child(3) .char-ico { width: 36px; }
+
+    .char-row dt,
+    .char-row dd {
+        position: static;
+        transform: none;
+        font-size: 22px;
+    }
+
+    .char-row dt { grid-area: dt; font-size: 19px; }
+    .char-row dd { grid-area: dd; white-space: normal; }
+    .char-row dd small { display: block; margin: 0 0 4px; font-size: 17px; }
+
+    .char-stat {
+        width: calc(50% - 8px);
+        height: auto;
+        aspect-ratio: 215 / 167;
+        display: block;
+    }
+
+    .char-stat-ico { left: 10px; top: 14px; width: 30px; }
+    .char-stat-label { left: 48px; top: 12px; font-size: 14px; }
+    .char-stat-value { font-size: 40px; bottom: 6px; padding-left: 8px; }
+
+    .char-progress {
+        height: auto;
+        padding: 52px 14px 22px;
+    }
+
+    .char-progress::before {
+        border-width: 20px;
+        border-image-width: 20px;
+    }
+
+    .char-progress-label {
+        top: 14px;
+        left: 14px;
+        transform: none;
+        font-size: 19px;
+        gap: 10px;
+    }
+
+    .char-progress-label::before,
+    .char-progress-label::after { width: 16px; height: 16px; }
+
+    .hud-bar.char-bar {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        height: 26px;
+        gap: 3px;
+        z-index: 1;
+    }
+
+    .hud-bar.char-bar i { border-radius: 5px; }
+}
+
+/* Le statistiche stanno in due colonne: il contenitore le affianca */
+@media (max-width: 700px), (max-height: 560px), (orientation: portrait) and (max-width: 1100px) {
+    .char-board {
+        flex-flow: row wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .char-data,
+    .char-progress {
+        flex: 0 0 100%;
+    }
+
+    .char-art,
+    .char-name {
+        flex: 0 0 auto;
+        margin: 0 auto;
+    }
+
+    .char-title { flex: 0 0 100%; }
+
+    .char-stat { flex: 0 0 calc(50% - 8px); }
 }
