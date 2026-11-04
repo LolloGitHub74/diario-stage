@@ -4486,13 +4486,13 @@ body[data-screen="viaggio"] main {
     background: #14092b;
 }
 
-/* Se lo schermo non è 2:1, ai lati resta lo stesso sfondo sfocato e scurito */
+/* Lo sfondo copre sempre tutto lo schermo: si ingrandisce quanto serve
+   e ritaglia ciò che avanza, tenendo il cavaliere a sinistra in vista */
 .character.char-scene::before {
     content: "";
     position: absolute;
-    inset: -24px;
-    background: url("../immagini/scheda-sfondo.webp") center / cover no-repeat;
-    filter: blur(16px) brightness(0.5) saturate(1.1);
+    inset: 0;
+    background: url("../immagini/scheda-sfondo.webp") 28% 40% / cover no-repeat;
 }
 
 body[data-screen="personaggio"] main {
@@ -4519,9 +4519,10 @@ body[data-screen="personaggio"] main {
     image-rendering: pixelated;
 }
 
-/* Lo sfondo riempie sempre tutto lo spazio 2:1 della scena, senza deformarsi */
+/* Su computer lo sfondo è lo strato dietro (sezione::before); l'immagine
+   nella scena serve solo come testata sul telefono */
 .char-art {
-    display: block;
+    display: none;
     width: 100%;
     height: 100%;
     image-rendering: pixelated;
@@ -4773,6 +4774,11 @@ body[data-screen="personaggio"] main {
         overflow: hidden;
     }
 
+    .character.char-scene::before {
+        background-position: left top;
+        filter: brightness(0.45);
+    }
+
     .char-stage {
         position: relative;
         left: auto;
@@ -4812,6 +4818,7 @@ body[data-screen="personaggio"] main {
 
     /* Sul telefono lo sfondo diventa una testata col cavaliere */
     .char-art {
+        display: block;
         height: 300px;
         object-fit: cover;
         object-position: 10% center;
