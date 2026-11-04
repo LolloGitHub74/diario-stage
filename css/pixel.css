@@ -4474,7 +4474,7 @@ body[data-screen="viaggio"] main {
 /* =========================================================
    SCHEDA PERSONAGGIO: un'immagine a tutto schermo con il cavaliere
    a sinistra e, a destra, i riquadri vuoti dove scrivo i dati.
-   --k = 1 px dell'immagine (1672 px di larghezza)
+   --k = 1 px dell'immagine (1774 px di larghezza)
    ========================================================= */
 
 .character.char-scene {
@@ -4484,6 +4484,16 @@ body[data-screen="viaggio"] main {
     padding: 0;
     overflow: hidden;
     background: #14092b;
+}
+
+/* Se lo schermo non è esattamente 2:1, ai lati resta la stessa immagine
+   ingrandita, sfocata e scurita, invece di una striscia piatta */
+.character.char-scene::before {
+    content: "";
+    position: absolute;
+    inset: -24px;
+    background: url("../immagini/scheda-pagina.webp") center / cover no-repeat;
+    filter: blur(16px) brightness(0.5) saturate(1.1);
 }
 
 body[data-screen="personaggio"] main {
@@ -4499,9 +4509,9 @@ body[data-screen="personaggio"] .back-menu {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: min(100vw, calc(100vh * 1672 / 941));
-    width: min(100vw, calc(100svh * 1672 / 941));
-    aspect-ratio: 1672 / 941;
+    width: min(100vw, calc(100vh * 2));
+    width: min(100vw, calc(100svh * 2));
+    aspect-ratio: 2 / 1;
     transform: translate(-50%, -50%);
     container-type: inline-size;
 }
@@ -4509,7 +4519,7 @@ body[data-screen="personaggio"] .back-menu {
 .char-board {
     position: absolute;
     inset: 0;
-    --k: calc(100cqw / 1672);
+    --k: calc(100cqw / 1774);
     font-family: var(--font);
 }
 
@@ -4586,9 +4596,9 @@ body[data-screen="personaggio"] .back-menu {
     display: grid;
     grid-template-columns: max-content max-content;
     column-gap: calc(28 * var(--k));
-    row-gap: calc(1 * var(--k));
+    row-gap: 0;
     align-items: center;
-    font-size: calc(25 * var(--k));
+    font-size: calc(22 * var(--k));
     line-height: 1.05;
 }
 
@@ -4670,8 +4680,8 @@ body[data-screen="personaggio"] .back-menu {
         top: auto;
         height: 100vh;
         height: 100svh;
-        width: calc(100vh * 1672 / 941);
-        width: calc(100svh * 1672 / 941);
+        width: calc(100vh * 2);
+        width: calc(100svh * 2);
         aspect-ratio: auto;
         transform: none;
     }

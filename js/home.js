@@ -214,8 +214,8 @@
         if (event.detail !== "personaggio") return;
         const scene = document.querySelector(".char-scene");
         if (scene && scene.scrollWidth > scene.clientWidth) {
-            // parte dal bordo sinistro dei dati (circa a 700 px su 1672), non dal fondo
-            scene.scrollLeft = scene.scrollWidth * 700 / 1672;
+            // parte dal bordo sinistro dei dati (circa a 810 px su 1774), non dal fondo
+            scene.scrollLeft = scene.scrollWidth * 810 / 1774;
         }
     });
 })();
