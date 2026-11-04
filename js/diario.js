@@ -512,6 +512,9 @@
         }
     }
 
+    // Le altre finestre (missioni, simulatore) aprono da qui la scheda di una settimana
+    window.openLevel = function (week) { open(week, false); };
+
     function weekFromHash() {
         const match = /^#livello-(\d{2})$/.exec(location.hash);
         return match ? Number(match[1]) : 0;

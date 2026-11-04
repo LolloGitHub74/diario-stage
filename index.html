@@ -812,87 +812,20 @@
                 <p class="forge-title">La forgia <span>· Il progetto</span></p>
             </div>
 
-            <dialog class="panel" id="panel-attivita" aria-labelledby="titolo-attivita">
-            <div class="panel-inner">
-
-                <div class="panel-head">
-                    <h2 id="titolo-attivita">Attività di lavoro</h2>
-                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+            <dialog class="panel mis-window" id="panel-attivita" aria-labelledby="titolo-attivita" tabindex="-1">
+            <div class="mis-board">
+                <div class="mis-filters" role="tablist" aria-label="Filtra le missioni"></div>
+                <div class="mis-grid" role="tabpanel"></div>
+                <div class="mis-pager">
+                    <button type="button" class="mis-arrow mis-prev" aria-label="Pagina precedente"></button>
+                    <div class="mis-track" aria-hidden="true"><i></i></div>
+                    <button type="button" class="mis-arrow mis-next" aria-label="Pagina successiva"></button>
                 </div>
-
-                <p class="panel-intro">
-                    I lavori che mi sono stati affidati per supportare il team,
-                    dentro e fuori dall'area AI.
-                </p>
-
-                <div class="activity-grid">
-
-                    <article class="activity-item">
-                        <h3>Gestione dei feedback degli utenti</h3>
-                        <p>
-                            Con Marti e Laura abbiamo studiato come raccogliere i feedback
-                            lasciati dagli utenti sui simulatori e, soprattutto, come
-                            usarli nel concreto. Ho costruito la mia proposta in Excel.
-                        </p>
-                        <div class="week-tags">
-                            <a href="#livello-02">Settimana 02</a>
-                            <a href="#livello-04">Settimana 04</a>
-                        </div>
-                    </article>
-
-                    <article class="activity-item">
-                        <h3>Test di Aria</h3>
-                        <p>
-                            Ho testato Aria, l'agente AI di Skilla, in un ambiente di
-                            prova di SkillaCloud su diverse macro-categorie, per capire
-                            quanto supporto offre nel lavoro di tutti i giorni.
-                        </p>
-                        <div class="week-tags">
-                            <a href="#livello-04">Settimana 04</a>
-                        </div>
-                    </article>
-
-                    <article class="activity-item">
-                        <h3>Revisione dei contratti</h3>
-                        <p>
-                            Insieme ad altri stagisti ho analizzato i contratti dei
-                            clienti per Elena Testoni, raccogliendo le informazioni utili
-                            allo sviluppo di un progetto interno.
-                        </p>
-                        <div class="week-tags">
-                            <a href="#livello-02">Settimana 02</a>
-                        </div>
-                    </article>
-
-                    <article class="activity-item">
-                        <h3>Testi per le traduzioni</h3>
-                        <p>
-                            Ho controllato e preparato i file con i testi dei simulatori
-                            Chiara e Sebastiano, pronti per la traduzione in inglese e
-                            spagnolo.
-                        </p>
-                        <div class="week-tags">
-                            <a href="#livello-02">Settimana 02</a>
-                        </div>
-                    </article>
-
-                    <article class="activity-item activity-item-wide">
-                        <h3>Esplorazione dei simulatori</h3>
-                        <p>
-                            Ho provato in prima persona i simulatori di SkillaCloud per
-                            capire come sono costruiti: Flavio, Giulia &amp; co., Davide,
-                            Elena &amp; co., Agata (problem solving) e Marina (gestione
-                            dello stress).
-                        </p>
-                        <div class="week-tags">
-                            <a href="#livello-01">Settimana 01</a>
-                            <a href="#livello-03">Settimana 03</a>
-                        </div>
-                    </article>
-
-                </div>
-
+                <div class="mis-detail" hidden></div>
             </div>
+            <div class="mis-frame" aria-hidden="true"></div>
+            <div class="mis-targa"><h2 id="titolo-attivita">Missioni</h2></div>
+            <button type="button" class="mis-close" data-close aria-label="Chiudi"></button>
         </dialog>
 
         <dialog class="panel" id="panel-skillalab" aria-labelledby="titolo-skillalab">
@@ -1171,6 +1104,7 @@
     <script src="js/theme.js"></script>
     <script src="js/diario.js"></script>
     <script src="js/simulatore.js"></script>
+    <script src="js/missioni.js"></script>
     <script src="js/screens.js"></script>
 
 </body>

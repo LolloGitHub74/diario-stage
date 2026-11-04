@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!panel || panel.open) return;
 
         panel.showModal();
-        panel.querySelector(".panel-inner").scrollTop = 0;
+        const inner = panel.querySelector(".panel-inner");
+        if (inner) inner.scrollTop = 0;
         document.documentElement.classList.add("panel-open");
     }
 
