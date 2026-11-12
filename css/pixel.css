@@ -3883,7 +3883,7 @@ body[data-screen="viaggio"] main {
    ========================================================= */
 
 .panel.sim-window {
-    --w: min(1100px, 94vw, calc(92vh * 1406 / 873));
+    --w: min(1100px, 86vw, calc(92vh * 1406 / 873));
     --u: calc(var(--w) / 1406);
     position: fixed;
     inset: 0;
@@ -3935,11 +3935,11 @@ body[data-screen="viaggio"] main {
 
 .sim-window .sim-close {
     position: absolute;
-    right: calc(20 * var(--u));
-    top: calc(14 * var(--u));
+    left: calc(100% + 12px);
+    right: auto;
+    top: calc(90 * var(--u));
     z-index: 4;
-    width: calc(92 * var(--u));
-    min-width: 40px;
+    width: clamp(40px, calc(86 * var(--u)), 64px);
 }
 
 /* L'interno della cornice */
@@ -4324,7 +4324,7 @@ body[data-screen="viaggio"] main {
 
     .sim-window .sim-targa h2 { font-size: 26px; padding-bottom: 3px; }
 
-    .sim-window .sim-close { top: 6px; right: 6px; width: 46px; }
+    .sim-window .sim-close { left: auto; top: 6px; right: 6px; width: 46px; }
 
     .sim-window .sim-content {
         left: 12px;
@@ -4968,7 +4968,7 @@ body[data-screen="personaggio"] main {
    ========================================================= */
 
 .panel.mis-window {
-    --w: min(1100px, 94vw, calc(92vh * 739 / 428));
+    --w: min(1100px, 86vw, calc(92vh * 739 / 428));
     --u: calc(var(--w) / 739);
     position: fixed;
     inset: 0;
@@ -5041,11 +5041,10 @@ body[data-screen="personaggio"] main {
 
 .mis-close {
     position: absolute;
-    right: calc(2 * var(--u));
-    top: calc(-8 * var(--u));
+    left: calc(100% + 12px);
+    top: calc(60 * var(--u));
     z-index: 4;
-    width: calc(54 * var(--u));
-    min-width: 36px;
+    width: clamp(40px, calc(54 * var(--u)), 62px);
     aspect-ratio: 78 / 72;
     padding: 0;
     cursor: pointer;
@@ -5467,7 +5466,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     }
 
     .mis-window .mis-targa h2 { font-size: 24px; }
-    .mis-close { top: -6px; right: -4px; width: 44px; }
+    .mis-close { left: auto; top: -6px; right: -4px; width: 44px; }
 
     .mis-board {
         left: 0;
@@ -5541,7 +5540,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
    ========================================================= */
 
 .panel.lib-window {
-    --w: min(1100px, 94vw, calc(92vh * 1378 / 651));
+    --w: min(1100px, 86vw, calc(92vh * 1378 / 651));
     --u: calc(var(--w) / 1378);
     --f: calc(var(--u) * 1.5);
     position: fixed;
@@ -5622,8 +5621,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
 .lib-x {
     position: absolute;
     z-index: 4;
-    width: calc(54 * var(--f));
-    min-width: 36px;
+    width: clamp(40px, calc(54 * var(--f)), 62px);
     aspect-ratio: 78 / 72;
     padding: 0;
     cursor: pointer;
@@ -5631,7 +5629,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
-.lib-close { right: calc(2 * var(--f)); top: calc(-8 * var(--f)); }
+.lib-close { left: calc(100% + 12px); top: calc(80 * var(--f)); }
 .lib-close:hover, .lib-x:hover, .lib-nav:hover, .lib-back:hover { filter: brightness(1.18); }
 
 /* Le targhette delle mensole, con il testo scritto dal sito */
@@ -5721,7 +5719,8 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
 
 /* Il libro aperto, a tutto schermo sopra la libreria */
 .lib-view {
-    --bw: min(94vw, calc(88vh * 1586 / 926));
+    --bw: min(84vw, calc(88vh * 1586 / 926));
+    --nw: clamp(40px, 5vw, 64px);
     --k: calc(var(--bw) / 1586);
     position: fixed;
     inset: 0;
@@ -5855,8 +5854,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
 
 .lib-nav {
     position: absolute;
-    bottom: 18px;
-    width: 64px;
+    top: 50%;
+    width: var(--nw);
+    margin-top: calc(var(--nw) * -0.53);
     aspect-ratio: 64 / 68;
     padding: 0;
     cursor: pointer;
@@ -5864,8 +5864,8 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
-.lib-nav-prev { left: 18px; }
-.lib-nav-next { right: 18px; background-image: url("../immagini/lav-freccia-dx.webp"); }
+.lib-nav-prev { left: max(6px, calc(50% - var(--bw) / 2 - var(--nw) - 12px)); }
+.lib-nav-next { right: max(6px, calc(50% - var(--bw) / 2 - var(--nw) - 12px)); background-image: url("../immagini/lav-freccia-dx.webp"); }
 
 @media (prefers-reduced-motion: reduce) {
     .lib-book-btn { transition: none; }
@@ -5889,7 +5889,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     .lib-frame { display: none; }
     .lib-targa { top: -8px; width: min(64vw, 260px); height: 52px; }
     .lib-window .lib-targa h2 { font-size: 25px; }
-    .lib-close { top: -6px; right: -4px; width: 44px; }
+    .lib-close { left: auto; top: -6px; right: -4px; width: 44px; }
 
     .lib-board {
         left: 0;
@@ -5990,5 +5990,27 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
 
     .lib-back { left: 10px; top: 10px; }
     .lib-x { right: 10px; top: 10px; width: 46px; }
-    .lib-nav { bottom: 14px; width: 54px; }
+    .lib-nav { top: auto; margin-top: 0; bottom: 14px; width: 54px; }
+    .lib-nav-prev { left: 18px; }
+    .lib-nav-next { right: 18px; }
+}
+
+/* Inventario: la X sta fuori dalla finestra, a destra */
+#panel-strumenti {
+    overflow: visible;
+    width: min(860px, calc(100% - 150px));
+}
+
+#panel-strumenti > .panel-close {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 22px;
+    z-index: 3;
+    background: var(--panel-solid);
+}
+
+@media (max-width: 700px) {
+    #panel-strumenti { width: min(860px, calc(100% - 32px)); }
+    #panel-strumenti > .panel-close { left: auto; right: 10px; top: 10px; }
+    #panel-strumenti .panel-head { padding-right: 56px; }
 }
