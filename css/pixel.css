@@ -5746,6 +5746,18 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     filter: drop-shadow(0 calc(14 * var(--k)) 0 rgba(0, 0, 0, 0.5));
 }
 
+/* La pagina che gira: i fotogrammi hanno un piccolo margine intorno al libro */
+.lib-flip {
+    position: absolute;
+    left: -0.252%;
+    top: -1.512%;
+    width: 100.504%;
+    height: 101.944%;
+    pointer-events: none;
+}
+
+.lib-flip[hidden] { display: none; }
+
 .lib-left,
 .lib-right {
     position: absolute;
@@ -5755,7 +5767,21 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.08s linear;
 }
+
+/* Mentre la pagina gira il testo sparisce, poi riappare */
+.lib-view.is-flipping .lib-left,
+.lib-view.is-flipping .lib-right { opacity: 0; transition: none; }
+
+/* Pagina di solo testo a sinistra: niente titolo, cartellino e icona */
+.lib-left .lib-ltext { display: none; }
+.lib-left.is-text { justify-content: flex-start; }
+.lib-left.is-text .lib-title,
+.lib-left.is-text .lib-lv,
+.lib-left.is-text .lib-icon { display: none; }
+.lib-left.is-text .lib-ltext { display: block; }
+.lib-right { justify-content: flex-start; }
 
 .lib-left { left: 13.6%; width: 32.6%; gap: calc(16 * var(--k)); }
 .lib-right { left: 53.4%; width: 31.6%; }
@@ -5796,11 +5822,16 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
 }
 
 .lib-text {
-    margin: 0;
-    font-size: calc(50 * var(--k));
-    line-height: 1.12;
+    width: 100%;
+    padding: calc(34 * var(--k)) calc(34 * var(--k)) 0 calc(44 * var(--k));
+    box-sizing: border-box;
+    font-size: calc(43 * var(--k));
+    line-height: 1.15;
     color: #3a2210;
 }
+
+.lib-text p { margin: 0 0 0.7em; }
+.lib-text p:last-child { margin-bottom: 0; }
 
 .lib-back {
     position: absolute;
@@ -5930,11 +5961,13 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         flex-direction: column;
         align-items: center;
         gap: 12px;
-        padding: 70px 40px 52px 36px;
-        background: url("../immagini/lav-pergamena-3.webp") 0 0 / 100% 100% no-repeat;
+        box-sizing: border-box;
+        padding: 40px 14px 26px 10px;
+        border: 30px solid transparent;
+        border-image: url("../immagini/lav-pergamena-3.webp") 42 fill / 30px stretch;
     }
 
-    .lib-bookimg { display: none; }
+    .lib-bookimg, .lib-flip { display: none; }
 
     .lib-left,
     .lib-right {
@@ -5948,7 +5981,8 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     .lib-lv { font-size: 22px; border-width: 3px; padding: 3px 12px 4px 8px; gap: 6px; }
     .lib-lv img { width: 18px; }
     .lib-icon { height: 74px; }
-    .lib-text { font-size: 23px; line-height: 1.1; text-align: center; }
+    .lib-text { font-size: 23px; line-height: 1.1; text-align: center; padding: 0; }
+    .lib-right { justify-content: center; }
 
     .lib-back { left: 10px; top: 10px; }
     .lib-x { right: 10px; top: 10px; width: 46px; }

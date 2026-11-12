@@ -7,6 +7,9 @@
 //   settimana: il livello (falò) collegato
 //   icona:    nome del file immagini/lib-icona-NOME.webp
 //   dorso:    1-6 (colore); "tinta" cambia il colore di un dorso già usato
+//   testo:    una sola pagina di testo (a capo con una riga vuota: \n\n)
+//   pagine:   in alternativa, un elenco di pagine: la prima sta a destra
+//             della copertina, le altre riempiono le doppie pagine che si sfogliano
 // =========================================================
 
 (function () {
@@ -14,7 +17,12 @@
 
     const LIBRI = [
         { titolo: "Il primo laboratorio", tipo: "skillalab", settimana: 1, icona: "porta", dorso: 1,
-          testo: "L'incontro di apertura, che mi ha lasciato molta curiosità per i laboratori successivi." },
+          pagine: [
+              "L'incontro di apertura, che mi ha lasciato molta curiosità per i laboratori successivi.",
+              "PAGINA DI PROVA 2. Qui racconterò di cosa abbiamo parlato durante il laboratorio.\n\nSecondo paragrafo di prova, per vedere come va a capo il testo.",
+              "PAGINA DI PROVA 3. Qui scriverò cosa ho imparato di nuovo.\n\nAltro paragrafo di prova.",
+              "PAGINA DI PROVA 4. E qui cosa mi porto via da questo laboratorio."
+          ] },
         { titolo: "Dare e ricevere feedback", tipo: "skillalab", settimana: 2, icona: "feedback", dorso: 2,
           testo: "Ho scoperto quanto un feedback, dato o ricevuto, possa influenzare davvero il lavoro di un team." },
         { titolo: "Scoprire il proprio talento", tipo: "skillalab", settimana: 4, icona: "talento", dorso: 3,
@@ -47,9 +55,48 @@
         title: view.querySelector(".lib-title"),
         lv: view.querySelector(".lib-lv"),
         icon: view.querySelector(".lib-icon"),
-        text: view.querySelector(".lib-text")
+        left: view.querySelector(".lib-left"),
+        ltext: view.querySelector(".lib-ltext"),
+        rtext: view.querySelector(".lib-rtext"),
+        flip: view.querySelector(".lib-flip")
     };
     let corrente = -1;
+    let doppia = 0;          // 0 = copertina; poi 1, 2... le doppie pagine
+    let inCorso = false;     // la pagina sta girando
+
+    // Le immagini della pagina che gira (la 62 è la pagina appena sollevata,
+    // la 59 quella che sta atterrando a sinistra)
+    const FRAME = ["62", "61", "60", "59"].map(function (n) { return "immagini/lib-pagina-" + n + ".webp"; });
+    const PASSO_MS = 85;
+    let caricati = false;
+
+    function telefono() {
+        return window.matchMedia("(max-width: 700px), (max-height: 520px)").matches;
+    }
+
+    function senzaMoto() {
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    function precarica() {
+        if (caricati) return;
+        caricati = true;
+        FRAME.forEach(function (src) { new Image().src = src; });
+    }
+
+    function pagineDi(libro) {
+        return libro.pagine || [libro.testo];
+    }
+
+    function numeroDoppie(libro) {
+        return 1 + Math.ceil((pagineDi(libro).length - 1) / 2);
+    }
+
+    function paragrafi(testo) {
+        return String(testo || "").split(/\n\n+/).map(function (p) {
+            return "<p>" + esc(p) + "</p>";
+        }).join("");
+    }
 
     function esc(text) {
         return String(text).replace(/[&<>"]/g, function (c) {
@@ -83,25 +130,90 @@
         });
     }
 
-    function mostra(indice) {
+    // Mette sul libro la copertina o la doppia pagina richiesta
+    function riempi(indice, n) {
         corrente = (indice + LIBRI.length) % LIBRI.length;
         const libro = LIBRI[corrente];
+        const pagine = pagineDi(libro);
         const w = libro.settimana;
         const aperto = !stage || stage.state(w) !== "locked";
         const nome = "LV " + String(w).padStart(2, "0");
+        doppia = n;
+        el.left.classList.toggle("is-text", n > 0);
         el.title.textContent = libro.titolo;
-        el.text.textContent = libro.testo;
         el.icon.src = "immagini/lib-icona-" + libro.icona + ".webp";
         el.lv.innerHTML = '<img src="immagini/lav-fiamma.webp" alt="">' + nome;
         el.lv.dataset.week = w;
         el.lv.classList.toggle("is-locked", !aperto);
         el.lv.setAttribute("href", aperto ? "#livello-" + String(w).padStart(2, "0") : "#");
+        if (telefono()) {
+            // Sul telefono tutte le pagine di seguito, su un'unica pergamena
+            el.ltext.innerHTML = "";
+            el.rtext.innerHTML = paragrafi(pagine.join("\n\n"));
+        } else if (n === 0) {
+            el.ltext.innerHTML = "";
+            el.rtext.innerHTML = paragrafi(pagine[0]);
+        } else {
+            el.ltext.innerHTML = paragrafi(pagine[2 * n - 1]);
+            el.rtext.innerHTML = paragrafi(pagine[2 * n]);
+        }
+    }
+
+    function mostra(indice) {
+        precarica();
+        riempi(indice, 0);
         view.hidden = false;
         view.querySelector(".lib-back").focus({ preventScroll: true });
     }
 
+    // Pagina che si gira, a scatti: avanti (dir = 1) o indietro (dir = -1)
+    function sfoglia(dir) {
+        if (inCorso) return;
+        const libro = LIBRI[corrente];
+        let indice = corrente;
+        let n = doppia + dir;
+        if (n >= numeroDoppie(libro)) {
+            indice = corrente + 1;
+            n = 0;
+        } else if (n < 0) {
+            indice = (corrente - 1 + LIBRI.length) % LIBRI.length;
+            n = numeroDoppie(LIBRI[indice]) - 1;
+        }
+        if (telefono()) {
+            // Su telefono si passa da un libro all'altro, senza pagine da girare
+            const vicino = (corrente + dir + LIBRI.length) % LIBRI.length;
+            riempi(vicino, 0);
+            view.scrollTop = 0;
+            return;
+        }
+        const cambia = function () { riempi(indice, n); };
+        if (senzaMoto()) { cambia(); return; }
+
+        inCorso = true;
+        view.classList.add("is-flipping");
+        const frames = dir > 0 ? FRAME : FRAME.slice().reverse();
+        let i = 0;
+        el.flip.hidden = false;
+        const passo = function () {
+            if (i >= frames.length) {
+                el.flip.hidden = true;
+                view.classList.remove("is-flipping");
+                inCorso = false;
+                return;
+            }
+            el.flip.src = frames[i];
+            if (i === 1) cambia();      // il testo cambia mentre è ancora nascosto
+            i += 1;
+            setTimeout(passo, PASSO_MS);
+        };
+        passo();
+    }
+
     function chiudiLibro() {
         view.hidden = true;
+        el.flip.hidden = true;
+        view.classList.remove("is-flipping");
+        inCorso = false;
         const btn = board.querySelector('.lib-book-btn[data-i="' + corrente + '"]');
         if (btn) btn.focus({ preventScroll: true });
     }
@@ -111,8 +223,8 @@
         if (btn) mostra(Number(btn.dataset.i));
     });
 
-    view.querySelector(".lib-nav-prev").addEventListener("click", function () { mostra(corrente - 1); });
-    view.querySelector(".lib-nav-next").addEventListener("click", function () { mostra(corrente + 1); });
+    view.querySelector(".lib-nav-prev").addEventListener("click", function () { sfoglia(-1); });
+    view.querySelector(".lib-nav-next").addEventListener("click", function () { sfoglia(1); });
     view.querySelector(".lib-back").addEventListener("click", chiudiLibro);
 
     // Un clic sul buio intorno al libro lo richiude
@@ -129,8 +241,8 @@
 
     win.addEventListener("keydown", function (event) {
         if (view.hidden) return;
-        if (event.key === "ArrowRight") { event.preventDefault(); mostra(corrente + 1); }
-        if (event.key === "ArrowLeft") { event.preventDefault(); mostra(corrente - 1); }
+        if (event.key === "ArrowRight") { event.preventDefault(); sfoglia(1); }
+        if (event.key === "ArrowLeft") { event.preventDefault(); sfoglia(-1); }
     });
 
     // Esc chiude prima il libro, poi la finestra
