@@ -828,57 +828,30 @@
             <button type="button" class="mis-close" data-close aria-label="Chiudi"></button>
         </dialog>
 
-        <dialog class="panel" id="panel-skillalab" aria-labelledby="titolo-skillalab">
-            <div class="panel-inner">
+        <dialog class="panel lib-window" id="panel-skillalab" aria-labelledby="titolo-skillalab" tabindex="-1">
+            <div class="lib-board">
+                <img class="lib-scaffale" src="immagini/lib-scaffale.webp" alt="" width="1186" height="495">
+                <h3 class="lib-plaque lib-plaque-1">SkillaLab</h3>
+                <h3 class="lib-plaque lib-plaque-2">Formazioni e pillole</h3>
+            </div>
+            <div class="lib-frame" aria-hidden="true"></div>
+            <div class="lib-targa"><h2 id="titolo-skillalab">Addestramento</h2></div>
+            <button type="button" class="lib-close" data-close aria-label="Chiudi"></button>
 
-                <div class="panel-head">
-                    <h2 id="titolo-skillalab">SkillaLab</h2>
-                    <button type="button" class="panel-close" data-close aria-label="Chiudi">×</button>
+            <div class="lib-view" hidden>
+                <div class="lib-book">
+                    <img class="lib-bookimg" src="immagini/lib-libro.webp" alt="" width="1586" height="926">
+                    <div class="lib-left">
+                        <h3 class="lib-title"></h3>
+                        <a class="lib-lv" href="#"></a>
+                        <img class="lib-icon" src="" alt="">
+                    </div>
+                    <div class="lib-right"><p class="lib-text"></p></div>
                 </div>
-
-                <p class="panel-intro">
-                    I laboratori del venerdì dedicati a noi stagisti: momenti di
-                    confronto che vanno oltre il lavoro tecnico.
-                </p>
-
-                <ul class="lab-list">
-
-                    <li class="lab-item">
-                        <span class="lab-week">Settimana 01</span>
-                        <div>
-                            <h3>Il primo laboratorio</h3>
-                            <p>
-                                L'incontro di apertura, che mi ha lasciato molta
-                                curiosità per i laboratori successivi.
-                            </p>
-                        </div>
-                    </li>
-
-                    <li class="lab-item">
-                        <span class="lab-week">Settimana 02</span>
-                        <div>
-                            <h3>Dare e ricevere feedback</h3>
-                            <p>
-                                Ho scoperto quanto un feedback, dato o ricevuto, possa
-                                influenzare davvero il lavoro di un team.
-                            </p>
-                        </div>
-                    </li>
-
-                    <li class="lab-item">
-                        <span class="lab-week">Settimana 04</span>
-                        <div>
-                            <h3>Scoprire il proprio talento</h3>
-                            <p>
-                                Il più stimolante finora: per riflettere bene su un tema
-                                non bisogna dare per scontato nulla, nemmeno la prima
-                                soluzione che sembra funzionare.
-                            </p>
-                        </div>
-                    </li>
-
-                </ul>
-
+                <button type="button" class="lib-back">‹ Libreria</button>
+                <button type="button" class="lib-nav lib-nav-prev" aria-label="Libro precedente"></button>
+                <button type="button" class="lib-nav lib-nav-next" aria-label="Libro successivo"></button>
+                <button type="button" class="lib-x" data-close aria-label="Chiudi"></button>
             </div>
         </dialog>
 
@@ -1105,6 +1078,7 @@
     <script src="js/diario.js"></script>
     <script src="js/simulatore.js"></script>
     <script src="js/missioni.js"></script>
+    <script src="js/libreria.js"></script>
     <script src="js/screens.js"></script>
 
 </body>

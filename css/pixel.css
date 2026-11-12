@@ -5532,3 +5532,425 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     .mis-sheet .mis-chips { margin-top: 6px; }
     .mis-detail { align-items: start; padding-top: 4px; }
 }
+
+
+/* =========================================================
+   ADDESTRAMENTO: la libreria con due mensole e il libro aperto.
+   --u = 1 px dell'immagine della libreria (1186 px), --f = 1 px
+   della cornice di legno (la stessa delle Missioni)
+   ========================================================= */
+
+.panel.lib-window {
+    --w: min(1100px, 94vw, calc(92vh * 1378 / 651));
+    --u: calc(var(--w) / 1378);
+    --f: calc(var(--u) * 1.5);
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: var(--w);
+    height: calc(var(--u) * 651);
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+    font-family: var(--font);
+    color: #3a2210;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    image-rendering: pixelated;
+}
+
+.lib-window:focus { outline: none; }
+
+.lib-board {
+    position: absolute;
+    left: calc(96 * var(--u));
+    top: calc(75 * var(--u));
+    width: calc(1186 * var(--u));
+    height: calc(495 * var(--u));
+    z-index: 1;
+}
+
+.lib-scaffale {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* La cornice di legno: gli angoli restano uguali, i lati si allungano */
+.lib-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-style: solid;
+    border-color: transparent;
+    border-width: calc(100 * var(--f));
+    border-image: url("../immagini/lav-cornice.webp") 100 / calc(100 * var(--f)) stretch;
+    filter: drop-shadow(0 calc(8 * var(--f)) 0 rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+}
+
+.lib-targa {
+    position: absolute;
+    left: 50%;
+    top: calc(-22 * var(--f));
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: calc(330 * var(--f));
+    height: calc(76 * var(--f));
+    transform: translateX(-50%);
+    background: url("../immagini/lav-targa.webp") 0 0 / 100% 100% no-repeat;
+    pointer-events: none;
+}
+
+.lib-window .lib-targa h2 {
+    margin: 0;
+    padding-bottom: calc(4 * var(--f));
+    font-size: calc(36 * var(--f));
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #ffe9b0;
+    text-shadow: 0 calc(3 * var(--f)) 0 #3a1708;
+    white-space: nowrap;
+}
+
+.lib-close,
+.lib-x {
+    position: absolute;
+    z-index: 4;
+    width: calc(54 * var(--f));
+    min-width: 36px;
+    aspect-ratio: 78 / 72;
+    padding: 0;
+    cursor: pointer;
+    background: url("../immagini/lav-chiudi.webp") 0 0 / 100% 100% no-repeat;
+    border: 0;
+}
+
+.lib-close { right: calc(2 * var(--f)); top: calc(-8 * var(--f)); }
+.lib-close:hover, .lib-x:hover, .lib-nav:hover, .lib-back:hover { filter: brightness(1.18); }
+
+/* Le targhette delle mensole, con il testo scritto dal sito */
+.lib-plaque {
+    position: absolute;
+    left: calc(355 * var(--u));
+    width: calc(472 * var(--u));
+    height: calc(58 * var(--u));
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding-bottom: calc(4 * var(--u));
+    font-size: calc(33 * var(--u));
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffd98a;
+    text-shadow: 0 calc(3 * var(--u)) 0 #2a0f06;
+    pointer-events: none;
+}
+
+.lib-plaque-1 { top: calc(10 * var(--u)); }
+.lib-plaque-2 { top: calc(255 * var(--u)); }
+
+/* I libri sulle mensole */
+.lib-book-btn {
+    position: absolute;
+    left: calc(var(--x) * var(--u));
+    top: calc(var(--y) * var(--u));
+    width: calc(82 * var(--u));
+    height: calc(145 * var(--u));
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    transition: transform 0.12s steps(2);
+}
+
+.lib-book-btn img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.lib-book-btn:hover,
+.lib-book-btn:focus-visible {
+    outline: none;
+    transform: translateY(calc(-10 * var(--u)));
+    filter: drop-shadow(0 0 calc(7 * var(--u)) rgba(255, 200, 90, 0.9));
+    z-index: 2;
+}
+
+.lib-num {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 48%;
+    transform: translateY(-50%);
+    font-size: calc(30 * var(--u));
+    line-height: 1;
+    text-align: center;
+    color: #4a2a10;
+    pointer-events: none;
+}
+
+/* La targhetta col titolo, sopra il libro sotto il cursore */
+.lib-tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 4 * var(--u));
+    z-index: 3;
+    padding: 0 calc(12 * var(--u)) calc(3 * var(--u));
+    font-size: calc(24 * var(--u));
+    line-height: 1.5;
+    white-space: nowrap;
+    color: #fff3d0;
+    background: url("../immagini/lav-linguetta-attiva.webp") 0 0 / 100% 100% no-repeat;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.lib-book-btn:hover .lib-tip,
+.lib-book-btn:focus-visible .lib-tip { opacity: 1; }
+
+/* Il libro aperto, a tutto schermo sopra la libreria */
+.lib-view {
+    --bw: min(94vw, calc(88vh * 1586 / 926));
+    --k: calc(var(--bw) / 1586);
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    background: rgba(12, 5, 2, 0.84);
+}
+
+.lib-view[hidden] { display: none; }
+
+.lib-book {
+    position: relative;
+    width: var(--bw);
+    aspect-ratio: 1586 / 926;
+}
+
+.lib-bookimg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 calc(14 * var(--k)) 0 rgba(0, 0, 0, 0.5));
+}
+
+.lib-left,
+.lib-right {
+    position: absolute;
+    top: 11.5%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lib-left { left: 13.6%; width: 32.6%; gap: calc(16 * var(--k)); }
+.lib-right { left: 53.4%; width: 31.6%; }
+
+.lib-view .lib-title {
+    margin: 0;
+    font-size: calc(70 * var(--k));
+    font-weight: 400;
+    line-height: 0.95;
+    text-align: center;
+    color: #3a1a08;
+}
+
+.lib-lv {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(8 * var(--k));
+    padding: calc(4 * var(--k)) calc(22 * var(--k)) calc(6 * var(--k)) calc(14 * var(--k));
+    font-size: calc(46 * var(--k));
+    line-height: 1;
+    text-decoration: none;
+    color: #ffd36a;
+    background: #3a1a0a;
+    border: calc(5 * var(--k)) solid #c9861c;
+    border-radius: calc(8 * var(--k));
+}
+
+.lib-lv img { width: calc(30 * var(--k)); height: auto; }
+a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
+.lib-lv.is-locked { color: #a98f6a; border-color: #6a4a2a; cursor: default; }
+.lib-lv.is-locked img { filter: grayscale(1) brightness(0.7); }
+
+.lib-icon {
+    height: calc(210 * var(--k));
+    width: auto;
+    max-width: 70%;
+    object-fit: contain;
+}
+
+.lib-text {
+    margin: 0;
+    font-size: calc(50 * var(--k));
+    line-height: 1.12;
+    color: #3a2210;
+}
+
+.lib-back {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    height: 38px;
+    padding: 0 16px 3px;
+    font-family: var(--font);
+    font-size: 24px;
+    color: #fff3d0;
+    cursor: pointer;
+    background: url("../immagini/lav-linguetta-attiva.webp") 0 0 / 100% 100% no-repeat;
+    border: 0;
+}
+
+.lib-x { right: 14px; top: 14px; width: 56px; }
+
+.lib-nav {
+    position: absolute;
+    bottom: 18px;
+    width: 64px;
+    aspect-ratio: 64 / 68;
+    padding: 0;
+    cursor: pointer;
+    background: url("../immagini/lav-freccia-sx.webp") 0 0 / 100% 100% no-repeat;
+    border: 0;
+}
+
+.lib-nav-prev { left: 18px; }
+.lib-nav-next { right: 18px; background-image: url("../immagini/lav-freccia-dx.webp"); }
+
+@media (prefers-reduced-motion: reduce) {
+    .lib-book-btn { transition: none; }
+}
+
+/* Telefono e schermi bassi: finestra a tutto schermo con i libri in elenco,
+   e una pagina sola per il libro aperto */
+@media (max-width: 700px), (max-height: 520px) {
+    .panel.lib-window {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        margin: 0;
+        background: #2a140c url("../immagini/lav-legno.webp") 0 0 / 100% 100% no-repeat;
+        border: 14px solid transparent;
+        border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
+    }
+
+    .lib-frame { display: none; }
+    .lib-targa { top: -8px; width: min(64vw, 260px); height: 52px; }
+    .lib-window .lib-targa h2 { font-size: 25px; }
+    .lib-close { top: -6px; right: -4px; width: 44px; }
+
+    .lib-board {
+        left: 0;
+        top: 50px;
+        width: 100%;
+        height: calc(100% - 50px);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 8px 24px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .lib-scaffale { display: none; }
+
+    .lib-plaque {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 6px 0 4px;
+        font-size: 24px;
+        text-align: left;
+        place-items: start;
+        border-bottom: 3px solid #c9861c;
+    }
+
+    .lib-book-btn {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        height: auto;
+        min-height: 74px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 6px 12px 6px 8px;
+        text-align: left;
+        color: #fff3d0;
+        background: rgba(12, 5, 2, 0.45);
+        border: 2px solid #6a3a14;
+        border-radius: 6px;
+    }
+
+    .lib-book-btn:hover,
+    .lib-book-btn:focus-visible { transform: none; filter: none; border-color: #c9861c; }
+
+    .lib-book-btn img { width: 44px; height: auto; flex: none; }
+    .lib-num { display: none; }
+
+    .lib-tip {
+        position: static;
+        padding: 0;
+        font-size: 23px;
+        line-height: 1.05;
+        white-space: normal;
+        color: #fff3d0;
+        background: none;
+        transform: none;
+        opacity: 1;
+    }
+
+    .lib-view { background: rgba(12, 5, 2, 0.92); align-items: start; padding: 64px 12px 90px; overflow-y: auto; }
+
+    .lib-book {
+        width: 100%;
+        max-width: 520px;
+        aspect-ratio: auto;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 70px 40px 52px 36px;
+        background: url("../immagini/lav-pergamena-3.webp") 0 0 / 100% 100% no-repeat;
+    }
+
+    .lib-bookimg { display: none; }
+
+    .lib-left,
+    .lib-right {
+        position: static;
+        width: 100%;
+        height: auto;
+        gap: 10px;
+    }
+
+    .lib-view .lib-title { font-size: 34px; }
+    .lib-lv { font-size: 22px; border-width: 3px; padding: 3px 12px 4px 8px; gap: 6px; }
+    .lib-lv img { width: 18px; }
+    .lib-icon { height: 74px; }
+    .lib-text { font-size: 23px; line-height: 1.1; text-align: center; }
+
+    .lib-back { left: 10px; top: 10px; }
+    .lib-x { right: 10px; top: 10px; width: 46px; }
+    .lib-nav { bottom: 14px; width: 54px; }
+}
