@@ -3937,10 +3937,15 @@ body[data-screen="viaggio"] main {
     position: absolute;
     left: calc(100% + 12px);
     right: auto;
-    top: calc(90 * var(--u));
+    top: calc(-6 * var(--u));
     z-index: 4;
     width: clamp(40px, calc(86 * var(--u)), 64px);
+    aspect-ratio: 78 / 72;
+    background-image: url("../immagini/lav-chiudi.webp");
+    filter: none;
 }
+
+.sim-window .sim-close:hover { filter: brightness(1.18); }
 
 /* L'interno della cornice */
 .sim-window .sim-content {
@@ -5042,7 +5047,7 @@ body[data-screen="personaggio"] main {
 .mis-close {
     position: absolute;
     left: calc(100% + 12px);
-    top: calc(60 * var(--u));
+    top: calc(-6 * var(--u));
     z-index: 4;
     width: clamp(40px, calc(54 * var(--u)), 62px);
     aspect-ratio: 78 / 72;
@@ -5629,7 +5634,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
-.lib-close { left: calc(100% + 12px); top: calc(80 * var(--f)); }
+.lib-close { left: calc(100% + 12px); top: calc(-8 * var(--f)); }
 .lib-close:hover, .lib-x:hover, .lib-nav:hover, .lib-back:hover { filter: brightness(1.18); }
 
 /* Le targhette delle mensole, con il testo scritto dal sito */
@@ -6004,7 +6009,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
 #panel-strumenti > .panel-close {
     position: absolute;
     left: calc(100% + 12px);
-    top: 22px;
+    top: 0;
     z-index: 3;
     background: var(--panel-solid);
 }
