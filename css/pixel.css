@@ -5754,7 +5754,11 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     width: 100.504%;
     height: 101.944%;
     pointer-events: none;
+    filter: drop-shadow(0 calc(14 * var(--k)) 0 rgba(0, 0, 0, 0.5));
 }
+
+/* Durante il giro il libro fermo sparisce: c'è solo il fotogramma */
+.lib-view.is-flipping .lib-bookimg { visibility: hidden; }
 
 .lib-flip[hidden] { display: none; }
 
