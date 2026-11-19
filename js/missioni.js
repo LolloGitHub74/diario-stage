@@ -27,46 +27,46 @@
         {
             titolo: "Identità di team",
             breve: "Il team AI come hub per gli altri team: idee, loghi e mockup.",
-            testo: "Il progetto per rendere il team AI un hub utile agli altri team: dal brainstorming dell'Open Day ai due loghi e al mockup dello spazio condiviso, fino alla proposta estetica.",
+            testo: "Il progetto per rendere il team AI un hub utile agli altri team: dal brainstorming dell'Open Day ai due loghi e al mockup dello spazio condiviso, presentati a inizio novembre, fino alla proposta puramente estetica da portare in una call.",
             stato: "corso",
-            settimane: [6, 7, 8],
-            fasi: [["Open Day", "fatta"], ["Loghi e mockup", "fatta"], ["Proposta", "attuale"], ["Presentazione", "futura"]],
+            settimane: [6, 7, 8, 9, 10],
+            fasi: [["Open Day", "fatta"], ["Loghi e spazio", "fatta"], ["Proposta estetica", "attuale"], ["Call di proposta", "futura"]],
             aggiunta: "2026-10-12"
         },
         {
             titolo: "Newsletter",
             breve: "Una newsletter di team: studio dei format e prima bozza.",
-            testo: "La newsletter del team: studio di canali e format, mockup e documento con le note, in vista della presentazione della demo.",
+            testo: "La newsletter del team, con Martina e Ari: studio di canali e format, mockup e documento con le note, test sull'ambiente Viva Agent e call sulla direzione finale. Ora preparo la prossima call.",
             stato: "corso",
-            settimane: [8],
-            fasi: [["Format", "fatta"], ["Mockup", "fatta"], ["Presentazione", "attuale"]],
+            settimane: [8, 9, 10],
+            fasi: [["Format", "fatta"], ["Mockup", "fatta"], ["Viva Agent", "fatta"], ["Direzione finale", "fatta"], ["Prossima call", "attuale"]],
             aggiunta: "2026-11-01"
         },
         {
             titolo: "Gestione dei feedback",
             breve: "Come raccogliere i feedback degli utenti e usarli davvero.",
-            testo: "Con Marti e Laura: come raccogliere i feedback lasciati dagli utenti sui simulatori e, soprattutto, come usarli nel concreto, con una proposta in Excel e una presentazione dei dati.",
+            testo: "Con Marti e Laura: come raccogliere i feedback lasciati dagli utenti sui simulatori e, soprattutto, come usarli nel concreto, con una proposta in Excel e una presentazione dei dati. Ora aspetto le indicazioni di Martina, dopo il confronto con Silvia.",
             stato: "attesa",
-            settimane: [2, 4, 5, 6],
+            settimane: [2, 4, 5, 6, 8, 10],
             fasi: [["Proposta", "fatta"], ["Presentazione", "fatta"], ["Indicazioni", "attuale"], ["Analisi", "futura"]],
             aggiunta: "2026-09-14"
         },
         {
             titolo: "Test di Aria",
             breve: "Test di Aria su diverse macro-categorie e nuove funzionalità.",
-            testo: "Test di Aria, l'agente AI di Skilla, in un ambiente di prova: prima su diverse macro-categorie, poi sulle nuove funzionalità, per capire quanto supporto offre nel lavoro di ogni giorno.",
-            stato: "attesa",
-            settimane: [4, 6, 7, 8],
-            fasi: [["Test", "fatta"], ["Nuove funzioni", "fatta"], ["In pausa", "attuale"], ["Chiusura", "futura"]],
+            testo: "Test di Aria, l'agente AI di Skilla, in un ambiente di prova: prima su diverse macro-categorie, poi sulle nuove funzionalità, per capire quanto supporto offre nel lavoro di ogni giorno. A metà novembre, con il nuovo file di Arianna, ho completato i test.",
+            stato: "completata",
+            settimane: [4, 6, 7, 8, 10],
+            fasi: [["Primo giro", "fatta"], ["Nuove funzioni", "fatta"], ["File di Arianna", "fatta"], ["Test completati", "fatta"]],
             aggiunta: "2026-09-28"
         },
         {
             titolo: "Prova dei simulatori",
             breve: "Provare i simulatori di SkillaCloud e lasciare feedback.",
-            testo: "Esplorazione dei simulatori di SkillaCloud per capire come sono costruiti: Flavio, Giulia & co., Davide, Elena & co., Agata e Marina. Poi prove e feedback ogni venerdì.",
-            stato: "corso",
-            settimane: [1, 3],
-            fasi: [["Esplorazione", "fatta"], ["Feedback", "attuale"], ["Nuovi test", "futura"]],
+            testo: "Esplorazione dei simulatori di SkillaCloud per capire come sono costruiti: Flavio, Giulia & co., Davide, Elena & co., Agata e Marina. Poi prove e feedback ogni venerdì, e il documento con i feedback sui simulatori assegnati. Per ora i test sono in stand-by: il server degli strumenti è spento.",
+            stato: "attesa",
+            settimane: [1, 3, 8, 9, 10],
+            fasi: [["Esplorazione", "fatta"], ["Feedback", "fatta"], ["Stand-by", "attuale"], ["Riprendere i test", "futura"]],
             aggiunta: "2026-09-07"
         },
         {
@@ -90,11 +90,29 @@
         {
             titolo: "Il Diario di Stage",
             breve: "Il sito di questo diario, il mio progetto finale.",
-            testo: "Il sito del diario di stage, il progetto finale: i mondi dei falò, la forgia del progetto e la scheda del personaggio.",
+            testo: "L'elaborato finale: il sito del diario di stage, con i mondi dei falò, la forgia del progetto e la scheda del personaggio. Il 23, 24 e 25 novembre ho tre pomeriggi dedicati, poi la rifinitura e la presentazione.",
             stato: "corso",
-            settimane: [5, 6],
-            fasi: [["Mondo 1", "fatta"], ["Mondo 2", "fatta"], ["Mondo 3", "attuale"], ["Mondo 4", "futura"]],
+            settimane: [5, 6, 10],
+            fasi: [["Il sito", "attuale"], ["Rifinitura", "futura"], ["Presentazione", "futura"], ["Modifiche", "futura"]],
             aggiunta: "2026-10-05"
+        },
+        {
+            titolo: "Progetti 2027",
+            breve: "Le idee per i progetti del 2027, presentate alla call.",
+            testo: "Ho pensato le idee per i progetti del 2027: tre per il team e una mia personale. Le ho presentate alla call del team, dove sono stato invitato a partecipare.",
+            stato: "completata",
+            settimane: [10],
+            fasi: [["Idee", "fatta"], ["Call", "fatta"]],
+            aggiunta: "2026-11-11"
+        },
+        {
+            titolo: "Video di Flora",
+            breve: "Lo storyboard del video di Flora, in attesa di feedback.",
+            testo: "Ho testato Flora e capito come introdurla, poi ho scritto e consegnato lo storyboard del video: c'è solo l'immagine del personaggio, nessun altro input grafico. Ora aspetto i feedback.",
+            stato: "attesa",
+            settimane: [10],
+            fasi: [["Test di Flora", "fatta"], ["Storyboard", "fatta"], ["Feedback", "attuale"]],
+            aggiunta: "2026-11-12"
         }
     ];
 
@@ -147,8 +165,10 @@
         return ordinate.filter(function (m) { return chiave === "tutte" || m.stato === chiave; }).length;
     }
 
-    function chips(m) {
-        return m.settimane.map(function (w) {
+    // Nel cartellino ci stanno le ultime 4 settimane; nel dettaglio tutte
+    function chips(m, massimo) {
+        const elenco = massimo ? m.settimane.slice(-massimo) : m.settimane;
+        return elenco.map(function (w) {
             const aperta = !stage || stage.state(w) !== "locked";
             const nome = '<span class="pre">LV </span>' + String(w).padStart(2, "0");
             return aperta
@@ -180,7 +200,7 @@
                 + '<button type="button" class="mis-open" aria-label="' + esc(m.titolo + ", " + stato.nome + ". Apri il dettaglio") + '"></button>'
                 + '<div class="mis-text' + (m.titolo.length > 19 ? " is-long" : "") + '"><h3>' + esc(m.titolo) + "</h3><p>" + esc(m.breve) + "</p></div>"
                 + puntini(m)
-                + '<div class="mis-chips">' + chips(m) + "</div>"
+                + '<div class="mis-chips">' + chips(m, 4) + "</div>"
                 + '<img class="mis-state mis-state-' + stato.icona + '" src="immagini/lav-' + stato.icona + '.webp" alt="' + stato.nome + '">'
                 + (nuova(m) ? '<span class="mis-new">Nuova</span>' : "")
                 + "</article>";
