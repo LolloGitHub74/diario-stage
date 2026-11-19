@@ -5136,9 +5136,9 @@ body[data-screen="personaggio"] main {
 
 .mis-text {
     position: absolute;
-    left: calc(16 * var(--u));
-    right: calc(30 * var(--u));
-    top: calc(24 * var(--u));
+    left: calc(26 * var(--u));
+    right: calc(42 * var(--u));
+    top: calc(27 * var(--u));
     bottom: calc(40 * var(--u));
     overflow: hidden;
     pointer-events: none;
@@ -5146,7 +5146,7 @@ body[data-screen="personaggio"] main {
 
 .mis-window .mis-text h3 {
     margin: 0;
-    font-size: calc(17 * var(--u));
+    font-size: calc(14.5 * var(--u));
     font-weight: 400;
     line-height: 0.95;
     color: #2a1608;
@@ -5159,7 +5159,7 @@ body[data-screen="personaggio"] main {
     line-clamp: 2;
     overflow: hidden;
     margin: calc(3 * var(--u)) 0 0;
-    font-size: calc(13 * var(--u));
+    font-size: calc(11.5 * var(--u));
     line-height: 1;
     color: #5a3a1c;
 }
@@ -5499,10 +5499,10 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
 
     .mis-card { min-height: 150px; transform: rotate(calc(var(--rot) * 0.5)); }
     .mis-card:hover { transform: rotate(calc(var(--rot) * 0.5)); }
-    .mis-text { left: 30px; right: 56px; top: 34px; bottom: 56px; overflow: visible; }
+    .mis-text { left: 36px; right: 64px; top: 36px; bottom: 56px; overflow: visible; }
     .mis-text p, .mis-text.is-long p { -webkit-line-clamp: 3; line-clamp: 3; }
-    .mis-window .mis-text h3 { font-size: 24px; }
-    .mis-text p { font-size: 18px; margin-top: 4px; line-height: 1.05; }
+    .mis-window .mis-text h3 { font-size: 22px; }
+    .mis-text p { font-size: 16px; margin-top: 4px; line-height: 1.05; }
     .mis-dots { left: 36px; right: 58px; bottom: 38px; height: 16px; }
     .mis-dots i { width: 13px; height: 13px; border-width: 2px; }
     .mis-dots i.is-attuale { width: 18px; height: 18px; }

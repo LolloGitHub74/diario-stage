@@ -35,7 +35,7 @@
         },
         {
             titolo: "Newsletter",
-            breve: "Una newsletter di team: studio dei format e prima bozza.",
+            breve: "Una newsletter di team: format, mockup e test su Viva Agent.",
             testo: "La newsletter del team, con Martina e Ari: studio di canali e format, mockup e documento con le note, test sull'ambiente Viva Agent e call sulla direzione finale. Ora preparo la prossima call.",
             stato: "corso",
             settimane: [8, 9, 10],
