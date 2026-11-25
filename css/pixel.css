@@ -4501,9 +4501,13 @@ body[data-screen="viaggio"] main {
     content: "";
     position: absolute;
     inset: 0;
-    background: url("../immagini/scheda-sfondo.webp") 50% 55% / cover no-repeat;
-    filter: blur(8px) brightness(0.9);
-    transform: scale(1.06);
+    background: url("../immagini/scheda-sfondo.webp") 50% 62% / cover no-repeat;
+}
+
+/* Su computer la scheda sta ferma: niente scorrimento */
+body[data-screen="personaggio"] {
+    overflow: hidden;
+    overscroll-behavior: none;
 }
 
 body[data-screen="personaggio"] main {
@@ -4514,9 +4518,9 @@ body[data-screen="personaggio"] main {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: min(100vw, calc(100vh * 2));
-    width: min(100vw, calc(100svh * 2));
-    aspect-ratio: 2 / 1;
+    width: min(100vw, calc(100vh * 16 / 9));
+    width: min(100vw, calc(100svh * 16 / 9));
+    aspect-ratio: 16 / 9;
     transform: translate(-50%, -50%);
     container-type: inline-size;
 }
@@ -4525,10 +4529,6 @@ body[data-screen="personaggio"] main {
     position: absolute;
     inset: 0;
     --k: calc(100cqw / 1774);
-    /* Lo sfondo nitido sta dentro la scena, nella stessa scala del cavaliere:
-       così la base poggia sempre sul terreno, qualunque sia lo schermo.
-       Lo strato sfocato dietro riempie solo i bordi. */
-    background: url("../immagini/scheda-sfondo.webp") 0 0 / 100% 100% no-repeat;
     font-family: var(--font);
     color: var(--cream);
     image-rendering: pixelated;
@@ -4547,10 +4547,10 @@ body[data-screen="personaggio"] main {
    L'ombra sotto i piedi è disegnata dentro l'animazione, a tempo con i passi */
 .char-hero {
     position: absolute;
-    left: 8.17%;
-    top: 14.15%;
-    height: 77.47%;
-    aspect-ratio: 432 / 687;
+    left: 7.44%;
+    top: 15.23%;
+    height: 73.35%;
+    aspect-ratio: 460 / 732;
 }
 
 .char-board .char-hero img {
@@ -5038,6 +5038,12 @@ body[data-screen="personaggio"] main {
     .char-title { flex: 0 0 100%; }
 
     .char-stat { flex: 0 0 calc(50% - 8px); }
+
+    /* Sul telefono la pagina scorre come al solito */
+    body[data-screen="personaggio"] {
+        overflow: auto;
+        overscroll-behavior: auto;
+    }
 
     /* Sul telefono i dati restano scritti dal sito, leggibili, e la pergamena sparisce */
     .character .char-info { display: none; }
