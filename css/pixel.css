@@ -4236,8 +4236,12 @@ body[data-screen="viaggio"] main {
     align-items: center;
     gap: calc(24 * var(--u));
     overflow-y: auto;
+    scrollbar-width: none;
     color: #3a2210;
 }
+
+/* Niente barra di scorrimento del browser sulla pergamena: il testo ci sta */
+.sim-detail::-webkit-scrollbar { display: none; }
 
 .sim-detail[hidden] { display: none; }
 
@@ -4248,7 +4252,7 @@ body[data-screen="viaggio"] main {
 
 .sim-window .sim-detail h4 {
     margin: 0;
-    font-size: calc(42 * var(--u));
+    font-size: calc(39 * var(--u));
     font-weight: 400;
     line-height: 1;
     text-transform: uppercase;
@@ -4264,8 +4268,8 @@ body[data-screen="viaggio"] main {
 .sim-window .sim-detail p {
     max-width: none;
     margin: calc(4 * var(--u)) 0 0;
-    font-size: calc(32 * var(--u));
-    line-height: 1.08;
+    font-size: calc(29 * var(--u));
+    line-height: 1.06;
     color: #3a2210;
 }
 
