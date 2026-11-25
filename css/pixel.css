@@ -4502,6 +4502,8 @@ body[data-screen="viaggio"] main {
     position: absolute;
     inset: 0;
     background: url("../immagini/scheda-sfondo.webp") 50% 55% / cover no-repeat;
+    filter: blur(8px) brightness(0.9);
+    transform: scale(1.06);
 }
 
 body[data-screen="personaggio"] main {
@@ -4523,6 +4525,10 @@ body[data-screen="personaggio"] main {
     position: absolute;
     inset: 0;
     --k: calc(100cqw / 1774);
+    /* Lo sfondo nitido sta dentro la scena, nella stessa scala del cavaliere:
+       così la base poggia sempre sul terreno, qualunque sia lo schermo.
+       Lo strato sfocato dietro riempie solo i bordi. */
+    background: url("../immagini/scheda-sfondo.webp") 0 0 / 100% 100% no-repeat;
     font-family: var(--font);
     color: var(--cream);
     image-rendering: pixelated;
@@ -4541,10 +4547,10 @@ body[data-screen="personaggio"] main {
    L'ombra sotto i piedi è disegnata dentro l'animazione, a tempo con i passi */
 .char-hero {
     position: absolute;
-    left: 10.1%;
-    top: 19.5%;
-    height: 72.5%;
-    aspect-ratio: 478 / 630;
+    left: 9.32%;
+    top: 23%;
+    height: 72.6%;
+    aspect-ratio: 495 / 644;
 }
 
 .char-board .char-hero img {
@@ -4554,7 +4560,7 @@ body[data-screen="personaggio"] main {
 .char-hero .char-base {
     position: absolute;
     left: 0;
-    top: 75.9%;
+    top: 75.7%;
     width: 100%;
     height: auto;
     display: block;
@@ -4562,9 +4568,9 @@ body[data-screen="personaggio"] main {
 
 .char-hero .char-knight {
     position: absolute;
-    left: 16.5%;
+    left: 16.9%;
     top: 0;
-    width: 65.3%;
+    width: 64.2%;
     display: block;
 }
 
