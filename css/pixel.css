@@ -4593,6 +4593,24 @@ body[data-screen="personaggio"] main {
     image-rendering: pixelated;
 }
 
+/* La pergamena con le informazioni (già scritte nell'immagine).
+   Sul computer prende il posto della card blu con i dati */
+.char-board .char-info {
+    height: auto;
+    image-rendering: auto;
+}
+
+.character .char-card,
+.character .char-name,
+.character .char-data { display: none; }
+
+/* Contatori e barra del viaggio, ridotti per stare sotto la pergamena */
+.char-stat,
+.char-progress {
+    transform-origin: 0 0;
+    transform: scale(var(--s, 1));
+}
+
 /* Il rettangolo blu scuro che raccoglie i pezzi */
 .char-title {
     position: absolute;
@@ -5020,6 +5038,13 @@ body[data-screen="personaggio"] main {
     .char-title { flex: 0 0 100%; }
 
     .char-stat { flex: 0 0 calc(50% - 8px); }
+
+    /* Sul telefono i dati restano scritti dal sito, leggibili, e la pergamena sparisce */
+    .character .char-info { display: none; }
+    .character .char-name { display: grid; }
+    .character .char-data { display: block; }
+    .char-stat,
+    .char-progress { transform: none; }
 }
 
 
