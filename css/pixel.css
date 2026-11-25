@@ -4835,7 +4835,7 @@ body[data-screen="personaggio"] main {
 }
 
 /* Telefono e schermi bassi: niente scena fissa, una colonna da scorrere */
-@media (max-width: 700px), (max-height: 560px), (orientation: portrait) and (max-width: 1100px) {
+@media (max-width: 700px), (max-height: 400px), (orientation: portrait) and (max-width: 1100px) {
     .character.char-scene {
         height: auto;
         min-height: 100vh;
@@ -5017,7 +5017,7 @@ body[data-screen="personaggio"] main {
 }
 
 /* Le statistiche stanno in due colonne: il contenitore le affianca */
-@media (max-width: 700px), (max-height: 560px), (orientation: portrait) and (max-width: 1100px) {
+@media (max-width: 700px), (max-height: 400px), (orientation: portrait) and (max-width: 1100px) {
     .char-board {
         flex-flow: row wrap;
         align-items: flex-start;
