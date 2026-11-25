@@ -4547,10 +4547,10 @@ body[data-screen="personaggio"] main {
    L'ombra sotto i piedi è disegnata dentro l'animazione, a tempo con i passi */
 .char-hero {
     position: absolute;
-    left: 9.32%;
-    top: 23%;
-    height: 72.6%;
-    aspect-ratio: 495 / 644;
+    left: 8.17%;
+    top: 14.15%;
+    height: 77.47%;
+    aspect-ratio: 432 / 687;
 }
 
 .char-board .char-hero img {
@@ -4560,7 +4560,7 @@ body[data-screen="personaggio"] main {
 .char-hero .char-base {
     position: absolute;
     left: 0;
-    top: 75.7%;
+    top: 80%;
     width: 100%;
     height: auto;
     display: block;
@@ -4568,9 +4568,9 @@ body[data-screen="personaggio"] main {
 
 .char-hero .char-knight {
     position: absolute;
-    left: 16.9%;
+    left: 8.9%;
     top: 0;
-    width: 64.2%;
+    width: 80.1%;
     display: block;
 }
 
@@ -4872,7 +4872,7 @@ body[data-screen="personaggio"] main {
     .char-hero {
         left: 50%;
         top: 33px;
-        height: 280px;
+        height: 285px;
         transform: translateX(-50%);
         z-index: 2;
     }
