@@ -4547,10 +4547,10 @@ body[data-screen="personaggio"] main {
    L'ombra sotto i piedi è disegnata dentro l'animazione, a tempo con i passi */
 .char-hero {
     position: absolute;
-    left: 7.44%;
-    top: 15.23%;
-    height: 73.35%;
-    aspect-ratio: 460 / 732;
+    left: 6.9%;
+    top: 9.42%;
+    height: 81.96%;
+    aspect-ratio: 515 / 818;
 }
 
 .char-board .char-hero img {
