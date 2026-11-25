@@ -4501,7 +4501,7 @@ body[data-screen="viaggio"] main {
     content: "";
     position: absolute;
     inset: 0;
-    background: url("../immagini/scheda-sfondo.webp") 28% 40% / cover no-repeat;
+    background: url("../immagini/scheda-sfondo.webp") 50% 55% / cover no-repeat;
 }
 
 body[data-screen="personaggio"] main {
@@ -4535,6 +4535,43 @@ body[data-screen="personaggio"] main {
     width: 100%;
     height: 100%;
     image-rendering: pixelated;
+}
+
+/* Il cavaliere che cammina sul posto sopra la base di pietra.
+   L'ombra sotto i piedi è disegnata dentro l'animazione, a tempo con i passi */
+.char-hero {
+    position: absolute;
+    left: 10.1%;
+    top: 19.5%;
+    height: 72.5%;
+    aspect-ratio: 478 / 630;
+}
+
+.char-board .char-hero img {
+    image-rendering: auto;
+}
+
+.char-hero .char-base {
+    position: absolute;
+    left: 0;
+    top: 75.9%;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.char-hero .char-knight {
+    position: absolute;
+    left: 16.5%;
+    top: 0;
+    width: 65.3%;
+    display: block;
+}
+
+.char-hero .char-knight img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .char-el {
@@ -4825,12 +4862,21 @@ body[data-screen="personaggio"] main {
 
     .char-card { display: none; }
 
+    /* Sul telefono il cavaliere sta sopra la testata, al centro */
+    .char-hero {
+        left: 50%;
+        top: 33px;
+        height: 280px;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+
     /* Sul telefono lo sfondo diventa una testata col cavaliere */
     .char-art {
         display: block;
         height: 300px;
         object-fit: cover;
-        object-position: 10% center;
+        object-position: 50% 62%;
         border: 3px solid #d89a2c;
         border-radius: 12px;
         box-shadow: 0 0 0 3px #1a0d05;
