@@ -6000,22 +6000,229 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     .lib-nav-next { right: 18px; }
 }
 
-/* Inventario: la X sta fuori dalla finestra, a destra */
-#panel-strumenti {
+/* =========================================================
+   INVENTARIO: la bacheca delle armi, una per ogni strumento
+   --u = 1 px dell'immagine della lavagna (1766 px)
+   ========================================================= */
+
+.panel.inv-window {
+    --w: min(1100px, 86vw, calc(92vh * 1766 / 824));
+    --u: calc(var(--w) / 1766);
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: var(--w);
+    height: calc(var(--u) * 824);
+    max-width: none;
+    max-height: none;
+    padding: 0;
     overflow: visible;
-    width: min(860px, calc(100% - 150px));
+    font-family: var(--font);
+    color: #3a2210;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    image-rendering: pixelated;
 }
 
-#panel-strumenti > .panel-close {
+.inv-window:focus { outline: none; }
+
+.inv-lavagna {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 calc(8 * var(--u)) 0 rgba(0, 0, 0, 0.5));
+}
+
+/* Il titolo sta sulla targa dell'immagine */
+.inv-targa {
+    position: absolute;
+    left: calc(575 * var(--u));
+    top: calc(24 * var(--u));
+    width: calc(618 * var(--u));
+    height: calc(76 * var(--u));
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding-bottom: calc(4 * var(--u));
+    font-size: calc(54 * var(--u));
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #ffe9b0;
+    text-shadow: 0 calc(4 * var(--u)) 0 #3a1708;
+    pointer-events: none;
+}
+
+/* Le armi: si alzano e brillano al passaggio del mouse */
+.inv-arma {
+    position: absolute;
+    left: calc(var(--x) * var(--u));
+    top: calc(var(--y) * var(--u));
+    width: calc(var(--w) * var(--u));
+    height: calc(var(--h) * var(--u));
+    z-index: 1;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    transition: transform 0.12s steps(2), filter 0.12s steps(2);
+}
+
+.inv-arma img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.inv-arma:hover,
+.inv-arma:focus-visible,
+.inv-arma.is-selected {
+    transform: translateY(calc(-7 * var(--u)));
+    filter: drop-shadow(0 0 calc(5 * var(--u)) #fff0b0) drop-shadow(0 0 calc(14 * var(--u)) rgba(255, 190, 70, 0.85));
+    outline: none;
+}
+
+/* Il nome sulla targhetta sopra l'arma */
+.inv-etichetta {
+    position: absolute;
+    left: calc(var(--x) * var(--u));
+    top: calc(var(--y) * var(--u));
+    width: calc(var(--w) * var(--u));
+    height: calc(var(--h) * var(--u));
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    padding-bottom: calc(2 * var(--u));
+    overflow: hidden;
+    font-size: calc(27 * var(--u));
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #ffe9b0;
+    text-shadow: 0 calc(2 * var(--u)) 0 #3a1708;
+    cursor: pointer;
+}
+
+.inv-etichetta.is-selected { color: #fff6c8; text-shadow: 0 0 calc(6 * var(--u)) #ffb83a, 0 calc(2 * var(--u)) 0 #3a1708; }
+
+/* La pergamena in basso */
+.inv-testo {
+    position: absolute;
+    left: calc(255 * var(--u));
+    top: calc(626 * var(--u));
+    width: calc(1256 * var(--u));
+    height: calc(104 * var(--u));
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(4 * var(--u));
+    text-align: center;
+    pointer-events: none;
+}
+
+.inv-testo strong {
+    font-size: calc(42 * var(--u));
+    font-weight: 400;
+    line-height: 1;
+    color: #2a1608;
+}
+
+.inv-testo span {
+    font-size: calc(32 * var(--u));
+    line-height: 1.05;
+    color: #4a2a10;
+}
+
+.inv-lista { display: none; }
+
+.inv-close {
     position: absolute;
     left: calc(100% + 12px);
-    top: 0;
-    z-index: 3;
-    background: var(--panel-solid);
+    top: calc(-12 * var(--u));
+    z-index: 4;
+    width: clamp(40px, calc(81 * var(--u)), 62px);
+    aspect-ratio: 78 / 72;
+    padding: 0;
+    cursor: pointer;
+    background: url("../immagini/lav-chiudi.webp") 0 0 / 100% 100% no-repeat;
+    border: 0;
 }
 
-@media (max-width: 700px) {
-    #panel-strumenti { width: min(860px, calc(100% - 32px)); }
-    #panel-strumenti > .panel-close { left: auto; right: 10px; top: 10px; }
-    #panel-strumenti .panel-head { padding-right: 56px; }
+.inv-close:hover { filter: brightness(1.18); }
+
+@media (prefers-reduced-motion: reduce) {
+    .inv-arma { transition: none; }
+}
+
+/* Telefono e schermi bassi: finestra a tutto schermo, armi in elenco */
+@media (max-width: 700px), (max-height: 520px) {
+    .panel.inv-window {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        margin: 0;
+        background: #2a140c url("../immagini/lav-legno.webp") 0 0 / 100% 100% no-repeat;
+        border: 14px solid transparent;
+        border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
+    }
+
+    .inv-lavagna, .inv-arma, .inv-etichetta, .inv-testo { display: none; }
+
+    .inv-targa {
+        left: 50%;
+        top: -8px;
+        width: min(64vw, 260px);
+        height: 52px;
+        padding-bottom: 4px;
+        font-size: 25px;
+        transform: translateX(-50%);
+        background: url("../immagini/lav-targa.webp") 0 0 / 100% 100% no-repeat;
+        text-shadow: none;
+        color: #ffe9b0;
+    }
+
+    .inv-close { left: auto; top: -6px; right: -4px; width: 44px; }
+
+    .inv-lista {
+        position: absolute;
+        left: 0;
+        top: 50px;
+        width: 100%;
+        height: calc(100% - 50px);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0;
+        padding: 10px 8px 24px;
+        list-style: none;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .inv-lista li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 8px 12px 8px 8px;
+        color: #fff3d0;
+        background: rgba(12, 5, 2, 0.45);
+        border: 2px solid #6a3a14;
+        border-radius: 6px;
+    }
+
+    .inv-lista img { width: 96px; height: auto; flex: none; }
+    .inv-lista strong { display: block; font-size: 25px; font-weight: 400; line-height: 1.05; color: #ffd36a; }
+    .inv-lista span { display: block; font-size: 20px; line-height: 1.05; }
 }
