@@ -4,7 +4,7 @@
 // un tonfo corto e basso con un soffio di rumore filtrato, senza acuti.
 // Ci sono quattro varianti a seconda del tipo di pulsante.
 // Il pulsante in alto a destra (in basso nella home) accende e spegne
-// l'audio, e si ricorda la scelta.
+// l'audio (clic e musica), e si ricorda la scelta. La musica è in musica.js.
 //
 //   moneta    solo il tasto START: "tin-din" a onda quadra, la seconda nota più alta
 //   tasto     pulsanti normali: il tac di un tasto
@@ -137,11 +137,16 @@
         }
     };
 
+    // Un solo contesto audio per tutto il sito (anche la musica usa questo)
+    function ottieni() {
+        if (!ctx) ctx = nuovoContesto();
+        if (ctx && ctx.state === "suspended" && ctx.resume) ctx.resume();
+        return ctx;
+    }
+
     function suona(tipo) {
         if (muto) return;
-        if (!ctx) ctx = nuovoContesto();
-        if (!ctx) return;
-        if (ctx.state === "suspended" && ctx.resume) ctx.resume();
+        if (!ottieni()) return;
         (VOCI[tipo] || VOCI.tasto)(ctx, ctx.currentTime + 0.005);
     }
 
@@ -176,10 +181,11 @@
             muto = !muto;
             try { localStorage.setItem(CHIAVE, muto ? "off" : "on"); } catch (e) { /* ignora */ }
             mostra();
+            window.dispatchEvent(new CustomEvent("diario:audio", { detail: { muto: muto } }));
             if (!muto) suona("tasto");
         });
         mostra();
     }
 
-    window.sfx = { play: suona, contesto: function () { return ctx; }, muto: function () { return muto; } };
+    window.sfx = { play: suona, ctx: ottieni, muto: function () { return muto; } };
 })();

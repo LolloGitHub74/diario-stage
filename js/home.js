@@ -18,6 +18,11 @@
         try { sessionStorage.setItem("diario-started", "1"); } catch (error) { /* memoria non disponibile */ }
     }
 
+    // Fa partire la musica: la ascolta musica.js
+    function avviaMusica() {
+        window.dispatchEvent(new Event("diario:musica"));
+    }
+
     function enterWorld() {
         remember();
         root.classList.remove("show-start");
@@ -35,6 +40,7 @@
     function irisTransition() {
         if (reduceMotion || !startScreen.animate || !iris) {
             enterWorld();
+            avviaMusica();
             return;
         }
         iris.classList.add("is-on");
@@ -45,6 +51,7 @@
             enterWorld();
             return new Promise(function (resolve) { setTimeout(resolve, 160); });
         }).then(function () {
+            avviaMusica();   // il secondo cerchio si apre: parte la musica
             return iris.animate([
                 { width: "0vmax", height: "0vmax" },
                 { width: "150vmax", height: "150vmax" }
