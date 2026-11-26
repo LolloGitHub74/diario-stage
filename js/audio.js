@@ -11,6 +11,7 @@
 //   pieno     azioni importanti (menu, falò, armi, libri): più profondo
 //   indietro  chiusure e ritorni: più leggero
 //   lieve     frecce e filtri: brevissimo e quasi sussurrato
+//   passo     i passi del cavaliere (li fa partire passi.js, a tempo con i piedi)
 // =========================================================
 
 (function () {
@@ -109,6 +110,8 @@
         o.stop(t + durata + coda + 0.02);
     }
 
+    let lato = 1;     // passo destro o sinistro
+
     const VOCI = {
         // La moneta: si bemolle 5 (988 Hz), breve, e poi mi 6 (1319 Hz), più lunga
         moneta: function (c, t) {
@@ -129,6 +132,14 @@
             const v = varia();
             tonfo(c, t, 360 * v, 230 * v, 0.06, 0.5);
             soffio(c, t, 1200 * v, 0.9, 2300, 0.45, 0.03);
+        },
+        // Un passo sulla terra: tonfo sordo e un po' di fruscio; destro e sinistro
+        // sono appena diversi, così la camminata non suona a macchinetta
+        passo: function (c, t) {
+            lato = -lato;
+            const v = varia() * (lato > 0 ? 1.06 : 0.94);
+            tonfo(c, t, 240 * v, 120 * v, 0.07, 0.55);
+            soffio(c, t, 850 * v, 0.7, 1700, 0.5, 0.045);
         },
         lieve: function (c, t) {
             const v = varia();

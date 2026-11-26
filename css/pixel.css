@@ -4650,13 +4650,25 @@ body[data-screen="personaggio"] main {
     left: 16.7%;
     top: 0;
     width: 64.9%;
+    aspect-ratio: 312 / 590;
     display: block;
+    /* 14 fotogrammi in una striscia, scorsi a scatti: così il suono dei passi
+       sa sempre a che punto è la camminata */
+    background: url("../immagini/scheda-cavaliere-strip.webp") 0 0 / 1400% 100% no-repeat;
+    animation: char-walk 1.1667s steps(14, jump-none) infinite;
 }
 
-.char-hero .char-knight img {
-    display: block;
-    width: 100%;
-    height: auto;
+@keyframes char-walk {
+    from { background-position: 0% 0; }
+    to   { background-position: 100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .char-hero .char-knight {
+        background-image: url("../immagini/scheda-cavaliere-fermo.webp");
+        background-size: 100% 100%;
+        animation: none;
+    }
 }
 
 .char-el {
