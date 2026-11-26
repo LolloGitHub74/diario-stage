@@ -6,6 +6,7 @@
 // Il pulsante in alto a destra (in basso nella home) accende e spegne
 // l'audio, e si ricorda la scelta.
 //
+//   moneta    solo il tasto START: "tin-din" a onda quadra, la seconda nota più alta
 //   tasto     pulsanti normali: il tac di un tasto
 //   pieno     azioni importanti (menu, falò, armi, libri): più profondo
 //   indietro  chiusure e ritorni: più leggero
@@ -20,6 +21,7 @@
 
     // Che suono fa ogni pulsante (il primo che combacia vince)
     const REGOLE = [
+        ["moneta", ".start-button"],
         ["indietro", "[data-close], .lib-back, .mis-back, .lib-x, .panel-close, .back-menu"],
         ["pieno",  ".menu-item, .world-stop, .forge-spot, .lib-book-btn, .inv-arma, .inv-etichetta, .sim-stage, .mis-open, .lib-lv, .sim-lv, .mis-lv"],
         ["lieve",  ".lib-nav, .world-arrow, .mis-arrow, .mis-filter, .world-dots"]
@@ -91,7 +93,28 @@
         s.start(t);
     }
 
+    // Una nota a onda quadra, come nei giochi 8 bit: attacco netto, poi si spegne
+    function nota(c, t, freq, durata, vol, coda) {
+        const o = c.createOscillator();
+        const g = c.createGain();
+        o.type = "square";
+        o.frequency.setValueAtTime(freq, t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(vol, t + 0.003);
+        g.gain.setValueAtTime(vol, t + durata);                       // la nota tiene...
+        g.gain.exponentialRampToValueAtTime(0.0001, t + durata + coda); // ...poi sfuma
+        o.connect(g);
+        g.connect(c._out);
+        o.start(t);
+        o.stop(t + durata + coda + 0.02);
+    }
+
     const VOCI = {
+        // La moneta: si bemolle 5 (988 Hz), breve, e poi mi 6 (1319 Hz), più lunga
+        moneta: function (c, t) {
+            nota(c, t, 987.77, 0.075, 0.42, 0.01);
+            nota(c, t + 0.085, 1318.51, 0.12, 0.42, 0.34);
+        },
         tasto: function (c, t) {
             const v = varia();
             tonfo(c, t, 420 * v, 210 * v, 0.07, 0.7);
