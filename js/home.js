@@ -14,17 +14,12 @@
 
     // ---------- Schermata START ----------
 
-    function remember() {
-        try { sessionStorage.setItem("diario-started", "1"); } catch (error) { /* memoria non disponibile */ }
-    }
-
     // Fa partire la musica: la ascolta musica.js
     function avviaMusica() {
         window.dispatchEvent(new Event("diario:musica"));
     }
 
     function enterWorld() {
-        remember();
         root.classList.remove("show-start");
         body.classList.add("started");
 

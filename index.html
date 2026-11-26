@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diario di Stage</title>
 
-    <!-- La schermata START compare solo alla prima visita della sessione -->
+    <!-- La schermata START compare ad ogni apertura e ad ogni ricarica della pagina.
+         Si salta solo se si arriva da un link diretto a una schermata o a una
+         settimana (per esempio #livello-10). -->
     <script>
         (function () {
-            var seen = false;
-            try { seen = sessionStorage.getItem("diario-started") === "1"; } catch (error) {}
-            if (!seen && !location.hash) document.documentElement.classList.add("show-start");
+            var nav = null;
+            try { nav = performance.getEntriesByType("navigation")[0]; } catch (error) {}
+            var reload = !!nav && nav.type === "reload";
+            if (reload && location.hash) {
+                // Ricaricando, si riparte dall'inizio: via anche l'indirizzo della schermata
+                try { history.replaceState(null, "", location.pathname + location.search); } catch (error) {}
+            }
+            if (reload || !location.hash) document.documentElement.classList.add("show-start");
 
             // Giorno o notte: la scelta salvata, altrimenti quella del dispositivo
             var theme = null;
@@ -26,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/pixel.css?v=20261128e">
+    <link rel="stylesheet" href="css/pixel.css?v=20261129a">
 </head>
 
 <body class="home">
@@ -1049,20 +1056,20 @@
 
     </main>
 
-    <script src="js/stage.js?v=20261128e"></script>
-    <script src="js/script.js?v=20261128e"></script>
-    <script src="js/scene.js?v=20261128e"></script>
-    <script src="js/home.js?v=20261128e"></script>
-    <script src="js/theme.js?v=20261128e"></script>
-    <script src="js/diario.js?v=20261128e"></script>
-    <script src="js/simulatore.js?v=20261128e"></script>
-    <script src="js/missioni.js?v=20261128e"></script>
-    <script src="js/libreria.js?v=20261128e"></script>
-    <script src="js/inventario.js?v=20261128e"></script>
-    <script src="js/screens.js?v=20261128e"></script>
-    <script src="js/audio.js?v=20261128e"></script>
-    <script src="js/musica.js?v=20261128e"></script>
-    <script src="js/passi.js?v=20261128e"></script>
+    <script src="js/stage.js?v=20261129a"></script>
+    <script src="js/script.js?v=20261129a"></script>
+    <script src="js/scene.js?v=20261129a"></script>
+    <script src="js/home.js?v=20261129a"></script>
+    <script src="js/theme.js?v=20261129a"></script>
+    <script src="js/diario.js?v=20261129a"></script>
+    <script src="js/simulatore.js?v=20261129a"></script>
+    <script src="js/missioni.js?v=20261129a"></script>
+    <script src="js/libreria.js?v=20261129a"></script>
+    <script src="js/inventario.js?v=20261129a"></script>
+    <script src="js/screens.js?v=20261129a"></script>
+    <script src="js/audio.js?v=20261129a"></script>
+    <script src="js/musica.js?v=20261129a"></script>
+    <script src="js/passi.js?v=20261129a"></script>
 
 </body>
 
