@@ -1,26 +1,28 @@
 // =========================================================
 // Effetti sonori, fatti nel codice (Web Audio): nessun file da scaricare.
-// Ogni clic su un pulsante fa un suono metallico; ci sono quattro
-// varianti a seconda del tipo di pulsante. Il pulsante in alto a destra
-// (in basso nella home) accende e spegne l'audio, e si ricorda la scelta.
+// Ogni clic su un pulsante fa un "tac" morbido, come un tasto di tastiera:
+// un tonfo corto e basso con un soffio di rumore filtrato, senza acuti.
+// Ci sono quattro varianti a seconda del tipo di pulsante.
+// Il pulsante in alto a destra (in basso nella home) accende e spegne
+// l'audio, e si ricorda la scelta.
 //
-//   tink  pulsanti normali: "tin" metallico acuto
-//   tonk  azioni importanti (menu, falò, armi, libri): più pieno, da forgia
-//   close chiusure e ritorni: più morbido, scende un poco
-//   tick  frecce e filtri: brevissimo
+//   tasto     pulsanti normali: il tac di un tasto
+//   pieno     azioni importanti (menu, falò, armi, libri): più profondo
+//   indietro  chiusure e ritorni: più leggero
+//   lieve     frecce e filtri: brevissimo e quasi sussurrato
 // =========================================================
 
 (function () {
     "use strict";
 
     const CHIAVE = "diario-audio";
-    const VOLUME = 0.22;
+    const VOLUME = 0.28;
 
     // Che suono fa ogni pulsante (il primo che combacia vince)
     const REGOLE = [
-        ["close", "[data-close], .lib-back, .mis-back, .lib-x, .panel-close, .back-menu"],
-        ["tonk",  ".menu-item, .world-stop, .forge-spot, .lib-book-btn, .inv-arma, .inv-etichetta, .sim-stage, .mis-open, .lib-lv, .sim-lv, .mis-lv"],
-        ["tick",  ".lib-nav, .world-arrow, .mis-arrow, .mis-filter, .world-dots"]
+        ["indietro", "[data-close], .lib-back, .mis-back, .lib-x, .panel-close, .back-menu"],
+        ["pieno",  ".menu-item, .world-stop, .forge-spot, .lib-book-btn, .inv-arma, .inv-etichetta, .sim-stage, .mis-open, .lib-lv, .sim-lv, .mis-lv"],
+        ["lieve",  ".lib-nav, .world-arrow, .mis-arrow, .mis-filter, .world-dots"]
     ];
     const CLICCABILI = "button, a[href], [role='tab'], .forge-spot";
 
@@ -43,64 +45,72 @@
         return c;
     }
 
-    // Una "campana" metallica: parziali non armonici che si spengono a velocità diverse
-    function campana(c, t, base, parziali, durata, scivola) {
-        parziali.forEach(function (p, i) {
-            const o = c.createOscillator();
-            const g = c.createGain();
-            o.type = "sine";
-            const f = base * p[0];
-            o.frequency.setValueAtTime(f, t);
-            if (scivola) o.frequency.exponentialRampToValueAtTime(f * scivola, t + durata * p[2]);
-            g.gain.setValueAtTime(0.0001, t);
-            g.gain.exponentialRampToValueAtTime(p[1], t + 0.002);
-            g.gain.exponentialRampToValueAtTime(0.0001, t + durata * p[2]);
-            o.connect(g);
-            g.connect(c._out);
-            o.start(t);
-            o.stop(t + durata * p[2] + 0.02);
-        });
+    // Piccolo scarto casuale (±5%), così due clic non sono mai identici
+    function varia() { return 1 + (Math.random() - 0.5) * 0.1; }
+
+    // Il tonfo del tasto: un'onda bassa che scende subito di tono e si spegne
+    function tonfo(c, t, da, a, durata, vol) {
+        const o = c.createOscillator();
+        const g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(da, t);
+        o.frequency.exponentialRampToValueAtTime(a, t + durata * 0.7);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(vol, t + 0.004);       // attacco morbido
+        g.gain.exponentialRampToValueAtTime(0.0001, t + durata);
+        o.connect(g);
+        g.connect(c._out);
+        o.start(t);
+        o.stop(t + durata + 0.02);
     }
 
-    // Un colpetto di rumore filtrato: il "clic" dell'attacco
-    function colpo(c, t, freq, vol, durata) {
+    // Il "tac" della plastica: rumore filtrato a banda, che sfuma subito
+    function soffio(c, t, freq, q, taglio, vol, durata) {
         const n = Math.floor(c.sampleRate * durata);
         const buf = c.createBuffer(1, n, c.sampleRate);
         const d = buf.getChannelData(0);
-        for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+        for (let i = 0; i < n; i++) {
+            const k = 1 - i / n;
+            d[i] = (Math.random() * 2 - 1) * k * k;
+        }
         const s = c.createBufferSource();
         s.buffer = buf;
-        const f = c.createBiquadFilter();
-        f.type = "highpass";
-        f.frequency.value = freq;
+        const banda = c.createBiquadFilter();
+        banda.type = "bandpass";
+        banda.frequency.value = freq;
+        banda.Q.value = q;
+        const basso = c.createBiquadFilter();        // niente acuti
+        basso.type = "lowpass";
+        basso.frequency.value = taglio;
         const g = c.createGain();
         g.gain.value = vol;
-        s.connect(f);
-        f.connect(g);
+        s.connect(banda);
+        banda.connect(basso);
+        basso.connect(g);
         g.connect(c._out);
         s.start(t);
     }
 
-    // Ogni volta un poco diverso (±3%), così non stanca
-    function varia() { return 1 + (Math.random() - 0.5) * 0.06; }
-
     const VOCI = {
-        tink: function (c, t) {
-            campana(c, t, 1900 * varia(), [[1, 0.5, 1], [2.76, 0.26, 0.66], [5.4, 0.1, 0.36]], 0.16);
-            colpo(c, t, 3500, 0.14, 0.006);
+        tasto: function (c, t) {
+            const v = varia();
+            tonfo(c, t, 420 * v, 210 * v, 0.07, 0.7);
+            soffio(c, t, 1400 * v, 0.9, 2600, 0.7, 0.035);
         },
-        tonk: function (c, t) {
-            campana(c, t, 640 * varia(), [[1, 0.55, 1], [2.4, 0.3, 0.7], [3.9, 0.14, 0.45], [6.1, 0.06, 0.3]], 0.3);
-            campana(c, t, 160, [[1, 0.5, 0.35]], 0.12, 0.7);
-            colpo(c, t, 2500, 0.12, 0.008);
+        pieno: function (c, t) {
+            const v = varia();
+            tonfo(c, t, 300 * v, 140 * v, 0.11, 0.85);
+            soffio(c, t, 1000 * v, 0.8, 2200, 0.7, 0.05);
         },
-        close: function (c, t) {
-            campana(c, t, 1250 * varia(), [[1, 0.42, 1], [2.76, 0.18, 0.55]], 0.14, 0.9);
-            colpo(c, t, 3000, 0.08, 0.005);
+        indietro: function (c, t) {
+            const v = varia();
+            tonfo(c, t, 360 * v, 230 * v, 0.06, 0.5);
+            soffio(c, t, 1200 * v, 0.9, 2300, 0.45, 0.03);
         },
-        tick: function (c, t) {
-            campana(c, t, 2300 * varia(), [[1, 0.34, 1], [3.1, 0.12, 0.5]], 0.07);
-            colpo(c, t, 4500, 0.1, 0.004);
+        lieve: function (c, t) {
+            const v = varia();
+            tonfo(c, t, 480 * v, 320 * v, 0.04, 0.3);
+            soffio(c, t, 1500 * v, 1, 2500, 0.35, 0.02);
         }
     };
 
@@ -109,14 +119,14 @@
         if (!ctx) ctx = nuovoContesto();
         if (!ctx) return;
         if (ctx.state === "suspended" && ctx.resume) ctx.resume();
-        (VOCI[tipo] || VOCI.tink)(ctx, ctx.currentTime + 0.005);
+        (VOCI[tipo] || VOCI.tasto)(ctx, ctx.currentTime + 0.005);
     }
 
     function tipoDi(el) {
         for (let i = 0; i < REGOLE.length; i++) {
             if (el.closest(REGOLE[i][1])) return REGOLE[i][0];
         }
-        return "tink";
+        return "tasto";
     }
 
     // Un solo ascoltatore per tutto il sito: vale anche per i pulsanti creati dopo
@@ -143,7 +153,7 @@
             muto = !muto;
             try { localStorage.setItem(CHIAVE, muto ? "off" : "on"); } catch (e) { /* ignora */ }
             mostra();
-            if (!muto) suona("tink");
+            if (!muto) suona("tasto");
         });
         mostra();
     }
