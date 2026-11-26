@@ -6398,8 +6398,8 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
 }
 
 /* =========================================================
-   MONDO 4 CHE VIVE: la lava scorre nelle cascate, scintille
-   rosse e zampilli. --p = 1 px dell'immagine (1774 px).
+   MONDO 4 CHE VIVE: la lava scorre nelle cascate e salgono
+   particelle rosse. --p = 1 px dell'immagine (1774 px).
    La lava delle cascate è ritagliata da una maschera ricavata dai
    colori del disegno, quindi la roccia resta ferma
    ========================================================= */
@@ -6441,9 +6441,10 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     position: absolute;
     left: var(--x);
     top: var(--y);
-    width: max(3px, calc(4 * var(--p)));
-    height: max(3px, calc(4 * var(--p)));
-    background: var(--c, #ff5a1e);
+    width: max(3px, calc(var(--s, 4) * var(--p)));
+    height: max(3px, calc(var(--s, 4) * var(--p)));
+    background: var(--c, #ff2a12);
+    box-shadow: 0 0 0 max(1px, calc(1.6 * var(--p))) #4a0805;
     opacity: 0;
     animation: w4-spark var(--d, 3.4s) steps(14) infinite;
     animation-delay: var(--w, 0s);
@@ -6456,48 +6457,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     100% { opacity: 0; transform: translate(var(--sx, 0), calc(-1 * var(--r, 100px))); }
 }
 
-/* Zampilli di lava: gocce che salgono e ricadono in un arco */
-.w4-spurt {
-    position: absolute;
-    width: 0;
-    height: 0;
-}
-
-.w4-drop {
-    position: absolute;
-    left: 0;
-    top: 0;
-    animation: w4-dx var(--d, 3.4s) linear infinite;
-    animation-delay: var(--w, 0s);
-}
-
-.w4-drop b {
-    display: block;
-    width: max(3px, calc(5 * var(--p)));
-    height: max(3px, calc(5 * var(--p)));
-    background: #fff2a8;
-    box-shadow: 0 0 0 max(1px, calc(2 * var(--p))) #a8200a;
-    opacity: 0;
-    animation: w4-dy var(--d, 3.4s) infinite;
-    animation-delay: var(--w, 0s);
-}
-
-@keyframes w4-dx {
-    0%, 5% { transform: translateX(0); }
-    52%    { transform: translateX(calc(var(--dx) * var(--p))); }
-    100%   { transform: translateX(calc(var(--dx) * var(--p))); }
-}
-
-@keyframes w4-dy {
-    0%   { opacity: 0; transform: translateY(0); animation-timing-function: step-end; }
-    5%   { opacity: 1; transform: translateY(0); animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1); }
-    28%  { opacity: 1; transform: translateY(calc(var(--h) * var(--p) * -1)); animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4); }
-    52%  { opacity: 1; transform: translateY(calc(var(--p) * 4)); }
-    54%  { opacity: 0; transform: translateY(calc(var(--p) * 4)); }
-    100% { opacity: 0; transform: translateY(0); }
-}
-
 @media (prefers-reduced-motion: reduce) {
     .w4-fall::before { animation: none; }
-    .w4-spark, .w4-spurt { display: none; }
+    .w4-spark { display: none; }
 }
