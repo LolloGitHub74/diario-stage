@@ -201,7 +201,7 @@
                 + '<div class="mis-text' + (m.titolo.length > 19 ? " is-long" : "") + '"><h3>' + esc(m.titolo) + "</h3><p>" + esc(m.breve) + "</p></div>"
                 + puntini(m)
                 + '<div class="mis-chips">' + chips(m, 4) + "</div>"
-                + '<img class="mis-state mis-state-' + stato.icona + '" src="immagini/lav-' + stato.icona + '.webp" alt="' + stato.nome + '">'
+                + '<img loading="lazy" class="mis-state mis-state-' + stato.icona + '" src="immagini/lav-' + stato.icona + '.webp" alt="' + stato.nome + '">'
                 + (nuova(m) ? '<span class="mis-new">Nuova</span>' : "")
                 + "</article>";
         }).join("");
@@ -217,7 +217,7 @@
         const stato = STATI[m.stato];
         detail.innerHTML = '<div class="mis-sheet">'
             + '<button type="button" class="mis-back">‹ Indietro</button>'
-            + '<img class="mis-state mis-state-' + stato.icona + '" src="immagini/lav-' + stato.icona + '.webp" alt="">'
+            + '<img loading="lazy" class="mis-state mis-state-' + stato.icona + '" src="immagini/lav-' + stato.icona + '.webp" alt="">'
             + "<h3>" + esc(m.titolo) + " <em>· " + stato.nome.toLowerCase() + "</em></h3>"
             + "<p>" + esc(m.testo) + "</p>"
             + '<ol class="mis-steps">' + m.fasi.map(function (f) {

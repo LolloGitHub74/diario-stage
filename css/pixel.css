@@ -25,15 +25,18 @@
     --font: "VT323", "Courier New", monospace;
 }
 
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
+
 
 body {
     font-family: var(--font);
@@ -44,18 +47,22 @@ body {
     -webkit-font-smoothing: none;
 }
 
+
 img {
     max-width: 100%;
     display: block;
 }
 
+
 a {
     color: inherit;
 }
 
+
 button {
     font: inherit;
 }
+
 
 :focus-visible {
     outline: 3px solid var(--gold);
@@ -71,10 +78,12 @@ button {
     display: none;
 }
 
+
 /* Visibile solo alla prima visita (vedi lo script nell'head) */
 html.show-start {
     overflow: hidden;
 }
+
 
 html.show-start .start-screen {
     position: fixed;
@@ -92,6 +101,7 @@ html.show-start .start-screen {
     --sw: min(720px, 88vw, 76vh);
 }
 
+
 .start-box {
     display: flex;
     flex-direction: column;
@@ -99,11 +109,13 @@ html.show-start .start-screen {
     text-align: center;
 }
 
+
 .start-kicker {
     font-size: calc(var(--sw) * 0.04);
     letter-spacing: 0.32em;
     color: var(--gold);
 }
+
 
 .start-divider {
     display: block;
@@ -113,9 +125,11 @@ html.show-start .start-screen {
     image-rendering: pixelated;
 }
 
+
 .start-title {
     margin: calc(var(--sw) * 0.02) 0 calc(var(--sw) * 0.03);
 }
+
 
 /* Titolo disegnato, con una striscia di luce che lo attraversa
    come su una targa di metallo */
@@ -125,12 +139,14 @@ html.show-start .start-screen {
     width: var(--sw);
 }
 
+
 .start-title-art img {
     display: block;
     width: 100%;
     height: auto;
     image-rendering: pixelated;
 }
+
 
 .start-title-art::after {
     content: "";
@@ -156,11 +172,13 @@ html.show-start .start-screen {
     animation: title-shine 3.6s linear 0.6s infinite;
 }
 
+
 @keyframes title-shine {
     0%   { background-position: 100% 0; }
     40%  { background-position: 0% 0; }
     100% { background-position: 0% 0; }
 }
+
 
 .start-sub,
 .start-hint {
@@ -169,10 +187,12 @@ html.show-start .start-screen {
     gap: 0.9em;
 }
 
+
 .start-sub {
     font-size: calc(var(--sw) * 0.042);
     color: #aeb6e6;
 }
+
 
 .start-sub::before,
 .start-sub::after {
@@ -181,6 +201,7 @@ html.show-start .start-screen {
     height: 2px;
     background: var(--gold-dark);
 }
+
 
 .start-button {
     margin-top: calc(var(--sw) * 0.075);
@@ -194,6 +215,7 @@ html.show-start .start-screen {
     transition: transform 0.1s steps(2), filter 0.1s steps(2);
 }
 
+
 .start-button img {
     display: block;
     width: 100%;
@@ -201,20 +223,24 @@ html.show-start .start-screen {
     image-rendering: pixelated;
 }
 
+
 .start-button:hover {
     filter: brightness(1.12) drop-shadow(0 0 calc(var(--sw) * 0.02) rgba(255, 207, 74, 0.45));
 }
+
 
 .start-button:focus-visible {
     outline: none;
     filter: brightness(1.12) drop-shadow(0 0 calc(var(--sw) * 0.02) rgba(255, 207, 74, 0.45));
 }
 
+
 .start-button.is-pressed {
     animation: none;
     transform: scale(0.95);
     filter: brightness(1.25);
 }
+
 
 /* Un solo piccolo salto ogni 2 secondi */
 @keyframes start-pulse {
@@ -223,12 +249,14 @@ html.show-start .start-screen {
     95% { transform: translateY(0); }
 }
 
+
 .start-hint {
     margin-top: calc(var(--sw) * 0.045);
     font-size: calc(var(--sw) * 0.036);
     letter-spacing: 0.12em;
     color: #8f97c9;
 }
+
 
 .start-hint::before,
 .start-hint::after {
@@ -238,9 +266,11 @@ html.show-start .start-screen {
     background: #4b547f;
 }
 
+
 @keyframes blink {
     50% { opacity: 0; }
 }
+
 
 /* Cerchio nero: chiude la schermata START e si riapre sulla home */
 .iris {
@@ -256,6 +286,7 @@ html.show-start .start-screen {
     box-shadow: 0 0 0 200vmax #000;
     pointer-events: none;
 }
+
 
 .iris.is-on {
     display: block;
@@ -275,6 +306,7 @@ html.show-start .start-screen {
     background: linear-gradient(#132858, #1d2c63);
 }
 
+
 /* Illustrazione del falò: dimensione e posizione le calcola scene.js */
 .scene {
     position: absolute;
@@ -283,6 +315,7 @@ html.show-start .start-screen {
     overflow: hidden;
 }
 
+
 .scene-art {
     display: block;
     width: 100%;
@@ -290,6 +323,7 @@ html.show-start .start-screen {
     max-width: none;
     image-rendering: pixelated;
 }
+
 
 /* Velo scuro in alto: le scritte restano leggibili sopra il cielo */
 .world::after {
@@ -314,8 +348,10 @@ html.show-start .start-screen {
     --u: min(calc(100vw / 1536), calc(100svh / 1100));
 }
 
+
 /* Schermi verticali (telefoni): riferimento 430 × 860 */
 @media (max-aspect-ratio: 1/1) {
+
     :root {
         --u: min(calc(100vw / 430), calc(100vh / 860));
         --u: min(calc(100vw / 430), calc(100svh / 860));
@@ -342,6 +378,7 @@ html.show-start .start-screen {
     gap: calc(var(--u) * 20);
 }
 
+
 .logo {
     display: flex;
     align-items: center;
@@ -349,12 +386,14 @@ html.show-start .start-screen {
     text-decoration: none;
 }
 
+
 .logo-mark {
     position: relative;
     width: calc(var(--u) * 98);
     height: calc(var(--u) * 42);
     background: var(--blue) url("../immagini/logo-skilla.png") center / cover no-repeat;
 }
+
 
 /* Filo verticale tra il logo e il nome del sito */
 .logo-mark::after {
@@ -367,6 +406,7 @@ html.show-start .start-screen {
     background: rgba(220, 222, 245, 0.45);
 }
 
+
 .logo-copy {
     white-space: nowrap;
     font-size: calc(var(--u) * 32);
@@ -374,10 +414,12 @@ html.show-start .start-screen {
     text-shadow: calc(var(--u) * 2) calc(var(--u) * 2) 0 var(--ink);
 }
 
+
 .navigation {
     display: flex;
     gap: calc(var(--u) * 50);
 }
+
 
 .navigation a {
     position: relative;
@@ -387,6 +429,7 @@ html.show-start .start-screen {
     color: #dfe1f5;
     text-shadow: calc(var(--u) * 2) calc(var(--u) * 2) 0 var(--ink);
 }
+
 
 /* Linea dorata sotto la voce attiva */
 .navigation a::after {
@@ -400,17 +443,21 @@ html.show-start .start-screen {
     transform: scaleX(0);
 }
 
+
 .navigation a:hover {
     color: var(--cream);
 }
+
 
 .navigation a.active {
     color: var(--gold);
 }
 
+
 .navigation a.active::after {
     transform: scaleX(1);
 }
+
 
 /* Hamburger, visibile solo sugli schermi verticali */
 .menu-toggle {
@@ -426,6 +473,7 @@ html.show-start .start-screen {
     cursor: pointer;
 }
 
+
 .menu-toggle span,
 .menu-toggle span::before,
 .menu-toggle span::after {
@@ -436,17 +484,23 @@ html.show-start .start-screen {
     position: relative;
 }
 
+
 .menu-toggle span::before,
 .menu-toggle span::after {
     content: "";
     position: absolute;
 }
 
+
 .menu-toggle span::before { top: calc(var(--u) * -7); }
+
 .menu-toggle span::after { top: calc(var(--u) * 7); }
 
+
 .menu-toggle.active span { background: transparent; }
+
 .menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
+
 .menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
 
 
@@ -457,9 +511,6 @@ html.show-start .start-screen {
     display: none;
 }
 
-body.nav-floating .world .header {
-    display: flex;
-}
 
 .world-ui {
     position: relative;
@@ -472,12 +523,14 @@ body.nav-floating .world .header {
     text-align: center;
 }
 
+
 /* Logo piccolo tra due fili sottili */
 .world-brand {
     display: flex;
     align-items: center;
     gap: calc(var(--u) * 18);
 }
+
 
 .world-brand::before,
 .world-brand::after {
@@ -491,14 +544,17 @@ body.nav-floating .world .header {
     opacity: 0.7;
 }
 
+
 .world-brand .logo-mark {
     width: calc(var(--u) * 96);
     height: calc(var(--u) * 40);
 }
 
+
 .world-brand .logo-mark::after {
     display: none;
 }
+
 
 .world-title {
     margin-top: calc(var(--u) * 16);
@@ -512,9 +568,11 @@ body.nav-floating .world .header {
         0 0 calc(var(--u) * 20) rgba(5, 6, 15, 0.5);
 }
 
+
 .world-title .accent {
     color: var(--gold);
 }
+
 
 /* Sottotitolo in un nastro con due ornamenti ai lati */
 .world-sub {
@@ -531,6 +589,7 @@ body.nav-floating .world .header {
     border-radius: calc(var(--u) * 14);
 }
 
+
 .world-sub::before,
 .world-sub::after {
     content: "";
@@ -544,8 +603,11 @@ body.nav-floating .world .header {
         linear-gradient(#cfd2ee, #cfd2ee) center / calc(var(--u) * 6) 100% no-repeat;
 }
 
+
 .world-sub::before { right: 100%; margin-right: calc(var(--u) * 4); }
+
 .world-sub::after { left: 100%; margin-left: calc(var(--u) * 4); }
+
 
 /* I tre pannelli del menu, uno sotto l'altro: sono le illustrazioni
    disegnate apposta, il testo vero resta nascosto per i lettori di schermo */
@@ -557,6 +619,7 @@ body.nav-floating .world .header {
     gap: calc(var(--u) * 12);
 }
 
+
 .menu-item {
     display: block;
     text-decoration: none;
@@ -564,12 +627,14 @@ body.nav-floating .world .header {
     transition: transform 0.12s steps(2), filter 0.12s steps(2);
 }
 
+
 .menu-item img {
     display: block;
     width: 100%;
     height: auto;
     image-rendering: pixelated;
 }
+
 
 /* Voce selezionata: il pannello si illumina, senza spostarsi,
    così i tre pannelli restano sempre allineati */
@@ -580,9 +645,11 @@ body.nav-floating .world .header {
         drop-shadow(calc(var(--u) * 5) calc(var(--u) * 5) 0 rgba(5, 6, 15, 0.55));
 }
 
+
 .menu-item:focus-visible {
     outline: none;
 }
+
 
 .visually-hidden {
     position: absolute;
@@ -592,6 +659,7 @@ body.nav-floating .world .header {
     clip-path: inset(50%);
     white-space: nowrap;
 }
+
 
 /* Barra a blocchi delle settimane (scheda del personaggio) */
 .hud-bar {
@@ -606,13 +674,16 @@ body.nav-floating .world .header {
     background: #060918;
 }
 
+
 .hud-bar i {
     background: #262d62;
 }
 
+
 .hud-bar i.is-done {
     background: linear-gradient(#ffe48a 0 18%, var(--gold) 18% 75%, var(--gold-dark) 75%);
 }
+
 
 .hud-bar i.is-now {
     background: #3e3a66;
@@ -623,31 +694,38 @@ body.nav-floating .world .header {
 /* ---------- Schermi verticali ---------- */
 
 @media (max-aspect-ratio: 1/1) {
+
     .header {
         height: calc(var(--u) * 72);
         padding: 0 calc(var(--u) * 16);
     }
 
+
     .logo {
         gap: calc(var(--u) * 32);
     }
+
 
     .logo-mark {
         width: calc(var(--u) * 84);
         height: calc(var(--u) * 36);
     }
 
+
     .logo-mark::after {
         right: calc(var(--u) * -16);
     }
+
 
     .logo-copy {
         font-size: calc(var(--u) * 26);
     }
 
+
     .menu-toggle {
         display: flex;
     }
+
 
     /* Il menu diventa una tendina sotto l'header */
     .navigation {
@@ -666,37 +744,45 @@ body.nav-floating .world .header {
         transition: max-height 0.2s steps(4);
     }
 
+
     .navigation.active {
         max-height: calc(var(--u) * 260);
         border-bottom: max(2px, calc(var(--u) * 3)) solid var(--cream);
     }
+
 
     .navigation a {
         padding: calc(var(--u) * 12) calc(var(--u) * 16);
         border-top: max(1px, calc(var(--u) * 2)) solid var(--edge);
     }
 
+
     .navigation a::after {
         display: none;
     }
+
 
     .world-ui {
         padding-top: calc(var(--u) * 34);
     }
 
+
     .world-brand::before,
-    .world-brand::after {
+.world-brand::after {
         width: calc(var(--u) * 60);
     }
+
 
     .world-title {
         font-size: calc(var(--u) * 78);
     }
 
+
     .world-sub {
         font-size: calc(var(--u) * 22);
         padding: calc(var(--u) * 5) calc(var(--u) * 20);
     }
+
 
     .game-menu {
         width: calc(var(--u) * 404);
@@ -711,13 +797,18 @@ html.show-start .world-ui > * {
     opacity: 0;
 }
 
+
 body.started .world-ui > * {
     animation: rise 0.5s steps(5) both;
 }
 
+
 body.started .world-ui > :nth-child(2) { animation-delay: 0.12s; }
+
 body.started .world-ui > :nth-child(3) { animation-delay: 0.24s; }
+
 body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
+
 
 @keyframes rise {
     from {
@@ -738,175 +829,51 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
     padding: 90px 5% 100px;
 }
 
+
 .levels {
     background: linear-gradient(#112136, #0b1626 260px, #0a1420);
 }
+
 
 .journey {
     background: linear-gradient(#0a1420, var(--night));
 }
 
+
 .character {
     background: var(--night);
 }
 
-.section-header {
-    max-width: 1300px;
-    margin: 0 auto 36px;
-}
-
-.eyebrow {
-    font-size: 22px;
-    letter-spacing: 4px;
-    color: var(--gold);
-}
-
-.section-header h2 {
-    margin: 4px 0 10px;
-    font-size: clamp(54px, 7vw, 80px);
-    font-weight: 400;
-    line-height: 0.95;
-    text-shadow: 4px 4px 0 var(--ink);
-}
-
-.section-header > p:last-child {
-    max-width: 640px;
-    font-size: 24px;
-    color: var(--muted);
-}
 
 /* =========================================================
    RESPONSIVE
    ========================================================= */
 
 @media (max-width: 768px) {
+
     .levels,
-    .journey,
-    .character {
+.journey,
+.character {
         padding: 70px 16px;
     }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     *,
-    *::before,
-    *::after {
+*::before,
+*::after {
         animation: none !important;
         transition: none !important;
     }
+
 
     html.show-start .world-ui > * {
         opacity: 1;
     }
 }
 
-
-/* =========================================================
-   IL SENTIERO DEI FALÒ
-   ========================================================= */
-
-.trail-wrap {
-    position: relative;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-/* Bosco, sentiero e falò disegnati da trail.js */
-.trail-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    image-rendering: pixelated;
-    pointer-events: none;
-}
-
-.trail {
-    position: relative;
-    list-style: none;
-    padding: 40px 0 60px;
-}
-
-/* Le tappe si alternano: falò a sinistra e cartello a destra, poi il contrario */
-.trail-stop {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    min-height: 190px;
-}
-
-.stop-fire {
-    width: 80px;
-    height: 80px;
-}
-
-.trail-stop:nth-child(odd) .stop-fire {
-    justify-self: end;
-    margin-right: 18%;
-}
-
-.trail-stop:nth-child(odd) .stop-card {
-    justify-self: start;
-}
-
-.trail-stop:nth-child(even) .stop-fire {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: start;
-    margin-left: 18%;
-}
-
-.trail-stop:nth-child(even) .stop-card {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: end;
-    text-align: right;
-}
-
-/* Cartello del livello */
-.stop-card {
-    width: min(320px, 100%);
-    padding: 12px 16px 14px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-
-    font: inherit;
-    color: var(--cream);
-    text-align: left;
-    cursor: pointer;
-
-    background: var(--panel);
-    border: 3px solid var(--edge);
-    box-shadow: 5px 5px 0 var(--ink);
-
-    transition: transform 0.12s steps(2), border-color 0.12s steps(2), box-shadow 0.12s steps(2);
-}
-
-.stop-card:hover,
-.stop-card:focus-visible {
-    border-color: var(--cream);
-    transform: translate(-2px, -2px);
-    box-shadow: 7px 7px 0 var(--ink);
-}
-
-.stop-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.trail-stop:nth-child(even) .stop-top {
-    flex-direction: row-reverse;
-}
-
-.stop-number {
-    font-size: 22px;
-    letter-spacing: 1px;
-    color: var(--gold);
-}
 
 .stop-state {
     padding: 0 6px;
@@ -917,41 +884,18 @@ body.started .world-ui > :nth-child(4) { animation-delay: 0.36s; }
     color: var(--dim);
 }
 
+
 .stop-title {
     font-size: 28px;
     line-height: 1;
 }
+
 
 .stop-date {
     font-size: 20px;
     color: var(--dim);
 }
 
-/* Falò accesi, falò di questa settimana e falò ancora spenti */
-.trail-stop.is-done .stop-state {
-    border-color: var(--ember);
-    color: var(--ember);
-}
-
-.trail-stop.is-current .stop-state {
-    border-color: var(--green);
-    color: var(--green);
-    animation: blink 1.2s steps(1) infinite;
-}
-
-.trail-stop.is-locked .stop-card {
-    background: rgba(9, 11, 34, 0.6);
-}
-
-.trail-stop.is-locked .stop-title,
-.trail-stop.is-locked .stop-number {
-    color: var(--dim);
-}
-
-/* Quando il sentiero raggiunge un falò acceso, il cartello si illumina */
-.trail-stop.is-done.is-reached .stop-card {
-    animation: lit 0.9s steps(4) both;
-}
 
 @keyframes lit {
     0% { box-shadow: 5px 5px 0 var(--ink), 0 0 0 rgba(255, 140, 50, 0); }
@@ -968,6 +912,7 @@ html.panel-open {
     overflow: hidden;
 }
 
+
 .panel {
     width: min(860px, calc(100% - 32px));
     max-width: none;
@@ -982,9 +927,11 @@ html.panel-open {
     box-shadow: 8px 8px 0 var(--ink);
 }
 
+
 .panel[open] {
     animation: panel-in 0.3s steps(4);
 }
+
 
 @keyframes panel-in {
     from {
@@ -993,11 +940,13 @@ html.panel-open {
     }
 }
 
+
 .panel::backdrop {
     background:
         repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 2px, transparent 2px 4px),
         rgba(4, 6, 20, 0.78);
 }
+
 
 .panel-inner {
     max-height: 86vh;
@@ -1005,6 +954,7 @@ html.panel-open {
     overscroll-behavior: contain;
     padding: 0 34px 34px;
 }
+
 
 /* Il titolo resta fisso in alto mentre si scorre la finestra */
 .panel-head {
@@ -1023,11 +973,13 @@ html.panel-open {
     border-bottom: 3px solid var(--edge);
 }
 
+
 .panel-head h2 {
     font-size: 44px;
     font-weight: 400;
     line-height: 1;
 }
+
 
 .panel-close {
     flex: 0 0 auto;
@@ -1046,16 +998,19 @@ html.panel-open {
     box-shadow: 3px 3px 0 var(--ink);
 }
 
+
 .panel-close:hover {
     color: var(--ink);
     background: var(--gold);
 }
+
 
 .panel-intro {
     max-width: 680px;
     font-size: 24px;
     color: var(--muted);
 }
+
 
 .panel h3 {
     font-size: 30px;
@@ -1064,6 +1019,7 @@ html.panel-open {
     color: var(--gold);
 }
 
+
 /* Schermata del livello */
 .level-kicker {
     font-size: 20px;
@@ -1071,13 +1027,16 @@ html.panel-open {
     color: var(--ember);
 }
 
+
 .level-kicker[data-state="current"] {
     color: var(--green);
 }
 
+
 .level-kicker[data-state="locked"] {
     color: var(--dim);
 }
+
 
 .level-date {
     margin-top: 4px;
@@ -1085,20 +1044,24 @@ html.panel-open {
     color: var(--dim);
 }
 
+
 .level-body section {
     padding: 18px 0;
     border-top: 2px dashed var(--edge);
 }
+
 
 .level-body section:first-of-type {
     border-top: 0;
     padding-top: 0;
 }
 
+
 .level-body h3::before {
     content: "▸ ";
     color: var(--ember);
 }
+
 
 .level-body p {
     max-width: 68ch;
@@ -1108,11 +1071,13 @@ html.panel-open {
     color: var(--cream);
 }
 
+
 .level-body .placeholder-text,
 .level-locked {
     color: var(--dim);
     font-style: normal;
 }
+
 
 .level-locked {
     margin-bottom: 18px;
@@ -1121,307 +1086,16 @@ html.panel-open {
     border: 2px solid var(--edge);
 }
 
-.level-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 22px;
-    padding-top: 18px;
-    border-top: 3px solid var(--edge);
-}
-
-.level-step {
-    padding: 6px 14px;
-    font-size: 22px;
-    color: var(--cream);
-    cursor: pointer;
-    background: transparent;
-    border: 3px solid var(--edge);
-}
-
-.level-step:hover:not(:disabled) {
-    color: var(--ink);
-    background: var(--gold);
-    border-color: var(--ink);
-}
-
-.level-step:disabled {
-    opacity: 0.3;
-    cursor: default;
-}
-
-
-/* =========================================================
-   IL VIAGGIO FINORA (PROGETTO)
-   ========================================================= */
-
-.project-tiles {
-    max-width: 1000px;
-    margin: 0 auto;
-
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-}
-
-.project-tile {
-    min-height: 220px;
-    padding: 24px 26px 22px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-
-    font: inherit;
-    color: var(--cream);
-    text-align: left;
-    cursor: pointer;
-
-    background: var(--panel-solid);
-    border: 3px solid var(--edge);
-    box-shadow: 6px 6px 0 var(--ink);
-
-    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), border-color 0.12s steps(2);
-}
-
-.project-tile:hover,
-.project-tile:focus-visible {
-    border-color: var(--cream);
-    transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0 var(--ink);
-}
-
-.project-tile h3 {
-    font-size: 40px;
-    font-weight: 400;
-    line-height: 1;
-}
-
-.project-tile p {
-    font-size: 23px;
-    line-height: 1.2;
-    color: var(--muted);
-}
-
-.tile-meta {
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: var(--gold);
-}
-
-.tile-more {
-    margin-top: auto;
-    padding-top: 6px;
-    font-size: 23px;
-    color: var(--gold);
-}
 
 /* Il simulatore è la missione principale: riquadro e pannello nel blu Skilla */
-.project-tile-simulator,
 .panel-simulator,
 .panel-simulator .panel-head {
     background: #0b13a8;
 }
 
-.project-tile-simulator {
-    border-color: #4a5cff;
-}
 
-.project-tile-simulator p,
 .panel-simulator .panel-intro {
     color: #c8d0ff;
-}
-
-.simulator-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px;
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: var(--cream);
-    border: 2px solid var(--cream);
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    background: var(--green);
-    animation: blink 1.2s steps(1) infinite;
-}
-
-.panel-simulator .simulator-status {
-    margin-bottom: 4px;
-}
-
-/* Contenuto dei pannelli */
-.activity-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-top: 24px;
-}
-
-.activity-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 18px 20px;
-    border: 2px solid var(--edge);
-}
-
-.activity-item-wide {
-    grid-column: 1 / -1;
-}
-
-.activity-item p {
-    font-size: 21px;
-    line-height: 1.2;
-    color: var(--muted);
-}
-
-.week-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: auto;
-    padding-top: 4px;
-}
-
-.week-tags a {
-    padding: 0 8px;
-    font-size: 19px;
-    text-decoration: none;
-    color: var(--ember);
-    border: 2px solid var(--ember);
-}
-
-.week-tags a::before {
-    content: "🔥 ";
-    font-size: 14px;
-}
-
-.week-tags a:hover {
-    color: var(--ink);
-    background: var(--ember);
-}
-
-.lab-list {
-    list-style: none;
-    margin-top: 16px;
-}
-
-.lab-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 22px;
-    padding: 18px 0;
-    border-top: 2px dashed var(--edge);
-}
-
-.lab-item:first-child {
-    border-top: 0;
-}
-
-.lab-item > div {
-    min-width: 0;
-}
-
-.lab-week {
-    flex: 0 0 auto;
-    padding: 0 8px;
-    font-size: 19px;
-    white-space: nowrap;
-    color: #c9b8ff;
-    border: 2px solid #6a58b8;
-}
-
-.lab-item p {
-    margin-top: 4px;
-    font-size: 21px;
-    line-height: 1.2;
-    color: var(--muted);
-}
-
-.simulator-steps {
-    list-style: none;
-    counter-reset: step;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
-    margin-top: 24px;
-}
-
-.simulator-steps li {
-    counter-increment: step;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.simulator-steps li::before {
-    content: counter(step);
-    width: 30px;
-    height: 30px;
-    margin-bottom: 6px;
-    display: grid;
-    place-items: center;
-    font-size: 22px;
-    border: 2px solid var(--cream);
-}
-
-.simulator-steps li.step-done::before {
-    content: "✓";
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: #0b13a8;
-    background: var(--cream);
-}
-
-.simulator-steps li.step-current {
-    border-color: var(--gold);
-}
-
-.simulator-steps strong {
-    font-size: 24px;
-    font-weight: 400;
-}
-
-.simulator-steps span {
-    font-size: 19px;
-    line-height: 1.15;
-    color: #c8d0ff;
-}
-
-.tech-grid {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-    margin-top: 24px;
-}
-
-.tech-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 18px;
-    border: 2px solid var(--edge);
-}
-
-.tech-item strong {
-    font-size: 26px;
-    font-weight: 400;
-    color: var(--gold);
-}
-
-.tech-item span {
-    font-size: 20px;
-    line-height: 1.15;
-    color: var(--muted);
 }
 
 
@@ -1446,63 +1120,6 @@ html.panel-open {
     box-shadow: 8px 8px 0 var(--ink);
 }
 
-/* Ritratto: il protagonista ritagliato dall'illustrazione del falò */
-.sheet-portrait {
-    grid-area: portrait;
-    width: 264px;
-    height: 203px;
-    max-width: 100%;
-
-    background: #132858 url("../immagini/home4k.webp") no-repeat;
-    background-size: 1672px auto;
-    background-position: -160px -548px;
-    image-rendering: pixelated;
-
-    border: 3px solid var(--edge);
-    box-shadow: inset 0 0 0 3px var(--ink);
-}
-
-.sheet-list {
-    grid-area: list;
-    display: flex;
-    flex-direction: column;
-}
-
-.sheet-list > div {
-    display: grid;
-    grid-template-columns: 160px minmax(0, 1fr);
-    gap: 16px;
-    padding: 8px 0;
-    border-bottom: 2px dashed var(--edge);
-}
-
-.sheet-list > div:last-child {
-    border-bottom: 0;
-}
-
-.sheet-list dt {
-    font-size: 21px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-}
-
-.sheet-list dd {
-    font-size: 26px;
-    line-height: 1.1;
-}
-
-.sheet-list small {
-    font-size: 19px;
-    color: var(--dim);
-}
-
-.sheet-stats {
-    grid-area: stats;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
-}
 
 .stat {
     padding: 12px 14px;
@@ -1512,43 +1129,13 @@ html.panel-open {
     border: 2px solid var(--edge);
 }
 
-.stat-label {
-    font-size: 18px;
-    letter-spacing: 2px;
-    color: var(--dim);
-}
-
-.stat-value {
-    font-size: 40px;
-    font-weight: 400;
-    line-height: 1;
-    color: var(--gold);
-}
-
-.sheet-bar {
-    grid-column: 1 / -1;
-    height: 26px;
-    padding: 3px;
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    gap: 3px;
-    background: var(--ink);
-}
-
 
 /* =========================================================
    RESPONSIVE DELLE NUOVE SEZIONI
    ========================================================= */
 
 @media (max-width: 860px) {
-    .simulator-steps,
-    .sheet-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
 
-    .tech-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
 
     .sheet {
         grid-template-columns: 1fr;
@@ -1558,43 +1145,11 @@ html.panel-open {
             "stats";
         justify-items: stretch;
     }
-
-    .sheet-portrait {
-        justify-self: center;
-    }
 }
 
+
 @media (max-width: 640px) {
-    /* Su telefono il sentiero va dritto: falò al centro e cartello sotto */
-    .trail-stop,
-    .trail-stop:nth-child(odd),
-    .trail-stop:nth-child(even) {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        gap: 8px;
-        min-height: 0;
-        padding: 18px 0;
-    }
 
-    .trail-stop:nth-child(n) .stop-fire,
-    .trail-stop:nth-child(n) .stop-card {
-        grid-column: 1;
-        grid-row: auto;
-        justify-self: center;
-        margin: 0;
-        text-align: left;
-    }
-
-    .trail-stop:nth-child(even) .stop-top {
-        flex-direction: row;
-    }
-
-    .project-tiles,
-    .activity-grid,
-    .simulator-steps,
-    .tech-grid {
-        grid-template-columns: 1fr;
-    }
 
     .panel {
         width: 100%;
@@ -1603,55 +1158,29 @@ html.panel-open {
         border: 0;
     }
 
+
     .panel-inner {
         height: 100%;
         max-height: 100%;
         padding: 0 18px 28px;
     }
 
+
     .panel-head h2 {
         font-size: 36px;
     }
 
-    .lab-item {
-        flex-direction: column;
-        gap: 8px;
-    }
 
     .sheet {
         padding: 18px;
     }
-
-    .sheet-list > div {
-        grid-template-columns: 1fr;
-        gap: 2px;
-    }
-
-    .level-nav {
-        flex-direction: column;
-    }
 }
 
-
-/* =========================================================
-   MENU FISSO SOTTO LA SCENA
-   ========================================================= */
-
-body.nav-floating .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-
-    background: rgba(5, 7, 22, 0.94);
-    border-bottom: max(2px, calc(var(--u) * 3)) solid var(--edge);
-    animation: nav-drop 0.25s steps(3);
-}
 
 @keyframes nav-drop {
     from { transform: translateY(-100%); }
 }
+
 
 /* Le sezioni non finiscono sotto il menu fisso quando ci salti */
 .levels,
@@ -1659,6 +1188,7 @@ body.nav-floating .header {
 .character {
     scroll-margin-top: 50px;
 }
+
 
 /* Se sopra l'illustrazione resta cielo libero, il bordo alto sfuma nel blu */
 .scene.is-floating .scene-art {
@@ -1676,9 +1206,11 @@ body.nav-floating .header {
     display: none !important;
 }
 
+
 html {
     scroll-behavior: auto;
 }
+
 
 /* Ogni schermata riempie almeno tutto lo schermo */
 body[data-screen="viaggio"] main,
@@ -1686,6 +1218,7 @@ body[data-screen="livelli"] main,
 body[data-screen="personaggio"] main {
     min-height: 100vh;
 }
+
 
 /* Tenda: un blocco nero grande quanto lo schermo, con i due bordi
    frastagliati a pixel; screens.js la fa scorrere a scatti */
@@ -1703,10 +1236,12 @@ body[data-screen="personaggio"] main {
     pointer-events: none;
 }
 
+
 .curtain.is-active {
     visibility: visible;
     pointer-events: auto;
 }
+
 
 .curtain::before,
 .curtain::after {
@@ -1719,16 +1254,19 @@ body[data-screen="personaggio"] main {
     image-rendering: pixelated;
 }
 
+
 /* Bordo destro: i denti guardano a destra */
 .curtain::after {
     left: 100%;
 }
+
 
 /* Bordo sinistro: lo stesso disegno, specchiato */
 .curtain::before {
     right: 100%;
     transform: scaleX(-1);
 }
+
 
 /* Pulsante "‹ Menu" in alto a sinistra nelle schermate interne */
 .back-menu {
@@ -1749,12 +1287,14 @@ body[data-screen="personaggio"] main {
     box-shadow: 4px 4px 0 rgba(5, 6, 15, 0.7);
 }
 
+
 .back-menu:hover,
 .back-menu:focus-visible {
     color: var(--gold);
     border-color: var(--gold);
     outline: none;
 }
+
 
 body:not([data-screen]) .back-menu,
 body[data-screen="home"] .back-menu {
@@ -1772,6 +1312,7 @@ body[data-screen="home"] .back-menu {
     container-type: size;
 }
 
+
 .scene-fx {
     position: absolute;
     inset: 0;
@@ -1779,10 +1320,12 @@ body[data-screen="home"] .back-menu {
     pointer-events: none;
 }
 
+
 .scene-fx i {
     position: absolute;
     display: block;
 }
+
 
 /* Stella: un pixel chiaro sopra quella disegnata, che si accende
    e si spegne con una piccola croce di luce quando è al massimo */
@@ -1795,6 +1338,7 @@ body[data-screen="home"] .back-menu {
     animation: twinkle var(--d, 4s) steps(1) var(--l, 0s) infinite;
 }
 
+
 .star::before,
 .star::after {
     content: "";
@@ -1803,6 +1347,7 @@ body[data-screen="home"] .back-menu {
     opacity: var(--cross, 0);
 }
 
+
 .star::before {
     left: -0.5cqw;
     right: -0.5cqw;
@@ -1810,12 +1355,14 @@ body[data-screen="home"] .back-menu {
     height: 0.2cqw;
 }
 
+
 .star::after {
     top: -0.5cqw;
     bottom: -0.5cqw;
     left: 0.15cqw;
     width: 0.2cqw;
 }
+
 
 @keyframes twinkle {
     0%   { opacity: 0; }
@@ -1827,6 +1374,7 @@ body[data-screen="home"] .back-menu {
     74%  { opacity: 0; }
 }
 
+
 /* Stelle piccole aggiunte nel cielo libero: sempre un po' visibili,
    ogni tanto si accendono del tutto */
 .star-small {
@@ -1837,10 +1385,12 @@ body[data-screen="home"] .back-menu {
     animation-name: twinkle-small;
 }
 
+
 .star-small::before,
 .star-small::after {
     display: none;
 }
+
 
 @keyframes twinkle-small {
     0%   { opacity: 0.4; }
@@ -1850,6 +1400,7 @@ body[data-screen="home"] .back-menu {
     58%  { opacity: 0.7; }
     70%  { opacity: 0.45; }
 }
+
 
 /* Stella cadente: ogni tanto una scia attraversa il cielo in alto a destra */
 .shooting-star {
@@ -1864,12 +1415,14 @@ body[data-screen="home"] .back-menu {
     animation: shooting 11s linear 3s infinite;
 }
 
+
 @keyframes shooting {
     0%   { opacity: 0; translate: 0 0; }
     1%   { opacity: 1; }
     7%   { opacity: 0; translate: -11cqw 5cqw; }
     100% { opacity: 0; translate: -11cqw 5cqw; }
 }
+
 
 /* Luce del fuoco: un alone arancione sul prato che respira piano */
 .fire-glow {
@@ -1883,12 +1436,14 @@ body[data-screen="home"] .back-menu {
     animation: glow 1.6s steps(4) infinite alternate;
 }
 
+
 @keyframes glow {
     0%   { opacity: 0.55; }
     35%  { opacity: 0.9; }
     60%  { opacity: 0.7; }
     100% { opacity: 1; }
 }
+
 
 /* Lucciola: un puntino giallo-verde che gira attorno al grande
    albero a sinistra, accendendosi e spegnendosi */
@@ -1907,6 +1462,7 @@ body[data-screen="home"] .back-menu {
         firefly-blink 2.3s steps(1) infinite;
 }
 
+
 @keyframes firefly-path {
     0%   { left: 9%;    top: 52%; }
     12%  { left: 11.5%; top: 47%; }
@@ -1919,6 +1475,7 @@ body[data-screen="home"] .back-menu {
     100% { left: 9%;    top: 52%; }
 }
 
+
 @keyframes firefly-blink {
     0%   { opacity: 0.9; }
     30%  { opacity: 0.5; }
@@ -1926,6 +1483,7 @@ body[data-screen="home"] .back-menu {
     60%  { opacity: 0.6; }
     75%  { opacity: 1; }
 }
+
 
 /* Fiamme animate in codice: dal disegno sono ritagliate solo le fiamme
    (fiamma.webp) e la spada (spada.webp). Le fiamme si allungano, ondeggiano
@@ -1942,9 +1500,11 @@ body[data-screen="home"] .back-menu {
     transform-origin: 50.9% 75%;
 }
 
+
 .flame {
     animation: flame-dance 1.6s steps(1) infinite;
 }
+
 
 .flame-glint {
     mix-blend-mode: screen;
@@ -1952,9 +1512,11 @@ body[data-screen="home"] .back-menu {
     animation: flame-glint 1.1s steps(1) infinite;
 }
 
+
 .flame-sword {
     background-image: url("../immagini/spada.webp");
 }
+
 
 @keyframes flame-dance {
     0%   { transform: scale(1.02, 1.03) skewX(0deg);    filter: brightness(1); }
@@ -1967,6 +1529,7 @@ body[data-screen="home"] .back-menu {
     87%  { transform: scale(1.03, 1.07) skewX(1.5deg);  filter: brightness(1.1); }
 }
 
+
 @keyframes flame-glint {
     0%   { transform: scale(1.06, 1.12) skewX(1deg);  opacity: 0.35; }
     20%  { transform: scale(1.02, 1.05) skewX(-1deg); opacity: 0.15; }
@@ -1974,6 +1537,7 @@ body[data-screen="home"] .back-menu {
     60%  { transform: scale(1.03, 1.08) skewX(2deg);  opacity: 0.25; }
     80%  { transform: scale(1.05, 1.1) skewX(0deg);   opacity: 0.4; }
 }
+
 
 /* Il cavaliere sbatte le palpebre: una toppa con gli occhi chiusi
    (occhi-chiusi.webp) compare per un attimo sopra i suoi occhi.
@@ -1989,6 +1553,7 @@ body[data-screen="home"] .back-menu {
     animation: blink 9s steps(1) 2s infinite;
 }
 
+
 @keyframes blink {
     0%     { opacity: 0; }
     20%    { opacity: 1; }
@@ -2000,6 +1565,7 @@ body[data-screen="home"] .back-menu {
     85%    { opacity: 1; }
     86.5%  { opacity: 0; }
 }
+
 
 /* Scintille: piccoli pixel arancioni che salgono dal fuoco e si spengono */
 .ember {
@@ -2013,12 +1579,14 @@ body[data-screen="home"] .back-menu {
     animation: ember var(--d, 2.4s) steps(12) var(--l, 0s) infinite;
 }
 
+
 @keyframes ember {
     0%   { opacity: 0; translate: 0 0; }
     10%  { opacity: 1; }
     70%  { opacity: 0.8; }
     100% { opacity: 0; translate: var(--x, 0) -9cqw; }
 }
+
 
 /* Altre due lucciole tra gli alberi a destra, con giri e ritmi diversi */
 .firefly-2 {
@@ -2029,6 +1597,7 @@ body[data-screen="home"] .back-menu {
         firefly-blink 2.9s steps(1) 0.7s infinite;
 }
 
+
 .firefly-3 {
     left: 92%;
     top: 66%;
@@ -2036,6 +1605,7 @@ body[data-screen="home"] .back-menu {
         firefly-path-3 12s linear infinite,
         firefly-blink 2.1s steps(1) 1.4s infinite;
 }
+
 
 @keyframes firefly-path-2 {
     0%   { left: 88%;   top: 63%; }
@@ -2057,13 +1627,21 @@ body[data-screen="home"] .back-menu {
     100% { left: 92%;   top: 66%; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .star { opacity: 0; }
+
     .star-small { opacity: 0.6; }
+
     .shooting-star { display: none; }
+
     .firefly { opacity: 0.8; }
+
     .fire-glow { opacity: 0.75; }
-    .ember, .flame-glint { display: none; }
+
+    .ember,
+.flame-glint { display: none; }
 }
 
 
@@ -2074,10 +1652,12 @@ body[data-screen="home"] .back-menu {
     white-space: nowrap;
 }
 
+
 .title-letter {
     display: inline-block;
     animation: letter-hop 4.5s steps(1) calc(1.2s + var(--i) * 0.07s) infinite;
 }
+
 
 @keyframes letter-hop {
     0%   { transform: translateY(0); }
@@ -2115,6 +1695,7 @@ body[data-screen="home"] .back-menu {
     box-shadow: 3px 3px 0 rgba(5, 6, 15, 0.7);
 }
 
+
 /* Punta del cartellino verso il falò */
 .world-stop::after {
     content: "";
@@ -2126,10 +1707,12 @@ body[data-screen="home"] .back-menu {
     border-top-color: #cfd2ee;
 }
 
+
 .world-stop-lv {
     font-size: max(18px, 1.5cqw);
     line-height: 1;
 }
+
 
 .world-stop-state {
     font-size: max(13px, 0.95cqw);
@@ -2137,8 +1720,11 @@ body[data-screen="home"] .back-menu {
     color: var(--muted);
 }
 
+
 .world-stop[data-state="done"] .world-stop-state { color: var(--green); }
+
 .world-stop[data-state="current"] .world-stop-state { color: var(--gold); }
+
 
 .world-stop:hover,
 .world-stop:focus-visible {
@@ -2147,11 +1733,11 @@ body[data-screen="home"] .back-menu {
     outline: none;
 }
 
+
 .world-stop:hover::after,
 .world-stop:focus-visible::after {
     border-top-color: var(--gold);
 }
-
 
 
 /* =========================================================
@@ -2167,9 +1753,11 @@ body[data-screen="home"] .back-menu {
     background: #04050d;
 }
 
+
 body[data-screen="livelli"] main {
     min-height: 0;
 }
+
 
 /* La pagina del mondo: se la mappa è più larga dello schermo
    (telefono, finestre strette) si scorre di lato */
@@ -2182,9 +1770,11 @@ body[data-screen="livelli"] main {
     scrollbar-width: none;
 }
 
+
 .world-page::-webkit-scrollbar {
     display: none;
 }
+
 
 /* La mappa riempie lo schermo in altezza, o in larghezza se lo
    schermo è molto largo; resta appoggiata in basso */
@@ -2199,12 +1789,14 @@ body[data-screen="livelli"] main {
     container-type: size;
 }
 
+
 .world-art {
     display: block;
     width: 100%;
     height: 100%;
     image-rendering: pixelated;
 }
+
 
 /* Velo scuro in alto, così nome del mondo e frecce si leggono */
 .levels::after {
@@ -2217,39 +1809,12 @@ body[data-screen="livelli"] main {
     background: linear-gradient(rgba(4, 5, 13, 0.55), rgba(4, 5, 13, 0));
 }
 
+
 /* Mondi ancora da disegnare: la stessa mappa, quasi nera */
 .world-page.is-wip .world-art {
     filter: brightness(0.12) saturate(0.4);
 }
 
-.world-wip {
-    position: absolute;
-    inset: 0;
-    z-index: 8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    padding: 0 24px;
-    text-align: center;
-    pointer-events: none;
-}
-
-.world-wip-title {
-    font-size: clamp(44px, 7vw, 88px);
-    line-height: 1;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 4px 4px 0 var(--ink);
-}
-
-.world-wip-text {
-    font-size: clamp(20px, 2.2vw, 28px);
-    line-height: 1.25;
-    color: var(--muted);
-}
 
 /* Nome del mondo e quattro tacche, in alto al centro */
 .world-hud {
@@ -2267,6 +1832,7 @@ body[data-screen="livelli"] main {
     pointer-events: none;
 }
 
+
 .world-hud-name {
     font-size: clamp(22px, 2.4vw, 34px);
     letter-spacing: 2px;
@@ -2275,14 +1841,17 @@ body[data-screen="livelli"] main {
     text-shadow: 3px 3px 0 var(--ink);
 }
 
+
 .world-hud-name [data-world-label] {
     color: var(--gold);
 }
+
 
 .world-dots {
     display: flex;
     gap: 8px;
 }
+
 
 .world-dots i {
     width: 22px;
@@ -2291,9 +1860,11 @@ body[data-screen="livelli"] main {
     box-shadow: 2px 2px 0 var(--ink);
 }
 
+
 .world-dots i.is-on {
     background: var(--gold);
 }
+
 
 /* Frecce ai lati per cambiare mondo */
 .world-arrow {
@@ -2316,8 +1887,11 @@ body[data-screen="livelli"] main {
     box-shadow: 4px 4px 0 rgba(5, 6, 15, 0.7);
 }
 
+
 .world-prev { left: 16px; }
+
 .world-next { right: 16px; }
+
 
 .world-arrow:hover,
 .world-arrow:focus-visible {
@@ -2326,21 +1900,26 @@ body[data-screen="livelli"] main {
     outline: none;
 }
 
+
 .world-arrow:disabled {
     opacity: 0.25;
     cursor: default;
     pointer-events: none;
 }
 
+
 @media (max-width: 768px) {
+
     .world-hud {
         top: 74px;
     }
+
 
     .world-hud-name {
         font-size: 18px;
         white-space: normal;
     }
+
 
     .world-arrow {
         width: 42px;
@@ -2349,7 +1928,9 @@ body[data-screen="livelli"] main {
         font-size: 42px;
     }
 
+
     .world-prev { left: 8px; }
+
     .world-next { right: 8px; }
 }
 
@@ -2372,6 +1953,7 @@ body[data-screen="livelli"] main {
     animation: knight-breathe 1.8s steps(1) infinite;
 }
 
+
 /* Camminando: i sei disegni della camminata */
 .knight-walker.is-walking {
     background-image: url("../immagini/cavaliere-cammina.webp");
@@ -2379,14 +1961,17 @@ body[data-screen="livelli"] main {
     animation: knight-walk 0.6s steps(6, jump-none) infinite;
 }
 
+
 .knight-walker.is-walking.is-left {
     transform: translate(-62.5%, -100%) scaleX(-1);
 }
+
 /* Quando torna indietro dal falò alla strada: i frame di schiena */
 .knight-walker.is-walking.is-up {
     background-image: url("../immagini/cavaliere-schiena.webp");
     transform: translate(-62.5%, -100%);
 }
+
 
 /* Quando scende verso chi guarda: i frame visti di fronte */
 .knight-walker.is-walking.is-down {
@@ -2394,17 +1979,21 @@ body[data-screen="livelli"] main {
     transform: translate(-62.5%, -100%);
 }
 
+
 @keyframes knight-walk {
     from { background-position: 0% 0; }
     to   { background-position: 100% 0; }
 }
+
 
 @keyframes knight-breathe {
     0%  { translate: 0 0; }
     50% { translate: 0 1.5%; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .knight-walker { animation: none; }
 }
 
@@ -2422,17 +2011,21 @@ body[data-screen="livelli"] main {
     inset: 0;
 }
 
+
 .scene-night {
     opacity: 1;
 }
+
 
 html[data-theme="day"] .scene-night {
     opacity: 0;
 }
 
+
 html[data-theme="day"] .world {
     background: linear-gradient(#3a7ad6, #5b9ae6);
 }
+
 
 /* Effetti notturni: stelle, stella cadente, lucciole, fuoco e scintille */
 .fx-night {
@@ -2440,14 +2033,17 @@ html[data-theme="day"] .world {
     inset: 0;
 }
 
+
 html[data-theme="day"] .fx-night {
     opacity: 0;
     visibility: hidden;
 }
 
+
 html[data-theme="day"] .fx-night .star {
     visibility: hidden;
 }
+
 
 /* Il fuoco cresce dai legni quando si accende e si ritira quando si spegne */
 html[data-theme="day"] .flame,
@@ -2456,14 +2052,17 @@ html[data-theme="day"] .fire-glow {
     scale: 0.15;
 }
 
+
 .flame,
 .flame-glint {
     transform-origin: 50.9% 75%;
 }
 
+
 .fire-glow {
     transform-origin: 0 0;
 }
+
 
 /* Occhi chiusi del cavaliere di giorno: stessa toppa, presa dal disegno di giorno */
 html[data-theme="day"] .knight-eyes {
@@ -2473,6 +2072,7 @@ html[data-theme="day"] .knight-eyes {
     height: 2.25%;
     background-image: url("../immagini/occhi-chiusi-giorno.webp");
 }
+
 
 /* Luce del tramonto e dell'alba: un velo caldo più forte in alto */
 .sky-tint {
@@ -2484,31 +2084,38 @@ html[data-theme="day"] .knight-eyes {
     background: linear-gradient(rgba(255, 110, 70, 0.55), rgba(255, 160, 90, 0.38) 45%, rgba(120, 50, 110, 0.25));
 }
 
+
 html.is-dusk .sky-tint,
 html.is-dawn .sky-tint {
     opacity: 1;
 }
 
+
 html.is-dawn .sky-tint {
     background: linear-gradient(rgba(255, 150, 170, 0.5), rgba(255, 200, 140, 0.35) 45%, rgba(140, 120, 200, 0.2));
 }
+
 
 /* Durante il passaggio tutto cambia a scatti, come nei vecchi giochi */
 html.theme-anim .scene-night {
     transition: opacity 1s steps(8);
 }
 
+
 html.theme-anim .sky-tint {
     transition: opacity 0.6s steps(5);
 }
+
 
 html.theme-anim .fx-night {
     transition: opacity 0.5s steps(4), visibility 0s linear 0.5s;
 }
 
+
 html.theme-anim[data-theme="night"] .fx-night {
     transition: opacity 0.6s steps(5) 0.8s, visibility 0s linear 0.8s;
 }
+
 
 html.theme-anim .flame,
 html.theme-anim .flame-glint,
@@ -2516,16 +2123,21 @@ html.theme-anim .fire-glow {
     transition: scale 0.4s steps(4);
 }
 
+
 html.theme-anim[data-theme="night"] .flame,
 html.theme-anim[data-theme="night"] .flame-glint,
 html.theme-anim[data-theme="night"] .fire-glow {
     transition: scale 0.5s steps(5) 0.8s;
 }
 
+
 /* Le stelle si accendono una dopo l'altra */
 html.theme-anim[data-theme="night"] .star:nth-child(3n + 1) { transition: visibility 0s linear 1.1s; }
+
 html.theme-anim[data-theme="night"] .star:nth-child(3n + 2) { transition: visibility 0s linear 1.4s; }
-html.theme-anim[data-theme="night"] .star:nth-child(3n)     { transition: visibility 0s linear 1.7s; }
+
+html.theme-anim[data-theme="night"] .star:nth-child(3n) { transition: visibility 0s linear 1.7s; }
+
 
 /* Fumo che sale dal falò quando si spegne */
 .smoke {
@@ -2542,15 +2154,18 @@ html.theme-anim[data-theme="night"] .star:nth-child(3n)     { transition: visibi
     image-rendering: pixelated;
 }
 
+
 html.is-smoke .smoke {
     animation: smoke-up 1.6s steps(8) forwards;
 }
+
 
 @keyframes smoke-up {
     0%   { opacity: 0; translate: 0 0; }
     15%  { opacity: 1; }
     100% { opacity: 0; translate: 0.8cqw -5cqw; }
 }
+
 
 /* Pulsante giorno / notte in alto a destra nella home */
 .theme-toggle {
@@ -2571,11 +2186,13 @@ html.is-smoke .smoke {
     box-shadow: calc(var(--u) * 4) calc(var(--u) * 4) 0 rgba(5, 6, 15, 0.6);
 }
 
+
 .theme-toggle svg {
     display: block;
     width: 100%;
     height: 100%;
 }
+
 
 /* Di notte mostra il sole (per passare al giorno), di giorno la luna */
 .theme-toggle .icon-moon,
@@ -2583,9 +2200,11 @@ html[data-theme="day"] .theme-toggle .icon-sun {
     display: none;
 }
 
+
 html[data-theme="day"] .theme-toggle .icon-moon {
     display: block;
 }
+
 
 .theme-toggle:hover,
 .theme-toggle:focus-visible {
@@ -2593,7 +2212,9 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     outline: none;
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     html.theme-anim * {
         transition: none !important;
     }
@@ -2618,6 +2239,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
 }
 
+
 /* Cartellino: icona di stato + livello e stato, con la punta verso il falò */
 .world-stop {
     flex-direction: row;
@@ -2625,6 +2247,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     padding: 2px 10px 2px 6px;
     transform: translate(-50%, calc(-100% - 12px));
 }
+
 
 .world-stop::after {
     content: "";
@@ -2637,10 +2260,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     background: url("../immagini/ui-punta.webp") center / contain no-repeat;
 }
 
+
 .world-stop:hover::after,
 .world-stop:focus-visible::after {
     border: 0;
 }
+
 
 .world-stop-text {
     display: flex;
@@ -2649,23 +2274,28 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     gap: 2px;
 }
 
+
 .world-stop-lv {
     font-size: max(20px, 1.45cqw);
 }
 
+
 .world-stop-state {
     font-size: max(15px, 1.05cqw);
 }
+
 
 .world-stop:hover,
 .world-stop:focus-visible {
     filter: brightness(1.15) drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
 }
 
+
 /* Il cartellino del falò aperto lascia il posto al riquadro */
 .world-stop.is-open {
     visibility: hidden;
 }
+
 
 /* Icona di stato: spunta verde, fiammella per la settimana in corso, lucchetto */
 .state-icon {
@@ -2677,13 +2307,16 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     image-rendering: pixelated;
 }
 
+
 .state-icon[data-state="current"] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 9' shape-rendering='crispEdges'%3E%3Cpath fill='%23e8452c' d='M3 0h1v1h1v2h1v2h1v3h-1v1h-5v-1h-1v-3h1v-1h1v-2h1z'/%3E%3Cpath fill='%23ff9a2e' d='M3 3h1v1h1v2h1v2h-5v-2h1v-1h1z'/%3E%3Cpath fill='%23ffe066' d='M3 5h1v1h1v2h-3v-2h1z'/%3E%3C/svg%3E");
 }
 
+
 .state-icon[data-state="locked"] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 9' shape-rendering='crispEdges'%3E%3Cpath fill='%239aa3b5' d='M2 0h4v1h1v3h-1v-3h-4v3h-1v-3h1z'/%3E%3Cpath fill='%23c99a16' d='M0 4h8v5h-8z'/%3E%3Cpath fill='%23ffcf4a' d='M1 4h6v1h-6z'/%3E%3Cpath fill='%2305060f' d='M3 6h2v2h-2z'/%3E%3C/svg%3E");
 }
+
 
 /* Riquadro del falò, sopra il falò scelto */
 .fire-panel {
@@ -2699,13 +2332,16 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: panel-pop 0.18s steps(3);
 }
 
+
 .fire-panel:not([open]) {
     display: none;
 }
 
+
 @keyframes panel-pop {
     from { transform: translate(calc(-50% + var(--shift, 0px)), calc(-100% + 10px + var(--drop, 0px))) scale(0.85); opacity: 0; }
 }
+
 
 .fp-head {
     display: flex;
@@ -2714,6 +2350,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     gap: 10px;
     padding: 0 0 4px;
 }
+
 
 .fp-head::before,
 .fp-head::after {
@@ -2724,25 +2361,31 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     background: var(--gold-dark);
 }
 
+
 .fp-lv {
     font-size: max(24px, 1.7cqw);
     line-height: 1;
 }
+
 
 .fp-state,
 .world-stop-state {
     color: var(--green);
 }
 
+
 .fire-panel[data-state="current"] .fp-state,
 .world-stop[data-state="current"] .world-stop-state { color: var(--gold); }
+
 
 .fire-panel[data-state="locked"] .fp-state,
 .world-stop[data-state="locked"] .world-stop-state { color: var(--muted); }
 
+
 .fp-state {
     font-size: max(17px, 1.2cqw);
 }
+
 
 /* Le quattro sezioni */
 .fp-row {
@@ -2764,6 +2407,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     border-radius: 4px;
 }
 
+
 .fp-row img {
     width: max(24px, 1.7cqw);
     height: max(24px, 1.7cqw);
@@ -2771,9 +2415,11 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     image-rendering: pixelated;
 }
 
+
 .fp-row span {
     flex: 1;
 }
+
 
 .fp-row:hover,
 .fp-row:focus-visible {
@@ -2782,6 +2428,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     outline: none;
 }
 
+
 /* Freccia dorata a pixel */
 .fp-chev {
     flex: none;
@@ -2789,6 +2436,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     height: 16px;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23ffb02e' d='M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
+
 
 /* Bottone dorato "Scopri i dettagli" */
 .fp-cta {
@@ -2810,15 +2458,18 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     border-radius: 5px;
 }
 
+
 .fp-cta .fp-chev {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 7' shape-rendering='crispEdges'%3E%3Cpath fill='%232a1608' d='M0 0h2v1h-2zM1 1h2v1h-2zM2 2h2v1h-2zM3 3h2v1h-2zM2 4h2v1h-2zM1 5h2v1h-2zM0 6h2v1h-2z'/%3E%3C/svg%3E");
 }
+
 
 .fp-cta:hover,
 .fp-cta:focus-visible {
     filter: brightness(1.1);
     outline: none;
 }
+
 
 /* Pulsante "‹ Menu" con la stessa cornice */
 .back-menu {
@@ -2829,6 +2480,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     color: var(--cream);
 }
 
+
 .back-menu:hover,
 .back-menu:focus-visible {
     border-color: transparent;
@@ -2836,18 +2488,23 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     filter: brightness(1.15) drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .fire-panel { animation: none; }
 }
+
 
 /* Mentre il riquadro è aperto il nome del mondo si nasconde */
 .world-hud {
     transition: opacity 0.15s steps(2);
 }
 
+
 .levels.has-panel .world-hud {
     opacity: 0;
 }
+
 
 /* Frecce per cambiare mondo: le due targhe dorate disegnate */
 .world-arrow {
@@ -2866,33 +2523,43 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.55));
 }
 
+
 .world-next {
     background-image: url("../immagini/ui-freccia-next.webp");
 }
+
 
 .world-arrow:hover,
 .world-arrow:focus-visible {
     filter: brightness(1.2) drop-shadow(0 3px 0 rgba(0, 0, 0, 0.55));
 }
 
+
 .world-prev { left: 10px; }
+
 .world-next { right: 10px; }
 
+
 @media (max-width: 768px) {
+
     .world-arrow {
         width: 28px;
         height: auto;
         margin-top: 0;
     }
 
+
     .world-prev { left: 6px; }
+
     .world-next { right: 6px; }
 }
+
 
 /* Cartellini sotto il falò (LV 01 e LV 02): la punta guarda in su */
 .world-stop[data-below] {
     transform: translate(-50%, 12px);
 }
+
 
 .world-stop[data-below]::after {
     top: auto;
@@ -2900,18 +2567,22 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     transform: rotate(180deg);
 }
 
+
 /* Riquadro aperto sotto il falò */
 .fire-panel.is-below {
     transform: translate(calc(-50% + var(--shift, 0px)), calc(6px + var(--drop, 0px)));
 }
 
+
 .fire-panel.is-below {
     animation-name: panel-pop-below;
 }
 
+
 @keyframes panel-pop-below {
     from { transform: translate(calc(-50% + var(--shift, 0px)), calc(-10px + var(--drop, 0px))) scale(0.85); opacity: 0; }
 }
+
 
 .fp-lv,
 .fp-state,
@@ -2929,6 +2600,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: knight-rest 2.1s steps(1) infinite;
 }
 
+
 @keyframes knight-rest {
     0%      { background-position: 0% 0; }
     33.33%  { background-position: 50% 0; }
@@ -2936,14 +2608,18 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     100%    { background-position: 100% 0; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .knight-walker.is-resting:not(.is-walking) { animation: none; }
 }
+
 
 .fp-row span {
     flex: 1 0 auto;
     overflow: visible;
 }
+
 
 /* Cartellini dei livelli un po' più piccoli */
 .world-stop {
@@ -2953,18 +2629,22 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     padding: 0 7px 0 4px;
 }
 
+
 .world-stop .state-icon {
     width: max(20px, 1.5cqw);
     height: max(20px, 1.5cqw);
 }
 
+
 .world-stop-lv {
     font-size: max(17px, 1.2cqw);
 }
 
+
 .world-stop-state {
     font-size: max(13px, 0.85cqw);
 }
+
 
 .world-stop::after {
     width: 20px;
@@ -2972,6 +2652,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     margin-left: -10px;
     top: calc(100% + 8px);
 }
+
 
 /* Falò animati sulla mappa: quattro disegni in falo-mappa.webp */
 .map-fire {
@@ -2987,15 +2668,18 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: map-fire 0.6s steps(1) infinite;
 }
 
+
 /* Mondo che inizia da una porta: il cavaliere esce dal buio del passaggio */
 .knight-walker {
     transition: opacity 0.45s ease-out;
 }
 
+
 .knight-walker.is-faded {
     opacity: 0;
     transition: none;
 }
+
 
 /* Settimana non ancora raggiunta: falò spento, fermo */
 .map-fire[data-state="locked"] {
@@ -3003,6 +2687,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     background-size: 100% 100%;
     animation: none;
 }
+
 
 /* Quattro posizioni esatte, una per disegno: nessuno spostamento tra un frame e l'altro */
 @keyframes map-fire {
@@ -3013,7 +2698,9 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     100% { background-position: 100% 0; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .map-fire { animation: none; }
 }
 
@@ -3031,10 +2718,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     overflow: hidden;
 }
 
+
 .world-fx i {
     position: absolute;
     display: block;
 }
+
 
 /* Acqua che scende: righe chiare che scorrono verso il basso */
 .wf-fall {
@@ -3051,10 +2740,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: fall-flow 0.5s steps(4) infinite;
 }
 
+
 @keyframes fall-flow {
     from { background-position: 0 0; }
     to   { background-position: 0 22px; }
 }
+
 
 /* Schiuma alla base delle cascate: pixel bianchi che brillano */
 .wf-foam {
@@ -3066,11 +2757,13 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: foam 0.6s steps(3) var(--l, 0s) infinite;
 }
 
+
 @keyframes foam {
     0%   { background-position: 0 0, 4px 3px; opacity: 0.9; }
     50%  { background-position: 3px -2px, 1px 1px; opacity: 0.6; }
     100% { background-position: 0 0, 4px 3px; opacity: 0.9; }
 }
+
 
 /* Riflesso della luna: strisce che tremolano sull'acqua */
 .wf-moon {
@@ -3082,12 +2775,14 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: moon-ripple 1.6s steps(4) infinite;
 }
 
+
 @keyframes moon-ripple {
     0%   { transform: translateX(0) scaleX(1);    opacity: 0.8; }
     25%  { transform: translateX(-3%) scaleX(0.9); opacity: 0.55; }
     50%  { transform: translateX(2%) scaleX(1.05); opacity: 0.9; }
     75%  { transform: translateX(-1%) scaleX(0.95); opacity: 0.6; }
 }
+
 
 /* Finestre del castello: luce che tremola come una candela */
 .wf-window {
@@ -3100,6 +2795,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: window-flicker var(--d, 2.4s) steps(1) var(--l, 0s) infinite;
 }
 
+
 @keyframes window-flicker {
     0%   { opacity: 0.35; }
     20%  { opacity: 0.6; }
@@ -3108,6 +2804,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     70%  { opacity: 0; }
     78%  { opacity: 0.45; }
 }
+
 
 /* Acqua del porto: piccole onde a pixel che scorrono, solo sull'acqua */
 .world-fx .wf-water {
@@ -3126,10 +2823,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: water-waves 3.2s steps(16) infinite;
 }
 
+
 @keyframes water-waves {
     from { background-position: 0 0, 0 0.4cqw; }
     to   { background-position: 2.7cqw 0, -2.25cqw 0.4cqw; }
 }
+
 
 /* Riflessi dei lampioni sull'acqua: tremolano e ondeggiano */
 .world-fx .wf-reflections {
@@ -3143,12 +2842,14 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     animation: reflection-wobble 1.4s steps(1) infinite;
 }
 
+
 @keyframes reflection-wobble {
     0%   { transform: translateX(0);         opacity: 0.9; }
     25%  { transform: translateX(0.12cqw);   opacity: 0.55; }
     50%  { transform: translateX(0);         opacity: 1; }
     75%  { transform: translateX(-0.12cqw);  opacity: 0.6; }
 }
+
 
 /* Lucciole che girano lente nel bosco */
 .wf-fly {
@@ -3163,6 +2864,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         firefly-blink var(--b, 2.3s) steps(1) infinite;
 }
 
+
 @keyframes fly-wander {
     0%   { translate: 0 0; }
     20%  { translate: 1.4cqw -0.9cqw; }
@@ -3171,6 +2873,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     80%  { translate: -0.8cqw 0.5cqw; }
     100% { translate: 0 0; }
 }
+
 
 /* Pipistrelli: due battiti d'ala, volano sopra il lago illuminato dalla luna */
 .wf-bat {
@@ -3188,6 +2891,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         bat-flap 0.3s steps(1) infinite;
 }
 
+
 .wf-bat-2 {
     width: 1cqw;
     animation:
@@ -3195,10 +2899,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         bat-flap 0.26s steps(1) infinite;
 }
 
+
 @keyframes bat-flap {
     0%  { background-size: 100% 100%, 0 0; }
     50% { background-size: 0 0, 100% 100%; }
 }
+
 
 @keyframes bat-fly {
     0%   { opacity: 1; left: 22%; top: 30%; }
@@ -3209,6 +2915,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     91%, 100% { left: 104%; top: 2%; opacity: 0; }
 }
 
+
 @keyframes bat-fly-2 {
     0%   { opacity: 1; left: 72%; top: 4%; }
     30%  { left: 58%; top: 20%; }
@@ -3217,10 +2924,14 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     86%, 100% { left: -4%; top: 30%; opacity: 0; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .world-fx i { animation: none !important; }
+
     .wf-bat { display: none; }
 }
+
 
 /* Riquadro del falò più piccolo: copre meno la mappa */
 .fire-panel {
@@ -3232,11 +2943,16 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     border-image-width: 17px;
     padding: 0 4px 4px;
 }
+
 .fp-head { gap: 7px; padding: 0 0 2px; }
+
 .fp-head::before,
 .fp-head::after { max-width: 22px; }
+
 .fp-lv { font-size: max(17px, 1.15cqw); }
+
 .fp-state { font-size: max(12px, 0.82cqw); }
+
 .fp-row {
     gap: 7px;
     margin-top: 3px;
@@ -3244,11 +2960,14 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     font-size: max(13px, 0.88cqw);
     border-width: 1px;
 }
+
 .fp-row img {
     width: max(17px, 1.15cqw);
     height: max(17px, 1.15cqw);
 }
+
 .fp-chev { width: 7px; height: 11px; }
+
 .fp-cta {
     gap: 9px;
     margin-top: 5px;
@@ -3256,14 +2975,17 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     font-size: max(14px, 0.98cqw);
 }
 
+
 /* Livello bloccato: inesplorabile, al clic il cartellino trema */
 .world-stop[data-state="locked"] {
     cursor: not-allowed;
 }
 
+
 .world-stop.is-denied {
     animation: stop-denied 0.36s steps(6);
 }
+
 
 @keyframes stop-denied {
     0%, 100% { translate: 0 0; }
@@ -3299,6 +3021,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     filter: drop-shadow(0 10px 0 rgba(0, 0, 0, 0.5));
 }
 
+
 /* Nel riquadro scuro in alto: livello, titolo, date */
 .level-screen .wall-head {
     position: absolute;
@@ -3312,14 +3035,18 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     gap: calc(var(--w) * 0.35 / 100);
 }
 
+
 .level-screen .level-kicker {
     font-size: calc(var(--w) * 1.45 / 100);
     letter-spacing: calc(var(--w) * 0.2 / 100);
     color: var(--gold);
 }
 
+
 .level-screen .level-kicker[data-state="done"] { color: var(--green); }
+
 .level-screen .level-kicker[data-state="locked"] { color: var(--dim); }
+
 
 .level-screen h2 {
     font-size: calc(var(--w) * 3.4 / 100);
@@ -3328,11 +3055,13 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     color: var(--cream);
 }
 
+
 .level-screen .level-date {
     margin: 0;
     font-size: calc(var(--w) * 1.5 / 100);
     color: #9fb0e0;
 }
+
 
 /* A destra nel riquadro: livello precedente, successivo, chiudi */
 .level-screen .wall-tools {
@@ -3343,7 +3072,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     gap: calc(var(--w) * 0.7 / 100);
 }
 
-.level-screen .level-step,
+
 .level-screen .panel-close {
     width: calc(var(--w) * 3.4 / 100);
     height: calc(var(--w) * 3.4 / 100);
@@ -3363,21 +3092,18 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     box-shadow: none;
 }
 
+
 .level-screen .panel-close {
     font-size: max(22px, calc(var(--w) * 2.3 / 100));
 }
 
-.level-screen .level-step:hover:not(:disabled),
+
 .level-screen .panel-close:hover {
     color: #2a1608;
     background: var(--gold);
     border-color: #5a3410;
 }
 
-.level-screen .level-step:disabled {
-    opacity: 0.3;
-    cursor: default;
-}
 
 /* ---------- Schede e pagina: i pezzi dell'immagine del mockup ----------
    schede-accese / schede-spente: la striscia con le quattro schede
@@ -3392,6 +3118,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     --px: calc(calc(var(--w) * 72 / 100) / 1848);
 }
 
+
 /* Pulsanti in alto a destra: quadrati dorati */
 .level-screen .wall-tools {
     top: 11.5%;
@@ -3399,7 +3126,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     gap: calc(var(--w) * 0.9 / 100);
 }
 
-.level-screen .level-step,
+
 .level-screen .panel-close {
     width: calc(var(--w) * 4.3 / 100);
     height: calc(var(--w) * 4.3 / 100);
@@ -3410,6 +3137,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     border-radius: 4px;
     box-shadow: inset 0 0 0 1px rgba(255, 190, 80, 0.25);
 }
+
 
 /* Striscia delle schede: tutte spente, sopra quella scelta accesa */
 .level-screen .wall-tabs {
@@ -3432,9 +3160,13 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     --tw: var(--w0);
 }
 
+
 .wall-tabs[data-active="1"] { --tl: var(--t1); --tw: var(--w1); }
+
 .wall-tabs[data-active="2"] { --tl: var(--t2); --tw: var(--w2); }
+
 .wall-tabs[data-active="3"] { --tl: var(--t3); --tw: var(--w3); }
+
 
 /* La scheda scelta: la stessa immagine accesa, ritagliata su quella colonna */
 .level-screen .wall-tabs::before {
@@ -3447,6 +3179,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     filter: drop-shadow(0 0 calc(10 * var(--px)) rgba(255, 190, 80, 0.45));
     pointer-events: none;
 }
+
 
 /* Il rombo sotto la scheda scelta */
 .level-screen .wall-tabs::after {
@@ -3461,6 +3194,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     image-rendering: pixelated;
     pointer-events: none;
 }
+
 
 /* I pulsanti delle schede sono trasparenti, sopra il disegno */
 .wall-tab {
@@ -3477,14 +3211,20 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     box-shadow: none;
 }
 
+
 .wall-tab[data-tab="0"] { left: var(--t0); width: var(--w0); }
+
 .wall-tab[data-tab="1"] { left: var(--t1); width: var(--w1); }
+
 .wall-tab[data-tab="2"] { left: var(--t2); width: var(--w2); }
+
 .wall-tab[data-tab="3"] { left: var(--t3); width: var(--w3); }
+
 
 .wall-tab img {
     display: none;
 }
+
 
 .wall-tab span {
     position: absolute;
@@ -3495,14 +3235,17 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     white-space: nowrap;
 }
 
+
 .wall-tab:hover {
     background: rgba(255, 220, 140, 0.07);
 }
+
 
 .wall-tab:focus-visible {
     outline: 2px solid #ffc24a;
     outline-offset: -6px;
 }
+
 
 /* La pagina: la cornice allungata senza deformare gli angoli */
 .level-screen .wall-page {
@@ -3525,6 +3268,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     z-index: 1;
 }
 
+
 /* Rombo al centro del bordo in basso */
 .level-screen .wall-page::after {
     content: "";
@@ -3539,6 +3283,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     pointer-events: none;
 }
 
+
 /* Il testo scorre dentro la cornice */
 .level-screen .level-body {
     position: absolute;
@@ -3549,14 +3294,17 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     scrollbar-color: #a8701e transparent;
 }
 
+
 .level-screen .level-body section {
     padding: 0;
     border: 0;
 }
 
+
 .level-screen .level-body section[hidden] {
     display: none;
 }
+
 
 /* Titolo: rombo, nome della sezione, riga dorata con il rombo in mezzo */
 .level-screen .level-body h3 {
@@ -3569,6 +3317,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     color: #ffc24a;
 }
 
+
 .level-screen .level-body h3::before {
     content: "◆";
     font-size: 0.75em;
@@ -3576,6 +3325,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     color: #ffb02e;
     vertical-align: 0;
 }
+
 
 .level-screen .level-body h3::after {
     content: "";
@@ -3588,6 +3338,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     image-rendering: pixelated;
 }
 
+
 .level-screen .level-body p {
     max-width: none;
     margin-top: calc(var(--w) * 1.2 / 100);
@@ -3597,15 +3348,18 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     color: #ece4cf;
 }
 
+
 .level-screen .level-locked {
     margin: 0 0 calc(var(--w) * 1.2 / 100);
     padding: calc(var(--w) * 0.6 / 100) calc(var(--w) * 1 / 100);
     font-size: max(16px, calc(var(--w) * 1.7 / 100));
 }
 
+
 /* Telefono: la parete non ci sta, resta la cornice dorata a tutto schermo
    con le stesse schede e la stessa pagina */
 @media (max-width: 700px), (max-height: 420px), (orientation: portrait) and (max-width: 1100px) {
+
     .level-screen {
         width: 100%;
         height: 100%;
@@ -3627,6 +3381,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         max-height: 100dvh;
     }
 
+
     .level-screen .wall-head {
         left: 16px;
         right: 140px;
@@ -3635,24 +3390,30 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         gap: 4px;
     }
 
+
     .level-screen .level-kicker { font-size: 13px; white-space: nowrap; overflow: hidden; }
+
     .level-screen h2 { font-size: 26px; white-space: nowrap; }
+
     .level-screen .level-date { font-size: 16px; }
+
 
     .level-screen .wall-tools { top: 14px; right: 12px; gap: 6px; }
 
-    .level-screen .level-step,
+
     .level-screen .panel-close {
         width: 36px;
         height: 36px;
         font-size: 18px;
     }
 
+
     .level-screen .wall-tabs {
         left: 8px;
         right: 8px;
         top: 118px;
     }
+
 
     .level-screen .wall-page {
         left: 8px;
@@ -3661,9 +3422,12 @@ html[data-theme="day"] .theme-toggle .icon-moon {
         bottom: 10px;
     }
 
+
     .level-screen .level-body h3 { gap: 10px; font-size: 24px; }
+
     .level-screen .level-body p { margin-top: 10px; font-size: 19px; line-height: 1.6; }
 }
+
 
 /* Pulsanti dorati della parete: sezione precedente, successiva, chiudi */
 .level-screen .wall-tools {
@@ -3671,6 +3435,7 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     right: 10.5%;
     gap: calc(var(--w) * 0.8 / 100);
 }
+
 
 .wall-button {
     width: calc(var(--w) * 5.6 / 100);
@@ -3684,58 +3449,75 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.5));
 }
 
-.wall-prev  { background-image: url("../immagini/pulsante-indietro.webp"); }
-.wall-next  { background-image: url("../immagini/pulsante-avanti.webp"); }
+
+.wall-prev { background-image: url("../immagini/pulsante-indietro.webp"); }
+
+.wall-next { background-image: url("../immagini/pulsante-avanti.webp"); }
+
 .wall-close { background-image: url("../immagini/pulsante-chiudi.webp"); }
+
 
 .wall-button:hover {
     filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.5)) brightness(1.15);
 }
+
 
 .wall-button:active {
     transform: translateY(2px);
     filter: none;
 }
 
+
 .wall-button:focus-visible {
     outline: 2px solid #ffc24a;
     outline-offset: 2px;
 }
 
+
 @media (max-width: 700px), (max-height: 420px), (orientation: portrait) and (max-width: 1100px) {
+
     .level-screen .wall-tools { top: 12px; right: 10px; gap: 4px; }
+
     .wall-button { width: 42px; min-width: 0; }
 }
+
 
 /* Telefono in orizzontale (schermo basso): schede e pagina meno alte,
    così resta spazio per leggere il testo */
 @media (max-height: 420px) and (min-width: 701px) {
+
     .level-screen {
         --px: min(calc((100vw - 44px) / 1848), 0.34px);
     }
 
+
     .level-screen .wall-tabs,
-    .level-screen .wall-page {
+.level-screen .wall-page {
         left: 50%;
         right: auto;
         width: calc(1848 * var(--px));
         transform: translateX(-50%);
     }
 
+
     .level-screen .wall-tabs { top: 96px; }
+
     .level-screen .wall-page { top: calc(96px + 187 * var(--px) - 1px); }
 }
+
 
 /* La finestra prende il fuoco all'apertura: nessun bordo intorno */
 .level-screen:focus {
     outline: none;
 }
 
+
 /* Il testo della settimana scorre col dito anche su iPhone */
 .level-screen .level-body {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
 }
+
 
 /* La pagina segue top/bottom: non prende l'altezza 100% dei pannelli generici */
 .level-screen .wall-page {
@@ -3757,9 +3539,11 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     background: #0a0710;
 }
 
+
 body[data-screen="viaggio"] main {
     min-height: 0;
 }
+
 
 /* Titolo in alto al centro, come il nome dei mondi */
 .forge-hud {
@@ -3772,6 +3556,7 @@ body[data-screen="viaggio"] main {
     white-space: nowrap;
 }
 
+
 .forge-title {
     font-size: clamp(22px, 2.6vw, 38px);
     letter-spacing: 2px;
@@ -3780,9 +3565,11 @@ body[data-screen="viaggio"] main {
     text-shadow: 0 3px 0 #000;
 }
 
+
 .forge-title span {
     color: var(--cream);
 }
+
 
 .forge.journey::after {
     content: "";
@@ -3794,6 +3581,7 @@ body[data-screen="viaggio"] main {
     background: linear-gradient(rgba(4, 5, 13, 0.6), rgba(4, 5, 13, 0));
 }
 
+
 /* Le zone cliccabili: invisibili, le indica il cartellino dorato */
 .forge-spot {
     position: absolute;
@@ -3804,9 +3592,11 @@ body[data-screen="viaggio"] main {
     border: 0;
 }
 
+
 .forge-spot:focus-visible {
     outline: none;
 }
+
 
 /* Contorno dorato che segue la sagoma dell'oggetto: compare solo sulla zona sotto il cursore */
 .forge-spot::before {
@@ -3819,15 +3609,21 @@ body[data-screen="viaggio"] main {
     pointer-events: none;
 }
 
+
 .forge-spot[data-panel="simulatore"]::before { background-image: url("../immagini/alone-simulatore.webp"); }
-.forge-spot[data-panel="attivita"]::before   { background-image: url("../immagini/alone-attivita.webp"); }
-.forge-spot[data-panel="skillalab"]::before  { background-image: url("../immagini/alone-skillalab.webp"); }
-.forge-spot[data-panel="strumenti"]::before  { background-image: url("../immagini/alone-strumenti.webp"); }
+
+.forge-spot[data-panel="attivita"]::before { background-image: url("../immagini/alone-attivita.webp"); }
+
+.forge-spot[data-panel="skillalab"]::before { background-image: url("../immagini/alone-skillalab.webp"); }
+
+.forge-spot[data-panel="strumenti"]::before { background-image: url("../immagini/alone-strumenti.webp"); }
+
 
 .forge-spot:hover::before,
 .forge-spot:focus-visible::before {
     opacity: 1;
 }
+
 
 /* Il cartellino sopra ogni oggetto, come sopra i falò */
 .forge-label {
@@ -3853,22 +3649,27 @@ body[data-screen="viaggio"] main {
     transform: translateX(-50%);
 }
 
+
 .forge-label img {
     width: max(20px, 1.5cqw);
     height: max(20px, 1.5cqw);
     image-rendering: pixelated;
 }
 
+
 .forge-spot:hover .forge-label,
 .forge-spot:focus-visible .forge-label {
     color: var(--gold);
 }
 
+
 /* Telefono: il titolo va sotto il pulsante Menu, la forgia si scorre di lato */
 @media (max-width: 700px) {
+
     .forge-hud {
         top: 76px;
     }
+
 
     .forge-title {
         font-size: 20px;
@@ -3903,7 +3704,9 @@ body[data-screen="viaggio"] main {
     filter: drop-shadow(0 calc(10 * var(--u)) 0 rgba(0, 0, 0, 0.5));
 }
 
+
 .sim-window:focus { outline: none; }
+
 
 /* La targa col titolo, appoggiata sul bordo alto */
 .sim-targa {
@@ -3920,6 +3723,7 @@ body[data-screen="viaggio"] main {
     image-rendering: pixelated;
 }
 
+
 .sim-window .sim-targa h2 {
     margin: 0;
     padding-bottom: calc(6 * var(--u));
@@ -3933,6 +3737,7 @@ body[data-screen="viaggio"] main {
     white-space: nowrap;
 }
 
+
 .sim-window .sim-close {
     position: absolute;
     left: calc(100% + 12px);
@@ -3945,7 +3750,9 @@ body[data-screen="viaggio"] main {
     filter: none;
 }
 
+
 .sim-window .sim-close:hover { filter: brightness(1.18); }
+
 
 /* L'interno della cornice */
 .sim-window .sim-content {
@@ -3962,12 +3769,14 @@ body[data-screen="viaggio"] main {
     overflow: visible;
 }
 
+
 .sim-top {
     display: flex;
     flex: none;
     gap: calc(26 * var(--u));
     height: calc(222 * var(--u));
 }
+
 
 .sim-art {
     flex: none;
@@ -3977,6 +3786,7 @@ body[data-screen="viaggio"] main {
     background: url("../immagini/sim-incudine.webp") center / contain no-repeat;
     image-rendering: pixelated;
 }
+
 
 .sim-info {
     display: flex;
@@ -3988,11 +3798,13 @@ body[data-screen="viaggio"] main {
     padding-top: calc(4 * var(--u));
 }
 
+
 .sim-title-row {
     display: flex;
     align-items: center;
     gap: calc(22 * var(--u));
 }
+
 
 .sim-window .sim-title-row h3 {
     margin: 0;
@@ -4002,6 +3814,7 @@ body[data-screen="viaggio"] main {
     color: #ffd36a;
     white-space: nowrap;
 }
+
 
 .sim-chip {
     padding: 0 calc(16 * var(--u));
@@ -4015,12 +3828,14 @@ body[data-screen="viaggio"] main {
     white-space: nowrap;
 }
 
+
 .sim-desc {
     margin: 0;
     font-size: calc(33 * var(--u));
     line-height: 1.1;
     color: #f3e8cf;
 }
+
 
 .sim-goals {
     margin: 0;
@@ -4031,6 +3846,7 @@ body[data-screen="viaggio"] main {
     color: #f3e8cf;
 }
 
+
 .sim-goals li::before {
     content: "◆";
     margin-right: calc(14 * var(--u));
@@ -4038,10 +3854,12 @@ body[data-screen="viaggio"] main {
     color: #ffb02e;
 }
 
+
 .sim-goals b {
     font-weight: 400;
     color: #ffd36a;
 }
+
 
 /* Titoletto con la riga dorata */
 .sim-divider {
@@ -4057,6 +3875,7 @@ body[data-screen="viaggio"] main {
     color: #f2dca0;
 }
 
+
 .sim-divider::before,
 .sim-divider::after {
     content: "";
@@ -4064,6 +3883,7 @@ body[data-screen="viaggio"] main {
     height: calc(4 * var(--u));
     background: #c9861c;
 }
+
 
 /* Le cinque tappe: riquadro, spada, targhetta */
 .sim-stages {
@@ -4074,6 +3894,7 @@ body[data-screen="viaggio"] main {
     height: calc(190 * var(--u));
     padding-top: calc(14 * var(--u));
 }
+
 
 .sim-stage {
     position: relative;
@@ -4087,9 +3908,11 @@ body[data-screen="viaggio"] main {
     image-rendering: pixelated;
 }
 
+
 .sim-stage[data-state="locked"] {
     background-image: url("../immagini/sim-riquadro-spento.webp");
 }
+
 
 /* Il riquadro acceso, con il bagliore, sopra quello normale */
 .sim-stage::before {
@@ -4101,13 +3924,17 @@ body[data-screen="viaggio"] main {
     pointer-events: none;
 }
 
+
 .sim-stage.is-selected::before,
 .sim-stage:hover::before {
     opacity: 1;
 }
 
+
 .sim-stage:focus-visible { outline: none; }
+
 .sim-stage:focus-visible::before { opacity: 1; }
+
 
 .sim-sword {
     position: absolute;
@@ -4120,9 +3947,11 @@ body[data-screen="viaggio"] main {
     image-rendering: pixelated;
 }
 
+
 .sim-stage[data-state="locked"] .sim-sword {
     filter: grayscale(1) brightness(0.55);
 }
+
 
 .sim-badge {
     position: absolute;
@@ -4132,6 +3961,7 @@ body[data-screen="viaggio"] main {
     width: calc(46 * var(--u));
     image-rendering: pixelated;
 }
+
 
 /* Tappa in corso (quando non è quella scelta): una freccia dorata */
 .sim-stage[data-state="current"]::after {
@@ -4150,6 +3980,7 @@ body[data-screen="viaggio"] main {
     border: calc(3 * var(--u)) solid #5a3410;
     border-radius: calc(6 * var(--u));
 }
+
 
 .sim-name {
     position: absolute;
@@ -4170,6 +4001,7 @@ body[data-screen="viaggio"] main {
     pointer-events: none;
 }
 
+
 .sim-stage.is-selected .sim-name {
     width: calc(212 * var(--u));
     height: calc(60 * var(--u));
@@ -4177,16 +4009,20 @@ body[data-screen="viaggio"] main {
     color: #2a1608;
 }
 
+
 .sim-stage[data-state="locked"]:not(.is-selected) .sim-name {
     filter: grayscale(0.7) brightness(0.72);
 }
+
 
 /* La linea che collega una tappa alla successiva */
 .sim-stages .sim-stage:not(:last-child) {
     --link: #5a3a1c;
 }
 
+
 .sim-stages .sim-stage[data-state="done"] { --link: #e3a336; }
+
 
 .sim-stages .sim-stage:not(:last-child)::after {
     content: "";
@@ -4197,6 +4033,7 @@ body[data-screen="viaggio"] main {
     height: calc(8 * var(--u));
     background: var(--link, #5a3a1c);
 }
+
 
 /* La freccia della tappa in corso non deve essere la linea */
 .sim-stages .sim-stage[data-state="current"]:not(:last-child)::after {
@@ -4217,6 +4054,7 @@ body[data-screen="viaggio"] main {
     border-radius: calc(6 * var(--u));
 }
 
+
 /* La pergamena col testo della tappa scelta */
 .sim-scroll {
     position: relative;
@@ -4229,6 +4067,7 @@ body[data-screen="viaggio"] main {
     image-rendering: pixelated;
 }
 
+
 .sim-detail {
     position: absolute;
     inset: calc(-4 * var(--u)) calc(-20 * var(--u)) calc(-4 * var(--u)) calc(-30 * var(--u));
@@ -4240,15 +4079,19 @@ body[data-screen="viaggio"] main {
     color: #3a2210;
 }
 
+
 /* Niente barra di scorrimento del browser sulla pergamena: il testo ci sta */
 .sim-detail::-webkit-scrollbar { display: none; }
 
+
 .sim-detail[hidden] { display: none; }
+
 
 .sim-detail-text {
     flex: 1;
     min-width: 0;
 }
+
 
 .sim-window .sim-detail h4 {
     margin: 0;
@@ -4259,11 +4102,13 @@ body[data-screen="viaggio"] main {
     color: #2a1608;
 }
 
+
 .sim-detail h4 em {
     font-size: 0.78em;
     text-transform: none;
     color: #6a4220;
 }
+
 
 .sim-window .sim-detail p {
     max-width: none;
@@ -4273,11 +4118,13 @@ body[data-screen="viaggio"] main {
     color: #3a2210;
 }
 
+
 .sim-lvs {
     display: flex;
     flex: none;
     gap: calc(14 * var(--u));
 }
+
 
 .sim-lv {
     display: inline-flex;
@@ -4293,23 +4140,29 @@ body[data-screen="viaggio"] main {
     border-radius: calc(7 * var(--u));
 }
 
+
 .sim-lv::before {
     content: "🔥";
     font-size: 0.8em;
 }
+
 
 .sim-lv:hover {
     color: #2a1608;
     background: #ffc24a;
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .panel.sim-window[open] { animation: none; }
 }
+
 
 /* Telefono e tablet in verticale: finestra a tutto schermo, una colonna,
    la cornice si allunga in altezza senza deformare gli angoli */
 @media (max-width: 700px), (orientation: portrait) and (max-width: 1100px) {
+
     .panel.sim-window {
         --u: calc((100vw - 16px) / 1406 * 1.9);
         position: fixed;
@@ -4325,15 +4178,19 @@ body[data-screen="viaggio"] main {
         --sim: 1;
     }
 
+
     .sim-window .sim-targa {
         top: -8px;
         width: min(86vw, 420px);
         height: 58px;
     }
 
+
     .sim-window .sim-targa h2 { font-size: 26px; padding-bottom: 3px; }
 
+
     .sim-window .sim-close { left: auto; top: 6px; right: 6px; width: 46px; }
+
 
     .sim-window .sim-content {
         left: 12px;
@@ -4346,15 +4203,27 @@ body[data-screen="viaggio"] main {
         -webkit-overflow-scrolling: touch;
     }
 
+
     .sim-top { flex-direction: column; height: auto; gap: 12px; }
+
     .sim-art { width: 100%; height: auto; aspect-ratio: 1473 / 837; }
+
     .sim-info { gap: 8px; padding-top: 0; }
+
     .sim-window .sim-title-row { gap: 12px; flex-wrap: wrap; }
+
     .sim-window .sim-title-row h3 { font-size: 34px; }
+
     .sim-chip { font-size: 18px; border-width: 2px; padding: 0 8px; }
-    .sim-desc, .sim-goals { font-size: 19px; }
+
+    .sim-desc,
+.sim-goals { font-size: 19px; }
+
     .sim-divider { height: auto; font-size: 17px; gap: 10px; }
-    .sim-divider::before, .sim-divider::after { height: 2px; }
+
+    .sim-divider::before,
+.sim-divider::after { height: 2px; }
+
 
     .sim-stages {
         height: auto;
@@ -4365,15 +4234,24 @@ body[data-screen="viaggio"] main {
         scrollbar-width: none;
     }
 
+
     .sim-stages::-webkit-scrollbar { display: none; }
 
+
     .sim-stage { width: 96px; height: 72px; }
+
     .sim-stages .sim-stage:not(:last-child)::after { width: 22px; height: 4px; top: 34px; }
+
     .sim-badge { width: 24px; right: -4px; top: -6px; }
+
     .sim-stage[data-state="current"]::after { width: 22px; height: 22px; font-size: 12px; border-width: 2px; right: -4px; top: -6px; }
+
     .sim-stages .sim-stage[data-state="current"]:not(:last-child)::after { width: 22px; height: 22px; font-size: 12px; border-width: 2px; right: -4px; top: -6px; }
+
     .sim-name { width: 100px; height: 28px; bottom: -22px; font-size: 16px; }
+
     .sim-stage.is-selected .sim-name { width: 106px; height: 30px; }
+
 
     .sim-scroll {
         flex: none;
@@ -4381,6 +4259,7 @@ body[data-screen="viaggio"] main {
         border-width: 24px 56px;
         border-image-width: 24px 56px;
     }
+
 
     .sim-detail {
         position: relative;
@@ -4391,8 +4270,11 @@ body[data-screen="viaggio"] main {
         gap: 10px;
     }
 
+
     .sim-window .sim-detail h4 { font-size: 24px; }
+
     .sim-window .sim-detail p { font-size: 19px; }
+
     .sim-lv { font-size: 19px; border-width: 3px; padding: 1px 10px; }
 }
 
@@ -4415,9 +4297,13 @@ body[data-screen="viaggio"] main {
     animation: snow-fall var(--s, 9s) linear infinite;
 }
 
-.wf-snow-far  { --t: 20cqw; --s: 30s; background-image: url("../immagini/neve-lontana.webp"); opacity: 0.8; }
-.wf-snow-mid  { --t: 26cqw; --s: 20s; background-image: url("../immagini/neve-media.webp"); }
+
+.wf-snow-far { --t: 20cqw; --s: 30s; background-image: url("../immagini/neve-lontana.webp"); opacity: 0.8; }
+
+.wf-snow-mid { --t: 26cqw; --s: 20s; background-image: url("../immagini/neve-media.webp"); }
+
 .wf-snow-near { --t: 34cqw; --s: 13s; background-image: url("../immagini/neve-vicina.webp"); }
+
 
 /* Cade in diagonale, spinta dal vento verso destra. Si sposta di una
    tessera intera in orizzontale e due in verticale: così il ciclo è perfetto */
@@ -4426,7 +4312,9 @@ body[data-screen="viaggio"] main {
     to   { transform: translate3d(var(--t), calc(var(--t) * 2), 0); }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .wf-snow { animation: none; }
 }
 
@@ -4446,6 +4334,7 @@ body[data-screen="viaggio"] main {
     background: #14092b;
 }
 
+
 /* Lo sfondo copre sempre tutto lo schermo: si ingrandisce quanto serve
    e ritaglia ciò che avanza, tenendo il cavaliere a sinistra in vista */
 .character.char-scene::before {
@@ -4455,15 +4344,18 @@ body[data-screen="viaggio"] main {
     background: url("../immagini/scheda-sfondo.webp") 50% 62% / cover no-repeat;
 }
 
+
 /* Su computer la scheda sta ferma: niente scorrimento */
 body[data-screen="personaggio"] {
     overflow: hidden;
     overscroll-behavior: none;
 }
 
+
 body[data-screen="personaggio"] main {
     min-height: 0;
 }
+
 
 /* Un riquadro grande quanto lo sfondo (stessa copertura e stesso taglio):
    gli oggetti messi dentro restano nel punto giusto dell'immagine */
@@ -4476,8 +4368,10 @@ body[data-screen="personaggio"] main {
     pointer-events: none;
 }
 
+
 /* 1 px dello sfondo (1672 px di larghezza), per posizionare gli effetti */
 .char-bgbox { --b: calc(max(100vw, calc(100vh * 16 / 9)) / 1672); }
+
 
 /* Luci delle lanterne: un alone caldo che lampeggia a scatti */
 .char-lamp {
@@ -4491,8 +4385,11 @@ body[data-screen="personaggio"] main {
     animation: char-lamp 6.4s steps(1) infinite;
 }
 
+
 .char-lamp-1 { left: calc((273 - 85) * var(--b)); top: calc((348 - 85) * var(--b)); }
+
 .char-lamp-2 { left: calc((1617 - 85) * var(--b)); top: calc((748 - 85) * var(--b)); animation-duration: 7.8s; animation-delay: -2.6s; }
+
 
 @keyframes char-lamp {
     0%   { opacity: 0.95; }
@@ -4507,6 +4404,7 @@ body[data-screen="personaggio"] main {
     91%  { opacity: 0.45; }
 }
 
+
 /* Due lucciole che si accendono e si spengono girando piano */
 .char-fly {
     position: absolute;
@@ -4518,8 +4416,11 @@ body[data-screen="personaggio"] main {
     animation: char-fly-1 15s linear infinite, char-fly-blink 2.4s steps(1) infinite;
 }
 
+
 .char-fly-1 { left: calc(430 * var(--b)); top: calc(660 * var(--b)); }
+
 .char-fly-2 { left: calc(1190 * var(--b)); top: calc(600 * var(--b)); animation-name: char-fly-2, char-fly-blink; animation-duration: 18s, 3s; animation-delay: -6s, 0.8s; }
+
 
 @keyframes char-fly-1 {
     0%   { transform: translate(0, 0); }
@@ -4531,6 +4432,7 @@ body[data-screen="personaggio"] main {
     100% { transform: translate(0, 0); }
 }
 
+
 @keyframes char-fly-2 {
     0%   { transform: translate(0, 0); }
     20%  { transform: translate(calc(-44 * var(--b)), calc(-26 * var(--b))); }
@@ -4540,6 +4442,7 @@ body[data-screen="personaggio"] main {
     100% { transform: translate(0, 0); }
 }
 
+
 @keyframes char-fly-blink {
     0%   { opacity: 0.95; }
     30%  { opacity: 0.5; }
@@ -4547,6 +4450,7 @@ body[data-screen="personaggio"] main {
     60%  { opacity: 0.6; }
     75%  { opacity: 1; }
 }
+
 
 /* Poche foglie rosse che cadono dall'albero a destra */
 .char-leaf {
@@ -4560,9 +4464,13 @@ body[data-screen="personaggio"] main {
     animation: char-leaf 7.5s linear infinite;
 }
 
+
 .char-leaf-1 { left: calc(1588 * var(--b)); }
+
 .char-leaf-2 { left: calc(1624 * var(--b)); background: #ff6a2a; animation-duration: 9s; animation-delay: -3.4s; }
+
 .char-leaf-3 { left: calc(1652 * var(--b)); background: #c42b1c; animation-duration: 8.2s; animation-delay: -6s; }
+
 
 @keyframes char-leaf {
     0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
@@ -4574,10 +4482,15 @@ body[data-screen="personaggio"] main {
     100% { transform: translate(calc(-4 * var(--b)), calc(600 * var(--b))) rotate(300deg); opacity: 0; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .char-lamp { animation: none; opacity: 0.55; }
-    .char-fly, .char-leaf { display: none; }
+
+    .char-fly,
+.char-leaf { display: none; }
 }
+
 
 /* Il fuoco al centro del cerchio di pietre (a 659 x 566 px dello sfondo 1672x941) */
 .char-fire {
@@ -4587,11 +4500,13 @@ body[data-screen="personaggio"] main {
     width: 7.8%;
 }
 
+
 .char-fire img {
     display: block;
     width: 100%;
     height: auto;
 }
+
 
 .char-stage {
     position: absolute;
@@ -4604,6 +4519,7 @@ body[data-screen="personaggio"] main {
     container-type: inline-size;
 }
 
+
 .char-board {
     position: absolute;
     inset: 0;
@@ -4613,6 +4529,7 @@ body[data-screen="personaggio"] main {
     image-rendering: pixelated;
 }
 
+
 /* Su computer lo sfondo è lo strato dietro (sezione::before); l'immagine
    nella scena serve solo come testata sul telefono */
 .char-art {
@@ -4621,6 +4538,7 @@ body[data-screen="personaggio"] main {
     height: 100%;
     image-rendering: pixelated;
 }
+
 
 /* Il cavaliere che cammina sul posto sopra la base di pietra.
    L'ombra sotto i piedi è disegnata dentro l'animazione, a tempo con i passi */
@@ -4632,9 +4550,11 @@ body[data-screen="personaggio"] main {
     aspect-ratio: 518 / 688;
 }
 
+
 .char-board .char-hero img {
     image-rendering: auto;
 }
+
 
 .char-hero .char-base {
     position: absolute;
@@ -4644,6 +4564,7 @@ body[data-screen="personaggio"] main {
     height: auto;
     display: block;
 }
+
 
 .char-hero .char-knight {
     position: absolute;
@@ -4658,18 +4579,22 @@ body[data-screen="personaggio"] main {
     animation: char-walk 1.1667s steps(14, jump-none) infinite;
 }
 
+
 @keyframes char-walk {
     from { background-position: 0% 0; }
     to   { background-position: 100% 0; }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .char-hero .char-knight {
         background-image: url("../immagini/scheda-cavaliere-fermo.webp");
         background-size: 100% 100%;
         animation: none;
     }
 }
+
 
 .char-el {
     position: absolute;
@@ -4680,9 +4605,11 @@ body[data-screen="personaggio"] main {
     margin: 0;
 }
 
+
 .char-board img {
     image-rendering: pixelated;
 }
+
 
 /* La pergamena con le informazioni (già scritte nell'immagine).
    Sul computer prende il posto della card blu con i dati */
@@ -4691,16 +4618,11 @@ body[data-screen="personaggio"] main {
     image-rendering: auto;
 }
 
+
 .character .char-card,
 .character .char-name,
 .character .char-data { display: none; }
 
-/* Contatori e barra del viaggio, ridotti per stare sotto la pergamena */
-.char-stat,
-.char-progress {
-    transform-origin: 0 0;
-    transform: scale(var(--s, 1));
-}
 
 /* Il rettangolo blu scuro che raccoglie i pezzi */
 .char-title {
@@ -4717,6 +4639,7 @@ body[data-screen="personaggio"] main {
     text-shadow: 0 calc(5 * var(--k)) 0 #1a0820, 0 0 calc(18 * var(--k)) rgba(20, 8, 40, 0.8);
 }
 
+
 .char-title::after {
     content: "";
     display: block;
@@ -4728,6 +4651,7 @@ body[data-screen="personaggio"] main {
         linear-gradient(#e3a336, #e3a336) center / 100% calc(3 * var(--k)) no-repeat;
 }
 
+
 .char-card {
     background: linear-gradient(rgba(14, 26, 66, 0.9), rgba(9, 18, 49, 0.92));
     border: calc(5 * var(--k)) solid #d89a2c;
@@ -4738,12 +4662,14 @@ body[data-screen="personaggio"] main {
         0 calc(14 * var(--k)) calc(30 * var(--k)) rgba(0, 0, 0, 0.55);
 }
 
+
 /* La targa rossa col nome */
 .char-name {
     display: grid;
     place-items: center;
     background: url("../immagini/scheda-banner.webp") 0 0 / 100% 100% no-repeat;
 }
+
 
 .char-name h3 {
     margin: 0 0 calc(4 * var(--k));
@@ -4754,6 +4680,7 @@ body[data-screen="personaggio"] main {
     text-shadow: 0 calc(4 * var(--k)) 0 #3a0710;
     white-space: nowrap;
 }
+
 
 /* Il pannello dei dati */
 .char-data::before {
@@ -4766,6 +4693,7 @@ body[data-screen="personaggio"] main {
     border-image: url("../immagini/scheda-pannello.webp") 40 fill / calc(50 * var(--k)) stretch;
 }
 
+
 .char-row {
     position: absolute;
     left: calc(38 * var(--k));
@@ -4775,9 +4703,11 @@ body[data-screen="personaggio"] main {
     border-bottom: calc(2 * var(--k)) dotted rgba(227, 163, 54, 0.5);
 }
 
+
 .char-row:last-child {
     border-bottom: 0;
 }
+
 
 .char-ico {
     position: absolute;
@@ -4788,8 +4718,11 @@ body[data-screen="personaggio"] main {
     transform: translateY(-50%);
 }
 
+
 .char-row:nth-child(2) .char-ico { width: calc(52 * var(--k)); }
+
 .char-row:nth-child(3) .char-ico { width: calc(58 * var(--k)); }
+
 
 .char-row dt,
 .char-row dd {
@@ -4801,12 +4734,14 @@ body[data-screen="personaggio"] main {
     line-height: 1.12;
 }
 
+
 .char-row dt {
     left: calc(68 * var(--k));
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #ffc24a;
 }
+
 
 .char-row dd {
     left: calc(268 * var(--k));
@@ -4815,118 +4750,17 @@ body[data-screen="personaggio"] main {
     white-space: nowrap;
 }
 
+
 .char-row dd small {
     margin-left: calc(14 * var(--k));
     font-size: 0.74em;
     color: #8fb4ff;
 }
 
-/* Le quattro statistiche */
-.char-stat {
-    background: url("../immagini/scheda-riquadro.webp") 0 0 / 100% 100% no-repeat;
-}
-
-.char-stat-ico {
-    position: absolute;
-    left: calc(22 * var(--k));
-    top: calc(30 * var(--k));
-    width: calc(54 * var(--k));
-    height: auto;
-}
-
-.char-stat-label {
-    position: absolute;
-    left: calc(90 * var(--k));
-    top: calc(28 * var(--k));
-    font-size: calc(23 * var(--k));
-    line-height: 1.05;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: #f6ecd6;
-}
-
-.char-stat-value {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: calc(18 * var(--k));
-    padding-left: calc(10 * var(--k));
-    text-align: center;
-    font-size: calc(64 * var(--k));
-    font-weight: 400;
-    line-height: 1;
-    color: #ffc24a;
-    text-shadow: 0 calc(4 * var(--k)) 0 #2a1208;
-}
-
-/* La barra del progresso del viaggio */
-.char-progress::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-width: calc(34 * var(--k));
-    border-image: url("../immagini/scheda-barra.webp") 30 fill / calc(34 * var(--k)) stretch;
-}
-
-.char-progress-label {
-    position: absolute;
-    left: calc(34 * var(--k));
-    top: 50%;
-    display: flex;
-    align-items: center;
-    gap: calc(14 * var(--k));
-    margin: 0;
-    transform: translateY(-50%);
-    font-size: calc(24 * var(--k));
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: #f6ecd6;
-}
-
-.char-progress-label::before {
-    content: "";
-    width: calc(24 * var(--k));
-    height: calc(24 * var(--k));
-    background: url("../immagini/scheda-rombo.webp") center / contain no-repeat;
-}
-
-.hud-bar.char-bar {
-    position: absolute;
-    left: calc(306 * var(--k));
-    top: calc(28 * var(--k));
-    width: calc(544 * var(--k));
-    height: calc(34 * var(--k));
-    display: flex;
-    gap: calc(8 * var(--k));
-    padding: 0;
-    background: none;
-    border: 0;
-}
-
-.hud-bar.char-bar i {
-    flex: 1;
-    height: auto;
-    border-radius: calc(7 * var(--k));
-    background: linear-gradient(#34468f, #212f69 55%, #1b2757);
-    box-shadow: inset 0 calc(2 * var(--k)) 0 rgba(255, 255, 255, 0.08);
-    animation: none;
-}
-
-.hud-bar.char-bar i.is-done {
-    background: linear-gradient(#ffe46a, #fdc018 45%, #f0a817);
-    box-shadow: inset 0 calc(3 * var(--k)) 0 rgba(255, 255, 255, 0.35);
-}
-
-/* Settimana in corso: gialla a metà, ferma */
-.hud-bar.char-bar i.is-now {
-    background: linear-gradient(#b99a3e, #977a22 60%, #7a6010);
-}
 
 /* Telefono e schermi bassi: niente scena fissa, una colonna da scorrere */
 @media (max-width: 700px), (max-height: 400px), (orientation: portrait) and (max-width: 1100px) {
+
     .character.char-scene {
         height: auto;
         min-height: 100vh;
@@ -4935,11 +4769,13 @@ body[data-screen="personaggio"] main {
         overflow: hidden;
     }
 
+
     .character.char-scene::before {
         position: absolute;
         background-position: left top;
         filter: brightness(0.45);
     }
+
 
     .char-stage {
         position: relative;
@@ -4952,6 +4788,7 @@ body[data-screen="personaggio"] main {
         transform: none;
         container-type: normal;
     }
+
 
     .char-board {
         position: relative;
@@ -4967,6 +4804,7 @@ body[data-screen="personaggio"] main {
         box-shadow: 0 0 0 3px #04061a;
     }
 
+
     .char-el {
         position: relative;
         left: auto;
@@ -4978,6 +4816,7 @@ body[data-screen="personaggio"] main {
 
     .char-card { display: none; }
 
+
     /* Sul telefono il cavaliere sta sopra la testata, al centro */
     .char-hero {
         left: 50%;
@@ -4986,6 +4825,7 @@ body[data-screen="personaggio"] main {
         transform: translateX(-50%);
         z-index: 2;
     }
+
 
     /* Sul telefono lo sfondo diventa una testata col cavaliere */
     .char-art {
@@ -4998,16 +4838,19 @@ body[data-screen="personaggio"] main {
         box-shadow: 0 0 0 3px #1a0d05;
     }
 
+
     .char-title {
         position: static;
         font-size: 34px;
         text-shadow: 0 3px 0 #1a0820;
     }
 
+
     .char-title::after {
         width: 70%;
         margin-top: 6px;
     }
+
 
     .char-name {
         width: min(100%, 380px);
@@ -5015,17 +4858,21 @@ body[data-screen="personaggio"] main {
         align-self: center;
     }
 
+
     .char-name h3 { font-size: 32px; }
+
 
     .char-data {
         padding: 8px 6px;
         height: auto;
     }
 
+
     .char-data::before {
         border-width: 22px;
         border-image-width: 22px;
     }
+
 
     .char-row {
         position: relative;
@@ -5042,6 +4889,7 @@ body[data-screen="personaggio"] main {
         margin: 0 8px;
     }
 
+
     .char-ico {
         grid-area: ico;
         position: static;
@@ -5049,90 +4897,55 @@ body[data-screen="personaggio"] main {
         transform: none;
     }
 
+
     .char-row:nth-child(2) .char-ico,
-    .char-row:nth-child(3) .char-ico { width: 36px; }
+.char-row:nth-child(3) .char-ico { width: 36px; }
+
 
     .char-row dt,
-    .char-row dd {
+.char-row dd {
         position: static;
         transform: none;
         font-size: 22px;
     }
 
+
     .char-row dt { grid-area: dt; font-size: 19px; }
+
     .char-row dd { grid-area: dd; white-space: normal; }
+
     .char-row dd small { display: block; margin: 0 0 4px; font-size: 17px; }
-
-    .char-stat {
-        width: calc(50% - 8px);
-        height: auto;
-        aspect-ratio: 215 / 167;
-        display: block;
-    }
-
-    .char-stat-ico { left: 10px; top: 14px; width: 30px; }
-    .char-stat-label { left: 48px; top: 12px; font-size: 14px; }
-    .char-stat-value { font-size: 40px; bottom: 6px; padding-left: 8px; }
-
-    .char-progress {
-        height: auto;
-        padding: 52px 14px 22px;
-    }
-
-    .char-progress::before {
-        border-width: 20px;
-        border-image-width: 20px;
-    }
-
-    .char-progress-label {
-        top: 14px;
-        left: 14px;
-        transform: none;
-        font-size: 19px;
-        gap: 10px;
-    }
-
-    .char-progress-label::before,
-    .char-progress-label::after { width: 16px; height: 16px; }
-
-    .hud-bar.char-bar {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 100%;
-        height: 26px;
-        gap: 3px;
-        z-index: 1;
-    }
-
-    .hud-bar.char-bar i { border-radius: 5px; }
 }
+
 
 /* Le statistiche stanno in due colonne: il contenitore le affianca */
 @media (max-width: 700px), (max-height: 400px), (orientation: portrait) and (max-width: 1100px) {
+
     .char-board {
         flex-flow: row wrap;
         align-items: flex-start;
         justify-content: space-between;
     }
 
-    .char-data,
-    .char-progress {
+
+    .char-data {
         flex: 0 0 100%;
     }
 
+
     .char-art,
-    .char-name {
+.char-name {
         flex: 0 0 auto;
         margin: 0 auto;
     }
 
+
     .char-title { flex: 0 0 100%; }
 
-    .char-stat { flex: 0 0 calc(50% - 8px); }
 
     /* Sul telefono lo sfondo è una testata: niente fuoco */
     .char-bgbox { display: none; }
+
 
     /* Sul telefono la pagina scorre come al solito */
     body[data-screen="personaggio"] {
@@ -5140,12 +4953,13 @@ body[data-screen="personaggio"] main {
         overscroll-behavior: auto;
     }
 
+
     /* Sul telefono i dati restano scritti dal sito, leggibili, e la pergamena sparisce */
     .character .char-info { display: none; }
+
     .character .char-name { display: grid; }
+
     .character .char-data { display: block; }
-    .char-stat,
-    .char-progress { transform: none; }
 }
 
 
@@ -5175,7 +4989,9 @@ body[data-screen="personaggio"] main {
     filter: drop-shadow(0 calc(8 * var(--u)) 0 rgba(0, 0, 0, 0.5));
 }
 
+
 .mis-window:focus { outline: none; }
+
 
 /* La lavagna sta dentro l'apertura della cornice (appena più larga, sotto le travi) */
 .mis-board {
@@ -5192,6 +5008,7 @@ body[data-screen="personaggio"] main {
     z-index: 1;
 }
 
+
 .mis-frame {
     position: absolute;
     inset: 0;
@@ -5199,6 +5016,7 @@ body[data-screen="personaggio"] main {
     pointer-events: none;
     z-index: 2;
 }
+
 
 .mis-targa {
     position: absolute;
@@ -5214,6 +5032,7 @@ body[data-screen="personaggio"] main {
     pointer-events: none;
 }
 
+
 .mis-window .mis-targa h2 {
     margin: 0;
     padding-bottom: calc(4 * var(--u));
@@ -5225,6 +5044,7 @@ body[data-screen="personaggio"] main {
     color: #ffe9b0;
     text-shadow: 0 calc(3 * var(--u)) 0 #3a1708;
 }
+
 
 .mis-close {
     position: absolute;
@@ -5239,9 +5059,11 @@ body[data-screen="personaggio"] main {
     border: 0;
 }
 
+
 .mis-close:hover,
 .mis-arrow:hover:not(:disabled),
 .mis-filter:hover { filter: brightness(1.18); }
+
 
 /* Filtri */
 .mis-filters {
@@ -5250,6 +5072,7 @@ body[data-screen="personaggio"] main {
     justify-content: center;
     gap: calc(8 * var(--u));
 }
+
 
 .mis-filter {
     display: flex;
@@ -5268,12 +5091,15 @@ body[data-screen="personaggio"] main {
     border: 0;
 }
 
+
 .mis-filter b { font-weight: 400; color: #ffc24a; }
+
 
 .mis-filter.is-on {
     color: #fff3d0;
     background-image: url("../immagini/lav-linguetta-attiva.webp");
 }
+
 
 /* Le pergamene */
 .mis-grid {
@@ -5287,6 +5113,7 @@ body[data-screen="personaggio"] main {
     padding: calc(6 * var(--u)) calc(2 * var(--u)) 0;
 }
 
+
 .mis-card {
     position: relative;
     min-width: 0;
@@ -5296,13 +5123,17 @@ body[data-screen="personaggio"] main {
     transition: transform 0.12s steps(2);
 }
 
+
 .mis-card:nth-child(2n) { background-image: url("../immagini/lav-pergamena-2.webp"); }
+
 .mis-card:nth-child(3n) { background-image: url("../immagini/lav-pergamena-3.webp"); }
+
 
 .mis-card:hover {
     transform: rotate(var(--rot, 0deg)) translateY(calc(-4 * var(--u))) scale(1.03);
     z-index: 2;
 }
+
 
 .mis-open {
     position: absolute;
@@ -5314,7 +5145,9 @@ body[data-screen="personaggio"] main {
     border: 0;
 }
 
+
 .mis-open:focus-visible { outline: 2px solid #ffc24a; outline-offset: 2px; }
+
 
 .mis-text {
     position: absolute;
@@ -5326,6 +5159,7 @@ body[data-screen="personaggio"] main {
     pointer-events: none;
 }
 
+
 .mis-window .mis-text h3 {
     margin: 0;
     font-size: calc(14.5 * var(--u));
@@ -5333,6 +5167,7 @@ body[data-screen="personaggio"] main {
     line-height: 0.95;
     color: #2a1608;
 }
+
 
 .mis-text p {
     display: -webkit-box;
@@ -5346,7 +5181,9 @@ body[data-screen="personaggio"] main {
     color: #5a3a1c;
 }
 
+
 .mis-text.is-long p { -webkit-line-clamp: 1; line-clamp: 1; }
+
 
 /* La fila delle fasi: puntini uniti da una linea */
 .mis-dots {
@@ -5361,6 +5198,7 @@ body[data-screen="personaggio"] main {
     pointer-events: none;
 }
 
+
 .mis-dots::before {
     content: "";
     position: absolute;
@@ -5372,6 +5210,7 @@ body[data-screen="personaggio"] main {
     transform: translateY(-50%);
 }
 
+
 .mis-dots i {
     position: relative;
     width: calc(9 * var(--u));
@@ -5381,7 +5220,9 @@ body[data-screen="personaggio"] main {
     border: calc(2 * var(--u)) solid #8a5a2c;
 }
 
+
 .mis-dots i.is-fatta { background: #f0a817; border-color: #8a4a08; }
+
 
 .mis-dots i.is-attuale {
     width: calc(13 * var(--u));
@@ -5390,6 +5231,7 @@ body[data-screen="personaggio"] main {
     border-color: #c9861c;
     box-shadow: 0 0 calc(6 * var(--u)) calc(2 * var(--u)) rgba(255, 200, 70, 0.9);
 }
+
 
 .mis-chips {
     position: absolute;
@@ -5400,6 +5242,7 @@ body[data-screen="personaggio"] main {
     gap: calc(6 * var(--u));
     z-index: 2;
 }
+
 
 .mis-lv {
     display: inline-flex;
@@ -5418,13 +5261,19 @@ body[data-screen="personaggio"] main {
     border-radius: calc(3 * var(--u));
 }
 
+
 .mis-lv img { width: calc(9 * var(--u)); height: auto; }
+
 
 /* Nelle pergamene piccole i cartellini mostrano solo il numero */
 .mis-grid .mis-lv .pre { display: none; }
+
 a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
+
 .mis-lv.is-locked { color: #a98f6a; border-color: #6a4a2a; }
+
 .mis-lv.is-locked img { filter: grayscale(1) brightness(0.7); }
+
 
 /* Simbolo di stato nell'angolo */
 .mis-state {
@@ -5436,11 +5285,16 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
-.mis-state-pugnale   { width: calc(38 * var(--u)); }
+
+.mis-state-pugnale { width: calc(38 * var(--u)); }
+
 .mis-state-clessidra { width: calc(22 * var(--u)); top: calc(-2 * var(--u)); right: calc(6 * var(--u)); }
-.mis-state-sigillo   { width: calc(36 * var(--u)); top: calc(-10 * var(--u)); }
+
+.mis-state-sigillo { width: calc(36 * var(--u)); top: calc(-10 * var(--u)); }
+
 
 .mis-card.is-completata .mis-text h3 { color: #4a3a2a; }
+
 
 /* Nastro verde "Nuova" */
 .mis-new {
@@ -5464,6 +5318,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
+
 /* Pagine: frecce, guida e cursore */
 .mis-pager {
     display: flex;
@@ -5474,7 +5329,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     padding: 0 calc(6 * var(--u));
 }
 
+
 .mis-pager.is-single { opacity: 0.35; }
+
 
 .mis-arrow {
     width: calc(24 * var(--u));
@@ -5485,8 +5342,11 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     background: url("../immagini/lav-freccia-sx.webp") 0 0 / 100% 100% no-repeat;
 }
 
+
 .mis-next { background-image: url("../immagini/lav-freccia-dx.webp"); }
+
 .mis-arrow:disabled { opacity: 0.4; cursor: default; }
+
 
 .mis-track {
     position: relative;
@@ -5496,6 +5356,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border: calc(2 * var(--u)) solid #6a3a14;
     border-radius: calc(5 * var(--u));
 }
+
 
 .mis-track i {
     position: absolute;
@@ -5507,6 +5368,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     transition: left 0.15s steps(4), width 0.15s steps(4);
 }
 
+
 /* Dettaglio: la pergamena grande */
 .mis-detail {
     position: absolute;
@@ -5517,7 +5379,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     background: rgba(12, 5, 2, 0.74);
 }
 
+
 .mis-detail[hidden] { display: none; }
+
 
 .mis-sheet {
     position: relative;
@@ -5530,10 +5394,15 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     gap: calc(8 * var(--u));
 }
 
+
 .mis-sheet .mis-state { right: calc(14 * var(--u)); top: calc(8 * var(--u)); }
+
 .mis-sheet .mis-state-pugnale { width: calc(50 * var(--u)); }
+
 .mis-sheet .mis-state-clessidra { width: calc(30 * var(--u)); }
+
 .mis-sheet .mis-state-sigillo { width: calc(48 * var(--u)); }
+
 
 .mis-window .mis-sheet h3 {
     margin: 0;
@@ -5545,7 +5414,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     color: #2a1608;
 }
 
+
 .mis-sheet h3 em { font-size: 0.6em; font-style: normal; text-transform: none; color: #6a4220; }
+
 
 .mis-sheet p {
     margin: 0;
@@ -5553,6 +5424,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     line-height: 1.05;
     color: #3a2210;
 }
+
 
 .mis-back {
     align-self: flex-start;
@@ -5566,7 +5438,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
+
 .mis-back:hover { filter: brightness(1.2); }
+
 
 .mis-steps {
     display: flex;
@@ -5576,6 +5450,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     padding: 0 0 calc(2 * var(--u));
     list-style: none;
 }
+
 
 .mis-steps li {
     position: relative;
@@ -5590,6 +5465,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     color: #5a3a1c;
 }
 
+
 .mis-steps li::before {
     content: "";
     position: absolute;
@@ -5600,7 +5476,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     background: #8a5a2c;
 }
 
+
 .mis-steps li:first-child::before { display: none; }
+
 
 .mis-steps i {
     position: relative;
@@ -5612,8 +5490,11 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border: calc(2 * var(--u)) solid #8a5a2c;
 }
 
+
 .mis-steps li.is-fatta i { background: #f0a817; border-color: #8a4a08; }
+
 .mis-steps li.is-attuale { color: #2a1608; }
+
 .mis-steps li.is-attuale i {
     width: calc(17 * var(--u));
     height: calc(17 * var(--u));
@@ -5623,13 +5504,16 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     box-shadow: 0 0 calc(7 * var(--u)) calc(2 * var(--u)) rgba(255, 200, 70, 0.9);
 }
 
+
 .mis-sheet .mis-chips {
     position: static;
     margin-top: calc(2 * var(--u));
 }
 
+
 /* Telefono e schermi bassi: finestra a tutto schermo, una colonna che scorre */
 @media (max-width: 700px), (max-height: 520px) {
+
     .panel.mis-window {
         --u: calc(100vw / 739);
         position: fixed;
@@ -5644,7 +5528,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
         border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
     }
 
+
     .mis-frame { display: none; }
+
 
     .mis-targa {
         top: -8px;
@@ -5652,8 +5538,11 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
         height: 50px;
     }
 
+
     .mis-window .mis-targa h2 { font-size: 24px; }
+
     .mis-close { left: auto; top: -6px; right: -4px; width: 44px; }
+
 
     .mis-board {
         left: 0;
@@ -5665,8 +5554,11 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
         background: none;
     }
 
+
     .mis-filters { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+
     .mis-filter { flex: none; width: 118px; height: 34px; font-size: 19px; gap: 6px; }
+
 
     .mis-grid {
         grid-template-columns: 1fr;
@@ -5679,25 +5571,45 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
         padding: 12px 6px 20px;
     }
 
+
     .mis-card { min-height: 150px; transform: rotate(calc(var(--rot) * 0.5)); }
+
     .mis-card:hover { transform: rotate(calc(var(--rot) * 0.5)); }
+
     .mis-text { left: 36px; right: 64px; top: 36px; bottom: 56px; overflow: visible; }
-    .mis-text p, .mis-text.is-long p { -webkit-line-clamp: 3; line-clamp: 3; }
+
+    .mis-text p,
+.mis-text.is-long p { -webkit-line-clamp: 3; line-clamp: 3; }
+
     .mis-window .mis-text h3 { font-size: 22px; }
+
     .mis-text p { font-size: 16px; margin-top: 4px; line-height: 1.05; }
+
     .mis-dots { left: 36px; right: 58px; bottom: 38px; height: 16px; }
+
     .mis-dots i { width: 13px; height: 13px; border-width: 2px; }
+
     .mis-dots i.is-attuale { width: 18px; height: 18px; }
+
     .mis-chips { left: 28px; bottom: 12px; gap: 8px; }
+
     .mis-grid .mis-lv .pre { display: inline; }
+
     .mis-lv { height: 22px; font-size: 17px; padding: 0 8px 0 5px; gap: 4px; border-width: 2px; }
+
     .mis-lv img { width: 13px; }
+
     .mis-state-pugnale { width: 54px; right: 2px; top: -10px; }
+
     .mis-state-clessidra { width: 32px; right: 14px; top: -4px; }
+
     .mis-state-sigillo { width: 50px; right: 2px; top: -12px; }
+
     .mis-new { width: 92px; height: 38px; font-size: 17px; left: -8px; }
 
+
     .mis-pager { display: none; }
+
 
     .mis-sheet {
         width: 100%;
@@ -5708,14 +5620,23 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
         overflow-y: auto;
     }
 
+
     .mis-window .mis-sheet h3 { font-size: 30px; padding-right: 60px; }
+
     .mis-sheet p { font-size: 21px; }
+
     .mis-back { height: 32px; font-size: 20px; padding: 0 14px 3px; }
+
     .mis-sheet .mis-state { right: 16px; top: 10px; }
+
     .mis-sheet .mis-state-pugnale { width: 54px; }
+
     .mis-steps { padding-bottom: 36px; }
+
     .mis-steps li { font-size: 16px; }
+
     .mis-sheet .mis-chips { margin-top: 6px; }
+
     .mis-detail { align-items: start; padding-top: 4px; }
 }
 
@@ -5747,7 +5668,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     image-rendering: pixelated;
 }
 
+
 .lib-window:focus { outline: none; }
+
 
 .lib-board {
     position: absolute;
@@ -5758,11 +5681,13 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     z-index: 1;
 }
 
+
 .lib-scaffale {
     display: block;
     width: 100%;
     height: 100%;
 }
+
 
 /* La cornice di legno: gli angoli restano uguali, i lati si allungano */
 .lib-frame {
@@ -5776,6 +5701,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     filter: drop-shadow(0 calc(8 * var(--f)) 0 rgba(0, 0, 0, 0.5));
     pointer-events: none;
 }
+
 
 .lib-targa {
     position: absolute;
@@ -5791,6 +5717,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
+
 .lib-window .lib-targa h2 {
     margin: 0;
     padding-bottom: calc(4 * var(--f));
@@ -5804,6 +5731,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     white-space: nowrap;
 }
 
+
 .lib-close,
 .lib-x {
     position: absolute;
@@ -5816,8 +5744,14 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
+
 .lib-close { left: calc(100% + 12px); top: calc(-8 * var(--f)); }
-.lib-close:hover, .lib-x:hover, .lib-nav:hover, .lib-back:hover { filter: brightness(1.18); }
+
+.lib-close:hover,
+.lib-x:hover,
+.lib-nav:hover,
+.lib-back:hover { filter: brightness(1.18); }
+
 
 /* Le targhette delle mensole, con il testo scritto dal sito */
 .lib-plaque {
@@ -5839,8 +5773,11 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
+
 .lib-plaque-1 { top: calc(10 * var(--u)); }
+
 .lib-plaque-2 { top: calc(255 * var(--u)); }
+
 
 /* I libri sulle mensole */
 .lib-book-btn {
@@ -5856,12 +5793,14 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     transition: transform 0.12s steps(2);
 }
 
+
 .lib-book-btn img {
     display: block;
     width: 100%;
     height: 100%;
     pointer-events: none;
 }
+
 
 .lib-book-btn:hover,
 .lib-book-btn:focus-visible {
@@ -5870,6 +5809,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     filter: drop-shadow(0 0 calc(7 * var(--u)) rgba(255, 200, 90, 0.9));
     z-index: 2;
 }
+
 
 .lib-num {
     position: absolute;
@@ -5883,6 +5823,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     color: #4a2a10;
     pointer-events: none;
 }
+
 
 /* La targhetta col titolo, sopra il libro sotto il cursore */
 .lib-tip {
@@ -5901,8 +5842,10 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
+
 .lib-book-btn:hover .lib-tip,
 .lib-book-btn:focus-visible .lib-tip { opacity: 1; }
+
 
 /* Il libro aperto, a tutto schermo sopra la libreria */
 .lib-view {
@@ -5917,7 +5860,9 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     background: rgba(12, 5, 2, 0.84);
 }
 
+
 .lib-view[hidden] { display: none; }
+
 
 .lib-book {
     position: relative;
@@ -5925,12 +5870,14 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     aspect-ratio: 1586 / 926;
 }
 
+
 .lib-bookimg {
     display: block;
     width: 100%;
     height: 100%;
     filter: drop-shadow(0 calc(14 * var(--k)) 0 rgba(0, 0, 0, 0.5));
 }
+
 
 /* La pagina che gira: i fotogrammi hanno un piccolo margine intorno al libro */
 .lib-flip {
@@ -5943,10 +5890,13 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     filter: drop-shadow(0 calc(14 * var(--k)) 0 rgba(0, 0, 0, 0.5));
 }
 
+
 /* Durante il giro il libro fermo sparisce: c'è solo il fotogramma */
 .lib-view.is-flipping .lib-bookimg { visibility: hidden; }
 
+
 .lib-flip[hidden] { display: none; }
+
 
 .lib-left,
 .lib-right {
@@ -5960,21 +5910,30 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     transition: opacity 0.08s linear;
 }
 
+
 /* Mentre la pagina gira il testo sparisce, poi riappare */
 .lib-view.is-flipping .lib-left,
 .lib-view.is-flipping .lib-right { opacity: 0; transition: none; }
 
+
 /* Pagina di solo testo a sinistra: niente titolo, cartellino e icona */
 .lib-left .lib-ltext { display: none; }
+
 .lib-left.is-text { justify-content: flex-start; }
+
 .lib-left.is-text .lib-title,
 .lib-left.is-text .lib-lv,
 .lib-left.is-text .lib-icon { display: none; }
+
 .lib-left.is-text .lib-ltext { display: block; }
+
 .lib-right { justify-content: flex-start; }
 
+
 .lib-left { left: 13.6%; width: 32.6%; gap: calc(16 * var(--k)); }
+
 .lib-right { left: 53.4%; width: 31.6%; }
+
 
 .lib-view .lib-title {
     margin: 0;
@@ -5984,6 +5943,7 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     text-align: center;
     color: #3a1a08;
 }
+
 
 .lib-lv {
     display: inline-flex;
@@ -5999,10 +5959,15 @@ a.mis-lv:hover { color: #2a1608; background: #ffc24a; }
     border-radius: calc(8 * var(--k));
 }
 
+
 .lib-lv img { width: calc(30 * var(--k)); height: auto; }
+
 a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
+
 .lib-lv.is-locked { color: #a98f6a; border-color: #6a4a2a; cursor: default; }
+
 .lib-lv.is-locked img { filter: grayscale(1) brightness(0.7); }
+
 
 .lib-icon {
     height: calc(210 * var(--k));
@@ -6010,6 +5975,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     max-width: 70%;
     object-fit: contain;
 }
+
 
 .lib-text {
     width: 100%;
@@ -6020,8 +5986,11 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     color: #3a2210;
 }
 
+
 .lib-text p { margin: 0 0 0.7em; }
+
 .lib-text p:last-child { margin-bottom: 0; }
+
 
 .lib-back {
     position: absolute;
@@ -6037,7 +6006,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
+
 .lib-x { right: 14px; top: 14px; width: 56px; }
+
 
 .lib-nav {
     position: absolute;
@@ -6051,16 +6022,22 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
+
 .lib-nav-prev { left: max(6px, calc(50% - var(--bw) / 2 - var(--nw) - 12px)); }
+
 .lib-nav-next { right: max(6px, calc(50% - var(--bw) / 2 - var(--nw) - 12px)); background-image: url("../immagini/lav-freccia-dx.webp"); }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .lib-book-btn { transition: none; }
 }
+
 
 /* Telefono e schermi bassi: finestra a tutto schermo con i libri in elenco,
    e una pagina sola per il libro aperto */
 @media (max-width: 700px), (max-height: 520px) {
+
     .panel.lib-window {
         position: fixed;
         inset: 0;
@@ -6073,10 +6050,15 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
     }
 
+
     .lib-frame { display: none; }
+
     .lib-targa { top: -8px; width: min(64vw, 260px); height: 52px; }
+
     .lib-window .lib-targa h2 { font-size: 25px; }
+
     .lib-close { left: auto; top: -6px; right: -4px; width: 44px; }
+
 
     .lib-board {
         left: 0;
@@ -6092,7 +6074,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         -webkit-overflow-scrolling: touch;
     }
 
+
     .lib-scaffale { display: none; }
+
 
     .lib-plaque {
         position: static;
@@ -6104,6 +6088,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         place-items: start;
         border-bottom: 3px solid #c9861c;
     }
+
 
     .lib-book-btn {
         position: relative;
@@ -6123,11 +6108,15 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         border-radius: 6px;
     }
 
+
     .lib-book-btn:hover,
-    .lib-book-btn:focus-visible { transform: none; filter: none; border-color: #c9861c; }
+.lib-book-btn:focus-visible { transform: none; filter: none; border-color: #c9861c; }
+
 
     .lib-book-btn img { width: 44px; height: auto; flex: none; }
+
     .lib-num { display: none; }
+
 
     .lib-tip {
         position: static;
@@ -6141,7 +6130,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         opacity: 1;
     }
 
+
     .lib-view { background: rgba(12, 5, 2, 0.92); align-items: start; padding: 64px 12px 90px; overflow-y: auto; }
+
 
     .lib-book {
         width: 100%;
@@ -6158,29 +6149,44 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         border-image: url("../immagini/lav-pergamena-3.webp") 42 fill / 30px stretch;
     }
 
-    .lib-bookimg, .lib-flip { display: none; }
+
+    .lib-bookimg,
+.lib-flip { display: none; }
+
 
     .lib-left,
-    .lib-right {
+.lib-right {
         position: static;
         width: 100%;
         height: auto;
         gap: 10px;
     }
 
+
     .lib-view .lib-title { font-size: 34px; }
+
     .lib-lv { font-size: 22px; border-width: 3px; padding: 3px 12px 4px 8px; gap: 6px; }
+
     .lib-lv img { width: 18px; }
+
     .lib-icon { height: 74px; }
+
     .lib-text { font-size: 23px; line-height: 1.1; text-align: center; padding: 0; }
+
     .lib-right { justify-content: center; }
 
+
     .lib-back { left: 10px; top: 10px; }
+
     .lib-x { right: 10px; top: 10px; width: 46px; }
+
     .lib-nav { top: auto; margin-top: 0; bottom: 14px; width: 54px; }
+
     .lib-nav-prev { left: 18px; }
+
     .lib-nav-next { right: 18px; }
 }
+
 
 /* =========================================================
    INVENTARIO: la bacheca delle armi, una per ogni strumento
@@ -6207,7 +6213,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     image-rendering: pixelated;
 }
 
+
 .inv-window:focus { outline: none; }
+
 
 .inv-lavagna {
     position: absolute;
@@ -6217,6 +6225,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     height: 100%;
     filter: drop-shadow(0 calc(8 * var(--u)) 0 rgba(0, 0, 0, 0.5));
 }
+
 
 /* Il titolo sta sulla targa dell'immagine */
 .inv-targa {
@@ -6240,6 +6249,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
+
 /* Le armi: si alzano e brillano al passaggio del mouse */
 .inv-arma {
     position: absolute;
@@ -6255,12 +6265,14 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     transition: transform 0.12s steps(2), filter 0.12s steps(2);
 }
 
+
 .inv-arma img {
     display: block;
     width: 100%;
     height: 100%;
     pointer-events: none;
 }
+
 
 .inv-arma:hover,
 .inv-arma:focus-visible,
@@ -6269,6 +6281,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     filter: drop-shadow(0 0 calc(5 * var(--u)) #fff0b0) drop-shadow(0 0 calc(14 * var(--u)) rgba(255, 190, 70, 0.85));
     outline: none;
 }
+
 
 /* Il nome sulla targhetta sopra l'arma */
 .inv-etichetta {
@@ -6292,7 +6305,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     cursor: pointer;
 }
 
+
 .inv-etichetta.is-selected { color: #fff6c8; text-shadow: 0 0 calc(6 * var(--u)) #ffb83a, 0 calc(2 * var(--u)) 0 #3a1708; }
+
 
 /* La pergamena in basso */
 .inv-testo {
@@ -6311,6 +6326,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     pointer-events: none;
 }
 
+
 .inv-testo strong {
     font-size: calc(42 * var(--u));
     font-weight: 400;
@@ -6318,13 +6334,16 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     color: #2a1608;
 }
 
+
 .inv-testo span {
     font-size: calc(32 * var(--u));
     line-height: 1.05;
     color: #4a2a10;
 }
 
+
 .inv-lista { display: none; }
+
 
 .inv-close {
     position: absolute;
@@ -6339,14 +6358,19 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     border: 0;
 }
 
+
 .inv-close:hover { filter: brightness(1.18); }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .inv-arma { transition: none; }
 }
 
+
 /* Telefono e schermi bassi: finestra a tutto schermo, armi in elenco */
 @media (max-width: 700px), (max-height: 520px) {
+
     .panel.inv-window {
         position: fixed;
         inset: 0;
@@ -6359,7 +6383,12 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         border-image: url("../immagini/ui-cornice.webp") 64 fill / 22px stretch;
     }
 
-    .inv-lavagna, .inv-arma, .inv-etichetta, .inv-testo { display: none; }
+
+    .inv-lavagna,
+.inv-arma,
+.inv-etichetta,
+.inv-testo { display: none; }
+
 
     .inv-targa {
         left: 50%;
@@ -6374,7 +6403,9 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         color: #ffe9b0;
     }
 
+
     .inv-close { left: auto; top: -6px; right: -4px; width: 44px; }
+
 
     .inv-lista {
         position: absolute;
@@ -6393,6 +6424,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         -webkit-overflow-scrolling: touch;
     }
 
+
     .inv-lista li {
         display: flex;
         align-items: center;
@@ -6404,10 +6436,14 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
         border-radius: 6px;
     }
 
+
     .inv-lista img { width: 96px; height: auto; flex: none; }
+
     .inv-lista strong { display: block; font-size: 25px; font-weight: 400; line-height: 1.05; color: #ffd36a; }
+
     .inv-lista span { display: block; font-size: 20px; line-height: 1.05; }
 }
+
 
 /* =========================================================
    MONDO 4 CHE VIVE: la lava scorre nelle cascate e salgono
@@ -6422,6 +6458,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     --th: calc(128 * var(--p));
 }
 
+
 .w4-fall {
     position: absolute;
     inset: 0;
@@ -6429,6 +6466,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     -webkit-mask: url("../immagini/maschera-lava.webp") 0 0 / 100% 100% no-repeat;
     mask: url("../immagini/maschera-lava.webp") 0 0 / 100% 100% no-repeat;
 }
+
 
 .w4-fall::before {
     content: "";
@@ -6443,10 +6481,12 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     animation: w4-flow 1.1s steps(16) infinite;
 }
 
+
 @keyframes w4-flow {
     from { transform: translate3d(0, 0, 0); }
     to   { transform: translate3d(0, var(--th), 0); }
 }
+
 
 /* Scintille rosse: salgono a scatti e si spengono */
 .w4-spark {
@@ -6462,6 +6502,7 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     animation-delay: var(--w, 0s);
 }
 
+
 @keyframes w4-spark {
     0%   { opacity: 0; transform: translate(0, 0); }
     10%  { opacity: 1; }
@@ -6469,8 +6510,11 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     100% { opacity: 0; transform: translate(var(--sx, 0), calc(-1 * var(--r, 100px))); }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
+
     .w4-fall::before { animation: none; }
+
     .w4-spark { display: none; }
 }
 
@@ -6495,15 +6539,19 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     box-shadow: 4px 4px 0 rgba(5, 6, 15, 0.6);
 }
 
+
 .sound-toggle svg {
     display: block;
     width: 100%;
     height: 100%;
 }
 
+
 .sound-toggle .icon-off,
 .sound-toggle[aria-pressed="false"] .icon-on { display: none; }
+
 .sound-toggle[aria-pressed="false"] .icon-off { display: block; }
+
 
 .sound-toggle:hover,
 .sound-toggle:focus-visible {
@@ -6511,11 +6559,13 @@ a.lib-lv:hover { color: #2a1608; background: #ffc24a; }
     outline: none;
 }
 
+
 body[data-screen="home"] .sound-toggle,
 body:not([data-screen]) .sound-toggle {
     top: auto;
     bottom: 16px;
 }
+
 
 /* La schermata START resta pulita */
 html.show-start .sound-toggle { display: none; }

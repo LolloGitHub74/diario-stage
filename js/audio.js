@@ -36,7 +36,8 @@
     function nuovoContesto() {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return null;
-        const c = new AC();
+        let c;
+        try { c = new AC({ latencyHint: "interactive" }); } catch (e) { c = new AC(); }
         const master = c.createGain();
         master.gain.value = VOLUME;
         const comp = c.createDynamicsCompressor();
@@ -174,14 +175,17 @@
     // Un solo contesto audio per tutto il sito (anche la musica usa questo)
     function ottieni() {
         if (!ctx) ctx = nuovoContesto();
-        if (ctx && ctx.state === "suspended" && ctx.resume) ctx.resume();
+        if (ctx && ctx.state === "suspended" && ctx.resume) {
+            const r = ctx.resume();
+            if (r && r.catch) r.catch(function () { /* ancora bloccato */ });
+        }
         return ctx;
     }
 
     function suona(tipo) {
         if (muto) return;
         if (!ottieni()) return;
-        (VOCI[tipo] || VOCI.tasto)(ctx, ctx.currentTime + 0.005);
+        (VOCI[tipo] || VOCI.tasto)(ctx, ctx.currentTime + 0.002);
         window.dispatchEvent(new CustomEvent("diario:suono", { detail: tipo }));
     }
 
@@ -192,13 +196,50 @@
         return "tasto";
     }
 
-    // Un solo ascoltatore per tutto il sito: vale anche per i pulsanti creati dopo
-    document.addEventListener("click", function (event) {
-        const el = event.target.closest && event.target.closest(CLICCABILI);
-        if (!el || el.disabled || el.getAttribute("aria-disabled") === "true") return;
-        if (el.id === "suono") return;     // l'interruttore ha il suo suono
+    // Il browser tiene l'audio fermo finché non c'è un gesto dell'utente: il primo
+    // tocco, tasto o clic lo sblocca (il contesto è già pronto dal caricamento)
+    function sblocca() {
+        if (ctx && ctx.state === "suspended" && ctx.resume) {
+            const r = ctx.resume();
+            if (r && r.catch) r.catch(function () { /* ancora bloccato: riproverà al prossimo gesto */ });
+        }
+    }
+    ["pointerdown", "keydown", "touchend", "click"].forEach(function (nome) {
+        document.addEventListener(nome, sblocca, { capture: true, passive: true });
+    });
+
+    function cliccabile(el) {
+        const x = el && el.closest && el.closest(CLICCABILI);
+        if (!x || x.disabled || x.getAttribute("aria-disabled") === "true") return null;
+        if (x.id === "suono") return null;     // l'interruttore ha il suo suono
+        return x;
+    }
+
+    // Col mouse il suono parte quando premi il tasto, non quando lo rilasci:
+    // il clic arriva solo al rilascio e si sentirebbe in ritardo.
+    // Col dito e con la tastiera il clic è già immediato.
+    let premuto = null;
+    document.addEventListener("pointerdown", function (event) {
+        if (event.pointerType === "touch" || event.button > 0) return;
+        const el = cliccabile(event.target);
+        if (!el) return;
+        premuto = { el: el, t: performance.now() };
         suona(tipoDi(el));
     }, true);
+
+    // Un solo ascoltatore per tutto il sito: vale anche per i pulsanti creati dopo
+    document.addEventListener("click", function (event) {
+        const el = cliccabile(event.target);
+        if (!el) return;
+        if (premuto && premuto.el === el && performance.now() - premuto.t < 3000) { premuto = null; return; }   // già suonato alla pressione
+        premuto = null;
+        suona(tipoDi(el));
+    }, true);
+
+    document.addEventListener("keydown", function () { premuto = null; }, true);
+
+    // Prepara subito l'audio (resta fermo fino al primo gesto): così il primo suono non aspetta
+    if (!muto) ottieni();
 
     // ---------- Interruttore ----------
 

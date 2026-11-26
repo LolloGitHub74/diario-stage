@@ -120,7 +120,7 @@
                 bottone.style.setProperty("--x", pos.x + n * PASSO);
                 bottone.style.setProperty("--y", pos.y);
                 bottone.setAttribute("aria-label", libro.titolo + ", settimana " + libro.settimana);
-                bottone.innerHTML = '<img src="immagini/lib-dorso-' + libro.dorso + '.webp" alt=""'
+                bottone.innerHTML = '<img loading="lazy" src="immagini/lib-dorso-' + libro.dorso + '.webp" alt=""'
                     + (libro.tinta ? ' style="filter: hue-rotate(' + libro.tinta + 'deg)"' : "") + ">"
                     + '<span class="lib-num">' + libro.settimana + "</span>"
                     + '<span class="lib-tip">' + esc(libro.titolo) + "</span>";

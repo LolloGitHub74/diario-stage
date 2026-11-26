@@ -45,10 +45,18 @@
         });
     }
 
+    // Il controllo gira ad ogni fotogramma solo mentre qualcuno cammina:
+    // quando i cavalieri sono fermi non consuma niente
+    function qualcunoCammina() {
+        return CAMMINATE.some(function (c) {
+            return Array.prototype.some.call(document.querySelectorAll(c.selettore), visibile);
+        });
+    }
+
     let corre = false;
     function ciclo() {
+        if (document.hidden || !qualcunoCammina()) { corre = false; return; }
         controlla();
-        if (document.hidden) { corre = false; return; }
         requestAnimationFrame(ciclo);
     }
     function parti() {
@@ -57,6 +65,10 @@
         requestAnimationFrame(ciclo);
     }
 
+    // Si risveglia quando cambia una classe (il cavaliere parte) o la schermata
+    new MutationObserver(parti).observe(document.body, {
+        subtree: true, attributes: true, attributeFilter: ["class", "hidden", "data-screen"]
+    });
     document.addEventListener("visibilitychange", function () { if (!document.hidden) parti(); });
     parti();
 

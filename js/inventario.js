@@ -64,12 +64,12 @@
             bottone.setAttribute("style", stile(s.x, s.y, s.w, s.h));
             bottone.setAttribute("aria-pressed", "false");
             bottone.setAttribute("aria-label", s.nome + ": " + s.desc);
-            bottone.innerHTML = '<img src="immagini/inv-arma-' + s.arma + '.webp" alt="">';
+            bottone.innerHTML = '<img loading="lazy" src="immagini/inv-arma-' + s.arma + '.webp" alt="">';
             win.insertBefore(bottone, prima);
         });
 
         lista.innerHTML = STRUMENTI.map(function (s) {
-            return '<li><img src="immagini/inv-arma-' + s.arma + '.webp" alt="">'
+            return '<li><img loading="lazy" src="immagini/inv-arma-' + s.arma + '.webp" alt="">'
                 + "<div><strong>" + esc(s.nome) + "</strong><span>" + esc(s.desc) + "</span></div></li>";
         }).join("");
     }
