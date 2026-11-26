@@ -110,6 +110,22 @@
         o.stop(t + durata + coda + 0.02);
     }
 
+    // La "punta" del click: una sinusoide che scende appena e si spegne subito
+    function punta(c, t, freq, durata, vol) {
+        const o = c.createOscillator();
+        const g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(freq, t);
+        o.frequency.exponentialRampToValueAtTime(freq * 0.6, t + durata);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(vol, t + 0.0015);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + durata);
+        o.connect(g);
+        g.connect(c._out);
+        o.start(t);
+        o.stop(t + durata + 0.01);
+    }
+
     let lato = 1;     // passo destro o sinistro
 
     const VOCI = {
@@ -118,20 +134,32 @@
             nota(c, t, 987.77, 0.075, 0.42, 0.01);
             nota(c, t + 0.085, 1318.51, 0.12, 0.42, 0.34);
         },
+        // Il click di un pulsante meccanico: un colpo secco e brevissimo quando
+        // scende, e un "tic" più leggero quando risale (circa 45 ms dopo).
+        // Niente tonfo basso: quello è dei passi.
         tasto: function (c, t) {
             const v = varia();
-            tonfo(c, t, 420 * v, 210 * v, 0.07, 0.7);
-            soffio(c, t, 1400 * v, 0.9, 2600, 0.7, 0.035);
+            soffio(c, t, 1600 * v, 1.1, 3000, 1.2, 0.013);
+            punta(c, t, 1150 * v, 0.016, 0.34);
+            soffio(c, t + 0.045, 1400 * v, 1.1, 2800, 0.45, 0.009);
         },
         pieno: function (c, t) {
             const v = varia();
-            tonfo(c, t, 300 * v, 140 * v, 0.11, 0.85);
-            soffio(c, t, 1000 * v, 0.8, 2200, 0.7, 0.05);
+            soffio(c, t, 1700 * v, 1.1, 3800, 1.0, 0.016);
+            punta(c, t, 1150 * v, 0.02, 0.35);
+            tonfo(c, t, 190 * v, 110 * v, 0.05, 0.22);        // un po' di corpo, per le azioni importanti
+            soffio(c, t + 0.05, 1500 * v, 1.2, 3600, 0.45, 0.01);
         },
         indietro: function (c, t) {
             const v = varia();
-            tonfo(c, t, 360 * v, 230 * v, 0.06, 0.5);
-            soffio(c, t, 1200 * v, 0.9, 2300, 0.45, 0.03);
+            soffio(c, t, 1500 * v, 1.1, 2900, 0.85, 0.011);
+            punta(c, t, 1050 * v, 0.013, 0.24);
+            soffio(c, t + 0.04, 1300 * v, 1.1, 2700, 0.3, 0.007);
+        },
+        lieve: function (c, t) {
+            const v = varia();
+            soffio(c, t, 1900 * v, 1.2, 3300, 0.7, 0.009);
+            punta(c, t, 1400 * v, 0.01, 0.2);
         },
         // Un passo sulla terra: tonfo sordo e un po' di fruscio; destro e sinistro
         // sono appena diversi, così la camminata non suona a macchinetta
@@ -141,11 +169,6 @@
             tonfo(c, t, 240 * v, 120 * v, 0.07, 0.55);
             soffio(c, t, 850 * v, 0.7, 1700, 0.5, 0.045);
         },
-        lieve: function (c, t) {
-            const v = varia();
-            tonfo(c, t, 480 * v, 320 * v, 0.04, 0.3);
-            soffio(c, t, 1500 * v, 1, 2500, 0.35, 0.02);
-        }
     };
 
     // Un solo contesto audio per tutto il sito (anche la musica usa questo)
@@ -159,6 +182,7 @@
         if (muto) return;
         if (!ottieni()) return;
         (VOCI[tipo] || VOCI.tasto)(ctx, ctx.currentTime + 0.005);
+        window.dispatchEvent(new CustomEvent("diario:suono", { detail: tipo }));
     }
 
     function tipoDi(el) {
