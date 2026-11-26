@@ -2997,6 +2997,10 @@ html[data-theme="day"] .theme-toggle .icon-moon {
     transition: none;
 }
 
+/* Mondo 4: strada e cerchi più piccoli, quindi falò e cavaliere in scala */
+.world-page[data-world="4"] .map-fire { width: 3.5%; }
+.world-page[data-world="4"] .knight-walker { height: 6.4%; }
+
 /* Settimana non ancora raggiunta: falò spento, fermo */
 .map-fire[data-state="locked"] {
     background-image: url("../immagini/falo-spento.webp");
